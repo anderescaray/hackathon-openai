@@ -91,7 +91,7 @@ export function LandingScreen() {
             whileTap={reducedMotion ? undefined : { scale: 0.985 }}
           >
             <Link
-              href="/interview-preview?role=tenant"
+              href="/interview?role=tenant"
               className="group flex min-h-[72px] items-center gap-[14px] rounded-card bg-surface px-[16px] py-[14px] shadow-card transition-colors hover:bg-surface-2"
             >
               <span className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-[14px] bg-granate-50 text-granate">
@@ -120,7 +120,7 @@ export function LandingScreen() {
             whileTap={reducedMotion ? undefined : { scale: 0.985 }}
           >
             <Link
-              href="/interview-preview?role=home"
+              href="/interview?role=home"
               className="group flex min-h-[72px] items-center gap-[14px] rounded-card bg-surface px-[16px] py-[14px] shadow-card transition-colors hover:bg-surface-2"
             >
               <span className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-[14px] bg-ochre-100 text-ochre-ink">
@@ -167,7 +167,7 @@ export function LandingScreen() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={reducedMotion ? undefined : { opacity: 0, y: -4 }}
                 transition={{ duration: 0.18 }}
-                className="mt-[8px] flex items-center justify-center gap-[10px]"
+                className="mt-[8px] flex flex-wrap items-center justify-center gap-[8px]"
               >
                 <button
                   type="button"
@@ -183,6 +183,12 @@ export function LandingScreen() {
                 >
                   Landlord (Marta)
                 </button>
+                <Link
+                  href="/interview-preview?role=tenant"
+                  className="flex min-h-[38px] items-center rounded-full border border-stone bg-surface-2 px-[14px] text-[13px] font-semibold text-granate transition-colors hover:bg-granate-50"
+                >
+                  Interview (no mic)
+                </Link>
               </motion.div>
             )}
           </AnimatePresence>
