@@ -62,7 +62,7 @@ export function FitsOverlay({ home, fit, photoUrl, onClose }: FitsOverlayProps) 
       {/* Logo pill (Phone 2 shows only the left homie pill) */}
       <div className="pointer-events-none absolute top-[20px] left-[20px] z-10">
         <span className="inline-block rounded-full bg-cream/94 px-[14px] py-[6px] font-display text-[24px] font-semibold leading-[1.2] text-granate">
-          homie
+          roomie
         </span>
       </div>
 

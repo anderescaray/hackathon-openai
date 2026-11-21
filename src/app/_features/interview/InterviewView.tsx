@@ -162,7 +162,7 @@ function StepHeader({ role, phase }: { role: Role; phase: InterviewViewProps["ph
   return (
     <header className="shrink-0 px-[20px] pt-[22px]">
       <div className="flex items-center justify-between">
-        <span className="font-display text-[24px] font-semibold leading-none text-granate">homie</span>
+        <span className="font-display text-[24px] font-semibold leading-none text-granate">roomie</span>
         <div
           className="flex items-center gap-[5px]"
           aria-label={stepTwoActive ? "Step 2 of 2" : "Step 1 of 2"}
@@ -385,7 +385,7 @@ export function InterviewView(props: InterviewViewProps) {
         <div className="mb-[58px] min-w-0 flex-1 rounded-[20px] rounded-bl-[6px] bg-surface px-[16px] py-[14px] shadow-bubble">
           <div className="flex items-center gap-[6px] text-[11px] font-bold uppercase tracking-[0.06em] text-granate">
             <span className="h-[7px] w-[7px] shrink-0 rounded-[4px] bg-ochre" />
-            Homie asks
+            Roomie asks
           </div>
           <AnimatePresence mode="wait">
             {agentLine ? (
@@ -406,7 +406,7 @@ export function InterviewView(props: InterviewViewProps) {
                 animate={{ opacity: 1 }}
                 exit={reducedMotion ? undefined : { opacity: 0 }}
                 className="font-display mt-[4px] text-[19px] font-semibold leading-[1.2] text-subtle"
-                aria-label="Homie is thinking"
+                aria-label="Roomie is thinking"
               >
                 …
               </motion.div>

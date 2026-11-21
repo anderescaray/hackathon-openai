@@ -16,7 +16,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "homie",
+  title: "roomie",
   description: "Find a home that fits — both ways.",
 };
 

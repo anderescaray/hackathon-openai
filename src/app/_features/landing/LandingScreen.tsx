@@ -50,7 +50,7 @@ export function LandingScreen() {
         transition={{ ...SPRING, delay: 0 }}
         className="shrink-0 px-[20px] pt-[22px]"
       >
-        <span className="font-display text-[24px] font-semibold leading-none text-granate">homie</span>
+        <span className="font-display text-[24px] font-semibold leading-none text-granate">roomie</span>
       </motion.header>
 
       {/* Mascot + hero copy */}
@@ -79,7 +79,7 @@ export function LandingScreen() {
           transition={{ ...SPRING, delay: reducedMotion ? 0 : 0.16 }}
           className="mx-auto mt-[10px] max-w-[320px] text-center text-[15px] leading-[1.42] text-muted"
         >
-          Talk to Homie for five minutes. We only show you what fits your must-haves — and theirs.
+          Talk to Roomie for five minutes. We only show you what fits your must-haves — and theirs.
         </motion.p>
 
         {/* Role choice buttons */}
@@ -102,7 +102,7 @@ export function LandingScreen() {
                   I&apos;m looking for a home
                 </span>
                 <span className="mt-[3px] block text-[13px] leading-[1.3] text-muted">
-                  Tell Homie what you need
+                  Tell Roomie what you need
                 </span>
               </span>
               <ChevronRight

@@ -5,7 +5,7 @@ export function DiscoverSkeleton() {
 
       <div className="pointer-events-none absolute inset-x-[20px] top-[20px] z-20 flex items-center justify-between">
         <span className="rounded-full bg-cream/94 px-[14px] py-[6px] font-display text-[24px] font-semibold leading-[1.2] text-granate">
-          homie
+          roomie
         </span>
         <span className="h-[30px] w-[108px] animate-pulse rounded-full bg-cream/94" />
       </div>

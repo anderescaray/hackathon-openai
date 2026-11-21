@@ -187,7 +187,7 @@ export function ChatScreen() {
               Say hi to {otherPersonName}
             </div>
             <p className="text-[14px] leading-[1.4] text-muted">
-              Break the ice — Homie already told them you fit.
+              Break the ice — Roomie already told them you fit.
             </p>
           </div>
         ) : (

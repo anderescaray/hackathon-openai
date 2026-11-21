@@ -61,7 +61,7 @@ export function TenantProfileScreen() {
           <h1 className="font-display text-[32px] leading-[1.15] font-semibold text-ink">
             Your card
           </h1>
-          <p className="mt-[2px] text-[14px] text-muted">What Homie knows about you</p>
+          <p className="mt-[2px] text-[14px] text-muted">What Roomie knows about you</p>
         </header>
       </div>
     );
@@ -79,7 +79,7 @@ export function TenantProfileScreen() {
           <h1 className="font-display text-[32px] leading-[1.15] font-semibold text-ink">
             Your card
           </h1>
-          <p className="mt-[2px] text-[14px] text-muted">What Homie knows about you</p>
+          <p className="mt-[2px] text-[14px] text-muted">What Roomie knows about you</p>
         </div>
 
         <span
