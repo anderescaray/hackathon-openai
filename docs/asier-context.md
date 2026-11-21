@@ -4,7 +4,7 @@
 
 En `feature/data`, commit `04abe82`, ya están los esquemas y tipos de [perfiles y feed](../src/domain/profile.ts), el [contrato de swipe](../src/domain/swipe.ts) y el [almacén SQLite](../src/db/store.ts). El almacén guarda y consulta perfiles y swipes. Usa `DATABASE_PATH`, con `data/app.db` como valor por defecto.
 
-El siguiente paso es entregar a Ander un JSON con 5 casas y 5 inquilinos inventados que validen con `profileSchema`. La carga final será de 25 perfiles por rol con `npm run seed`, que aún no existe. También quedan pendientes el motor de matching, la persistencia de embeddings y las rutas de la tabla.
+Ya están hechos el pipeline de matching, los datos de demo (25 por rol, en `src/matching/demo-data.json`, que se cargan con `npm run seed`), la tabla de embeddings y las cinco rutas de la tabla. Las decisiones y el contrato exacto están en [el pipeline de matching](3-pipeline-matching.md). Lo siguiente es integrar con Adolfo (cuerpos del `PATCH`) y con Ander (feed, swipes y matches reales).
 
 ## Límites e integración
 

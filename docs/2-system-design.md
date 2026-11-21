@@ -167,8 +167,9 @@ otros dos, porque rompen a todos.
 
 `src/db/store.ts` ya existe: abre el fichero SQLite (`data/app.db`, se crea solo) y ofrece
 `saveProfile`, `findProfile`, `listProfilesByRole`, `saveSwipe`, `findSwipe` y `listSwipesFrom`.
-Las rutas y los datos inventados de Asier se apoyan en él. El embedding de las notas aún no tiene
-dónde guardarse; lo añade Asier cuando haga el orden.
+Las rutas y los datos inventados de Asier se apoyan en él. El embedding de las notas se guarda
+aparte, en la tabla `profile_embeddings` (`saveEmbedding`, `findEmbedding`). El detalle del
+matching está en `docs/3-pipeline-matching.md`.
 
 ## Orden del día
 
