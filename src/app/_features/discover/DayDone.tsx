@@ -1,6 +1,8 @@
+"use client";
+
 import Link from "next/link";
 
-import { DAILY_HOMES } from "@/app/_lib/api";
+import { DAILY_HOMES, resetMockData } from "@/app/_lib/api";
 import { Homie } from "@/app/_ui/homie/Homie";
 
 export function DayDone() {
@@ -28,6 +30,17 @@ export function DayDone() {
       >
         See your matches
       </Link>
+
+      <button
+        type="button"
+        onClick={() => {
+          resetMockData();
+          window.location.reload();
+        }}
+        className="mt-[4px] min-h-[40px] px-[14px] text-[13px] font-medium text-subtle underline decoration-dash underline-offset-4 transition-colors hover:text-muted"
+      >
+        Start the demo again
+      </button>
     </div>
   );
 }

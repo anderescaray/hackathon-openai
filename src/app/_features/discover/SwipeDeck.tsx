@@ -33,6 +33,7 @@ import {
   matchIdFor,
   swipe,
 } from "@/app/_lib/api";
+import { DEMO_TENANT_ID } from "@/app/_lib/fixtures";
 import { evaluateRequirements, type FitResult } from "@/app/_lib/fit";
 import { useSession } from "@/app/_lib/session";
 import { MatchCelebration } from "@/app/_features/match/MatchCelebration";
@@ -249,7 +250,10 @@ export function SwipeDeck() {
     if (!profileId) return;
     let cancelled = false;
 
-    Promise.all([getFeed(profileId), getProfile(profileId)])
+    // A profile the store doesn't know (e.g. an interview that wasn't saved) must not empty the feed:
+    // fall back to the demo tenant so the 5 homes still show.
+    const viewerPromise = getProfile(profileId).catch(() => getProfile(DEMO_TENANT_ID));
+    Promise.all([getFeed(profileId), viewerPromise])
       .then(([items, viewerProfile]) => {
         if (cancelled) return;
         const homesOnly = items.filter((item) => item.profile.role === "home").slice(0, DAILY_HOMES);

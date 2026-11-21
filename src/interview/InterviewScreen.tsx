@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { InterviewView } from "../app/_features/interview/InterviewView";
 import type { InterviewStatus, Speaker } from "../app/_features/interview/types";
+import { saveProfile } from "../app/_lib/api";
 import { setSession } from "../app/_lib/session";
 import type { Role } from "../domain/profile.ts";
 import { buildAgentConfig } from "./agents.ts";
@@ -138,8 +139,14 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
     if (activity.kind === "userLine") setUserLine(activity.line);
   }
 
-  function continueToApp(): void {
+  async function continueToApp(): Promise<void> {
     const { profile } = interviewRef.current;
+    // Save first so the feed can find this profile (falls back to the browser's mock store without the API).
+    try {
+      await saveProfile({ ...profile, status: "complete" });
+    } catch (error) {
+      console.warn("[homie] could not save the interview profile", error);
+    }
     setSession({ profileId: profile.id, role });
     router.push(NEXT_SCREEN[role]);
   }
@@ -285,7 +292,7 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
         justSaved={justSaved}
         onStart={startCall}
         onEnd={endCall}
-        onContinue={continueToApp}
+        onContinue={() => void continueToApp()}
       />
     </>
   );
