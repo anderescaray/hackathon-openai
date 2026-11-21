@@ -1,5 +1,7 @@
 /**
- * Who is using this window: profileId + role, kept in localStorage (no accounts, see the system design).
+ * Who is using this window: profileId + role (no accounts, see the system design).
+ * Kept per tab in sessionStorage, so window 1 (tenant) and window 2 (landlord) of the demo don't overwrite each other;
+ * localStorage keeps the last choice as the default for new tabs.
  * `?as=<profileId>` in any URL switches the window to that profile (demo: window 1 tenant, window 2 landlord).
  * Client only: read it with `useSession()` inside client components.
  */
@@ -24,13 +26,13 @@ function applyAsParam(): void {
   const as = new URLSearchParams(window.location.search).get("as");
   if (!as) return;
   const next = JSON.stringify({ profileId: as, role: roleForId(as) } satisfies Session);
-  if (window.localStorage.getItem(KEY) !== next) window.localStorage.setItem(KEY, next);
+  if (window.sessionStorage.getItem(KEY) !== next) window.sessionStorage.setItem(KEY, next);
 }
 
 function readRaw(): string {
   try {
     applyAsParam();
-    return window.localStorage.getItem(KEY) ?? "";
+    return window.sessionStorage.getItem(KEY) ?? window.localStorage.getItem(KEY) ?? "";
   } catch {
     return "";
   }
@@ -60,11 +62,13 @@ export function getSession(): Session | null {
 }
 
 export function setSession(session: Session): void {
+  window.sessionStorage.setItem(KEY, JSON.stringify(session));
   window.localStorage.setItem(KEY, JSON.stringify(session));
   window.dispatchEvent(new Event(EVENT));
 }
 
 export function clearSession(): void {
+  window.sessionStorage.removeItem(KEY);
   window.localStorage.removeItem(KEY);
   window.dispatchEvent(new Event(EVENT));
 }

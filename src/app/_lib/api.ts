@@ -261,17 +261,28 @@ export function peekProfile(id: string): Profile | undefined {
 
 const SEEN_KEY = "homie.seenMatches";
 
-/** Matches already celebrated in this browser, so the poller doesn't celebrate twice. */
+/**
+ * Matches already celebrated in THIS tab (sessionStorage: the tenant and landlord windows each celebrate once).
+ */
+function readSeen(): string[] {
+  try {
+    return JSON.parse(window.sessionStorage.getItem(SEEN_KEY) ?? "[]") as string[];
+  } catch {
+    return [];
+  }
+}
+
 export function isMatchSeen(matchId: string): boolean {
-  return readJson<string[]>(SEEN_KEY, []).includes(matchId);
+  return readSeen().includes(matchId);
 }
 
 export function markMatchSeen(matchId: string): void {
-  const seen = readJson<string[]>(SEEN_KEY, []);
-  if (!seen.includes(matchId)) writeJson(SEEN_KEY, [...seen, matchId]);
+  const seen = readSeen();
+  if (!seen.includes(matchId)) window.sessionStorage.setItem(SEEN_KEY, JSON.stringify([...seen, matchId]));
 }
 
 /** Demo reset: forget mock swipes, saved profiles and seen matches. */
 export function resetMockData(): void {
-  for (const key of [SWIPES_KEY, PROFILES_KEY, SEEN_KEY]) window.localStorage.removeItem(key);
+  for (const key of [SWIPES_KEY, PROFILES_KEY]) window.localStorage.removeItem(key);
+  window.sessionStorage.removeItem(SEEN_KEY);
 }
