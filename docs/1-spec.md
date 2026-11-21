@@ -9,7 +9,7 @@ mira tres cosas: si es mejor que lo que ya existe, si funciona y si resuelve el 
 
 La idea, en palabras del equipo: cuando buscas piso aplicas a cientos de anuncios y te responden
 pocos, porque al otro lado hay alguien recibiendo 100 mensajes que pierde horas filtrando. Queremos
-que cada lado reciba al otro ya filtrado. La transcripción original está en `spec.md`.
+que cada lado reciba al otro ya filtrado. La transcripción original está en `primera_idea.md`.
 
 Si la idea da para startup se mira después del hackathon; hoy no condiciona nada.
 
