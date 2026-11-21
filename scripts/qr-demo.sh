@@ -6,6 +6,8 @@
 # - Serves a production build of THIS laptop on port 3200 (the dev server on 3000/3100 is untouched).
 # - Public HTTPS link via a free Cloudflare quick tunnel (no account). Works while this script runs; Ctrl+C stops it.
 # - QR images are written to ~/roomie-qr/ (outside the repo):
+#     roomie.png         → /start          the app from the beginning: landing → role → voice interview → homes
+#                                          (needs OPENAI_API_KEY in .env.local for the interview)
 #     try-swipe.png      → /try            swipe the 5 demo homes (no API key needed)
 #     try-interview.png  → /try/interview  voice interview, then the 5 demo homes (needs OPENAI_API_KEY in .env.local)
 # - Each phone keeps its own state, so many people can try it at once.
@@ -33,7 +35,7 @@ if ! command -v cloudflared >/dev/null 2>&1 && [ ! -x "$CLOUDFLARED" ]; then
 fi
 command -v cloudflared >/dev/null 2>&1 && CLOUDFLARED="$(command -v cloudflared)"
 
-if [ -f .env.local ] && grep -q '^OPENAI_API_KEY=.\+' .env.local; then
+if [ -f .env.local ] && grep -q '^OPENAI_API_KEY=sk-' .env.local; then
   echo "→ OPENAI_API_KEY found in .env.local: the interview QR will work."
 else
   echo "→ No OPENAI_API_KEY in .env.local: only the swipe QR will work (the interview will show an error)."
@@ -71,21 +73,23 @@ done
 
 # Wait until the public link actually answers (DNS for a new quick tunnel can take a few seconds).
 for _ in $(seq 1 40); do
-  [ "$(curl -s -o /dev/null -w '%{http_code}' "$URL/try")" = "200" ] && break
+  [ "$(curl -s -o /dev/null -w '%{http_code}' "$URL/start")" = "200" ] && break
   sleep 2
 done
 
+npx -y qrcode@1.5.4 -o "$OUT_DIR/roomie.png" -w 720 -m 2 "$URL/start" >/dev/null
 npx -y qrcode@1.5.4 -o "$OUT_DIR/try-swipe.png" -w 720 -m 2 "$URL/try" >/dev/null
 npx -y qrcode@1.5.4 -o "$OUT_DIR/try-interview.png" -w 720 -m 2 "$URL/try/interview" >/dev/null
-printf '%s/try\n%s/try/interview\n' "$URL" "$URL" >"$OUT_DIR/links.txt"
+printf '%s/start\n%s/try\n%s/try/interview\n' "$URL" "$URL" "$URL" >"$OUT_DIR/links.txt"
 
 echo
 echo "================ roomie is live ================"
+echo "Full app (start):  $URL/start"
 echo "Swipe only:        $URL/try"
 echo "Interview + swipe: $URL/try/interview"
-echo "QR images:         $OUT_DIR/try-swipe.png  ·  $OUT_DIR/try-interview.png"
+echo "QR images:         $OUT_DIR/roomie.png  ·  $OUT_DIR/try-swipe.png  ·  $OUT_DIR/try-interview.png"
 echo
-echo "Swipe QR:"
-npx -y qrcode@1.5.4 -t terminal -s 1 "$URL/try" 2>/dev/null || true
+echo "Scan to start roomie from the beginning:"
+npx -y qrcode@1.5.4 -t terminal -s 1 "$URL/start" 2>/dev/null || true
 echo "Logs: $LOG_DIR · Press Ctrl+C to stop."
 wait "$TUNNEL_PID"

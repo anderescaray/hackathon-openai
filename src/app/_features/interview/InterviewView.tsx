@@ -37,29 +37,12 @@ const HOME_FACT_ORDER: (keyof HomeFacts)[] = [
   "availableFrom",
 ];
 
-const TENANT_REQ_ORDER: (keyof HomeFacts)[] = [
-  "monthlyRentEur",
-  "district",
-  "rentalType",
-  "availableFrom",
-  "furnished",
-  "bedrooms",
-  "sizeM2",
-];
-
-const HOME_REQ_ORDER: (keyof TenantFacts)[] = [
-  "employmentContract",
-  "smokes",
-  "stayMonths",
-  "monthlyIncomeEur",
-  "hasPets",
-  "occupants",
-];
-
 type CardItem = {
   id: string;
   field: string;
   label: string;
+  /** label without the "· must/nice" suffix, for the live summary rows */
+  shortLabel: string;
   value: string;
   isMust: boolean;
   kind: "fact" | "requirement";
@@ -68,7 +51,6 @@ type CardItem = {
 function buildCards(profile: Profile): {
   factCards: CardItem[];
   requirementCards: CardItem[];
-  totalFacts: number;
 } {
   const factCards: CardItem[] = [];
 
@@ -80,6 +62,7 @@ function buildCards(profile: Profile): {
           id: `fact-${key}`,
           field: key,
           label: TENANT_FACT_LABELS[key],
+          shortLabel: TENANT_FACT_LABELS[key],
           value: formatFactValue(key, value),
           isMust: false,
           kind: "fact",
@@ -94,6 +77,7 @@ function buildCards(profile: Profile): {
           id: `fact-${key}`,
           field: key,
           label: HOME_FACT_LABELS[key],
+          shortLabel: HOME_FACT_LABELS[key],
           value: formatFactValue(key, value),
           isMust: false,
           kind: "fact",
@@ -108,48 +92,14 @@ function buildCards(profile: Profile): {
       id: `req-${req.field}-${req.operator}-${index}`,
       field: req.field,
       label: `${fieldLabel} · ${req.isMust ? "must" : "nice"}`,
+      shortLabel: fieldLabel,
       value: requirementValue(req),
       isMust: req.isMust,
       kind: "requirement",
     };
   });
 
-  return {
-    factCards,
-    requirementCards,
-    totalFacts: profile.role === "tenant" ? TENANT_FACT_ORDER.length : HOME_FACT_ORDER.length,
-  };
-}
-
-function getNextSlotLabel(
-  role: Role,
-  phase: InterviewViewProps["phase"],
-  profile: Profile,
-): string | null {
-  if (phase === "facts") {
-    if (role === "tenant" && profile.role === "tenant") {
-      const missing = TENANT_FACT_ORDER.find((key) => profile.facts[key] === undefined);
-      return missing ? `${TENANT_FACT_LABELS[missing]}…` : "Must-haves…";
-    }
-    if (role === "home" && profile.role === "home") {
-      const missing = HOME_FACT_ORDER.find((key) => profile.facts[key] === undefined);
-      return missing ? `${HOME_FACT_LABELS[missing]}…` : "Must-haves…";
-    }
-  }
-
-  if (phase === "requirements") {
-    const existing = new Set<string>(profile.requirements.map((r) => r.field));
-    const reqOrder: string[] = role === "tenant" ? TENANT_REQ_ORDER : HOME_REQ_ORDER;
-    const missingReq = reqOrder.find((field) => !existing.has(field));
-    if (missingReq) {
-      return `${REQUIREMENT_FIELD_LABELS[missingReq] ?? missingReq}…`;
-    }
-    if (!profile.notes) {
-      return "Personal note…";
-    }
-  }
-
-  return null;
+  return { factCards, requirementCards };
 }
 
 function StepHeader({ role, phase }: { role: Role; phase: InterviewViewProps["phase"] }) {
@@ -263,6 +213,148 @@ function InterviewCard({
   );
 }
 
+function SummaryRow({
+  card,
+  isJustSaved,
+  reducedMotion,
+}: {
+  card: CardItem;
+  isJustSaved: boolean;
+  reducedMotion: boolean;
+}) {
+  return (
+    <motion.li
+      layout={!reducedMotion}
+      initial={reducedMotion ? false : { opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={reducedMotion ? undefined : { opacity: 0, height: 0 }}
+      transition={SPRING}
+      className="overflow-hidden"
+    >
+      <motion.div
+        key={`${card.id}-${card.value}`}
+        initial={
+          isJustSaved && !reducedMotion ? { backgroundColor: "rgba(247, 227, 181, 1)" } : false
+        }
+        animate={{ backgroundColor: "rgba(247, 227, 181, 0)" }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="flex items-center justify-between gap-[12px] rounded-[12px] px-[10px] py-[9px]"
+      >
+        <span className="shrink-0 text-[13px] text-muted">{card.shortLabel}</span>
+        <span className="flex min-w-0 items-center gap-[6px]">
+          <span className="font-display truncate text-right text-[16px] font-semibold leading-tight text-ink">
+            {card.value}
+          </span>
+          {card.isMust && (
+            <span className="shrink-0 rounded-full bg-granate px-[7px] py-[3px] text-[9px] font-extrabold uppercase leading-none tracking-[0.08em] text-white">
+              Must
+            </span>
+          )}
+        </span>
+      </motion.div>
+    </motion.li>
+  );
+}
+
+function SummaryGroup({
+  title,
+  cards,
+  justSaved,
+  reducedMotion,
+}: {
+  title: string;
+  cards: CardItem[];
+  justSaved: Set<string>;
+  reducedMotion: boolean;
+}) {
+  return (
+    <motion.section
+      layout={!reducedMotion}
+      initial={reducedMotion ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={SPRING}
+      className="mt-[6px] first:mt-0"
+    >
+      <div className="px-[10px] pb-[2px] pt-[4px] text-[11px] font-bold uppercase tracking-[0.06em] text-subtle">
+        {title}
+      </div>
+      <ul className="m-0 list-none divide-y divide-line p-0">
+        <AnimatePresence initial={false}>
+          {cards.map((card) => (
+            <SummaryRow
+              key={card.id}
+              card={card}
+              isJustSaved={justSaved.has(card.field)}
+              reducedMotion={reducedMotion}
+            />
+          ))}
+        </AnimatePresence>
+      </ul>
+    </motion.section>
+  );
+}
+
+function SummaryCard({
+  role,
+  factCards,
+  requirementCards,
+  justSaved,
+  reducedMotion,
+}: {
+  role: Role;
+  factCards: CardItem[];
+  requirementCards: CardItem[];
+  justSaved: Set<string>;
+  reducedMotion: boolean;
+}) {
+  const [factsTitle, requirementsTitle] =
+    role === "tenant" ? ["About you", "What you're after"] : ["Your place", "Who you're looking for"];
+  const savedCount = factCards.length + requirementCards.length;
+  const isEmpty = savedCount === 0;
+
+  return (
+    <motion.div
+      layout={!reducedMotion}
+      transition={SPRING}
+      className="rounded-tile bg-surface px-[6px] pb-[6px] pt-[12px] shadow-bubble"
+    >
+      <div className="flex items-baseline justify-between px-[10px] pb-[6px]">
+        <h2 className="font-display text-[20px] font-semibold leading-tight text-ink">Summary card</h2>
+        {!isEmpty && (
+          <span className="text-[12px] text-subtle">
+            {savedCount} saved
+          </span>
+        )}
+      </div>
+
+      {isEmpty ? (
+        <p className="m-0 px-[10px] pb-[8px] text-[13px] leading-[1.35] text-subtle">
+          Fills in as you talk with Roomie.
+        </p>
+      ) : (
+        <>
+          {requirementCards.length > 0 && (
+            <SummaryGroup
+              title={requirementsTitle}
+              cards={requirementCards}
+              justSaved={justSaved}
+              reducedMotion={reducedMotion}
+            />
+          )}
+          {factCards.length > 0 && (
+            <SummaryGroup
+              title={factsTitle}
+              cards={factCards}
+              justSaved={justSaved}
+              reducedMotion={reducedMotion}
+            />
+          )}
+        </>
+      )}
+    </motion.div>
+  );
+}
+
 export function InterviewView(props: InterviewViewProps) {
   const {
     role,
@@ -282,7 +374,7 @@ export function InterviewView(props: InterviewViewProps) {
   } = props;
 
   const reducedMotion = Boolean(useReducedMotion());
-  const { factCards, requirementCards, totalFacts } = buildCards(profile);
+  const { factCards, requirementCards } = buildCards(profile);
   const justSavedSet = new Set(justSaved ?? []);
 
   const isFinished = status === "finished" || phase === "done";
@@ -367,11 +459,6 @@ export function InterviewView(props: InterviewViewProps) {
   const homieMood: HomieMood =
     speaker === "agent" ? "speaking" : speaker === "user" ? "listening" : "idle";
 
-  const filledCount = factCards.length + requirementCards.length;
-  const totalTarget = totalFacts + requirementCards.length;
-  const nextSlotLabel = getNextSlotLabel(role, phase, profile);
-
-  const showRequirementsFirst = phase === "requirements" || requirementCards.length > 0;
   const showThinkingDots = !agentLine && (status === "connecting" || status === "live");
   const isIdleOrFailed = status === "idle" || status === "failed";
 
@@ -433,62 +520,15 @@ export function InterviewView(props: InterviewViewProps) {
         </AnimatePresence>
       </div>
 
-      {/* Your card header */}
-      <div className="flex shrink-0 items-baseline justify-between px-[20px] pb-[8px] pt-[14px]">
-        <h2 className="font-display text-[22px] font-semibold leading-tight text-ink">Your card</h2>
-        <div className="text-[12px] text-subtle">
-          {filledCount} of {totalTarget} · updates live
-        </div>
-      </div>
-
-      {/* Live 2-column grid (scrolls if long) */}
-      <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-[12px] py-[4px]">
-        <div className="grid grid-cols-2 gap-[8px] pb-[8px]">
-          {showRequirementsFirst ? (
-            <>
-              {requirementCards.map((card) => (
-                <InterviewCard
-                  key={card.id}
-                  card={card}
-                  isJustSaved={justSavedSet.has(card.field)}
-                  compact={false}
-                  reducedMotion={reducedMotion}
-                />
-              ))}
-              {nextSlotLabel && (
-                <div className="flex min-h-[76px] items-center justify-center rounded-tile border-[1.5px] border-dashed border-dash p-[14px] text-center text-[13px] text-subtle">
-                  {nextSlotLabel}
-                </div>
-              )}
-              {factCards.map((card) => (
-                <InterviewCard
-                  key={card.id}
-                  card={card}
-                  isJustSaved={justSavedSet.has(card.field)}
-                  compact={false}
-                  reducedMotion={reducedMotion}
-                />
-              ))}
-            </>
-          ) : (
-            <>
-              {factCards.map((card) => (
-                <InterviewCard
-                  key={card.id}
-                  card={card}
-                  isJustSaved={justSavedSet.has(card.field)}
-                  compact={false}
-                  reducedMotion={reducedMotion}
-                />
-              ))}
-              {nextSlotLabel && (
-                <div className="flex min-h-[76px] items-center justify-center rounded-tile border-[1.5px] border-dashed border-dash p-[14px] text-center text-[13px] text-subtle">
-                  {nextSlotLabel}
-                </div>
-              )}
-            </>
-          )}
-        </div>
+      {/* Summary card: rows appear only once Roomie has saved them */}
+      <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-[16px] pb-[6px] pt-[14px]">
+        <SummaryCard
+          role={role}
+          factCards={factCards}
+          requirementCards={requirementCards}
+          justSaved={justSavedSet}
+          reducedMotion={reducedMotion}
+        />
       </div>
 
       {/* Mic error banner */}
