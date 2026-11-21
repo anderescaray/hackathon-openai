@@ -1,0 +1,281 @@
+--- a/src/interview/InterviewScreen.tsx
++++ b/src/interview/InterviewScreen.tsx
+@@ -1,12 +1,15 @@
+ "use client";
+ 
++import { useRouter } from "next/navigation";
+ import { useEffect, useRef, useState } from "react";
+ import { z } from "zod";
+ 
++import { InterviewView } from "../app/_features/interview/InterviewView";
++import type { InterviewStatus, Speaker } from "../app/_features/interview/types";
++import { setSession } from "../app/_lib/session";
+ import type { Role } from "../domain/profile.ts";
+-import { buildAgentConfig, type InterviewPhase } from "./agents.ts";
++import { buildAgentConfig } from "./agents.ts";
+ import { handleToolCall, startInterview, type InterviewState } from "./interviewSession.ts";
+-import { HOME_FACT_LABELS, TENANT_FACT_LABELS, formatRequirement, formatValue } from "./labels.ts";
+ import { logEvent } from "./log.ts";
+ import { connectRealtime, type RealtimeConnection } from "./realtimeConnection.ts";
+ import {
+@@ -26,21 +29,56 @@
+ const FAREWELL_NOT_STARTED: FarewellProgress = { farewellResponseId: undefined, isFinished: false };
+ const FAREWELL_TIMEOUT_MS = 15000;
+ 
+-const ROLE_TITLES: Record<Role, string> = { tenant: "Busco piso", home: "Alquilo mi piso" };
+-
+-const PHASE_TITLES: Record<Role, Record<InterviewPhase, string>> = {
+-  tenant: { facts: "1 de 2 · Sobre ti", requirements: "2 de 2 · Qué buscas", done: "Perfil completo" },
+-  home: { facts: "1 de 2 · Tu piso", requirements: "2 de 2 · A quién buscas", done: "Perfil completo" },
++// The UI view has no "dropped": it shows it as "failed" (same retry button).
++const VIEW_STATUS: Record<ScreenStatus, InterviewStatus> = {
++  idle: "idle",
++  connecting: "connecting",
++  live: "live",
++  finished: "finished",
++  failed: "failed",
++  dropped: "failed",
+ };
+ 
+-const STATUS_MESSAGES: Record<ScreenStatus, string> = {
+-  idle: "Pulsa para empezar. Solo tienes que hablar.",
+-  connecting: "Conectando…",
+-  live: "Te escucho. Habla con normalidad.",
+-  finished: "Entrevista terminada.",
+-  failed: "No se ha podido iniciar la entrevista. Revisa el micrófono y vuelve a intentarlo.",
+-  dropped: "Se ha cortado la conexión. Vuelve a empezar la entrevista.",
+-};
++const NEXT_SCREEN: Record<Role, string> = { tenant: "/discover", home: "/interested" };
++
++// Presentation only: who is talking (Homie's mouth / mic) and the subtitles. Never touches the profile.
++const voiceActivitySchema = z.looseObject({
++  type: z.string(),
++  response_id: z.string().optional(),
++  delta: z.string().optional(),
++  transcript: z.string().optional(),
++});
++
++type VoiceActivity =
++  | { kind: "speaker"; speaker: Speaker }
++  | { kind: "agentDelta"; responseId: string; delta: string }
++  | { kind: "agentLine"; line: string }
++  | { kind: "userLine"; line: string };
++
++function readVoiceActivity(serverEvent: unknown): VoiceActivity | undefined {
++  const parsed = voiceActivitySchema.safeParse(serverEvent);
++  if (!parsed.success) return undefined;
++  const { type, response_id: responseId = "", delta, transcript } = parsed.data;
++  switch (type) {
++    case "output_audio_buffer.started":
++      return { kind: "speaker", speaker: "agent" };
++    case "output_audio_buffer.stopped":
++    case "output_audio_buffer.cleared":
++    case "input_audio_buffer.speech_stopped":
++      return { kind: "speaker", speaker: "none" };
++    case "input_audio_buffer.speech_started":
++      return { kind: "speaker", speaker: "user" };
++    case "response.output_audio_transcript.delta":
++      return delta ? { kind: "agentDelta", responseId, delta } : undefined;
++    case "response.output_audio_transcript.done":
++      return transcript ? { kind: "agentLine", line: transcript } : undefined;
++    // Only arrives if input transcription is enabled in the session config.
++    case "conversation.item.input_audio_transcription.completed":
++      return transcript ? { kind: "userLine", line: transcript.trim() } : undefined;
++    default:
++      return undefined;
++  }
++}
+ 
+ function getToday(): string {
+   return formatBarcelonaDate(new Date());
+@@ -62,6 +100,12 @@
+   const farewellRef = useRef(FAREWELL_NOT_STARTED);
+   const isStartingRef = useRef(false);
+   const isUnmountedRef = useRef(false);
++  const router = useRouter();
++  const [speaker, setSpeaker] = useState<Speaker>("none");
++  const [agentLine, setAgentLine] = useState<string | undefined>(undefined);
++  const [userLine, setUserLine] = useState<string | undefined>(undefined);
++  const [justSaved, setJustSaved] = useState<string[]>([]);
++  const agentDraftRef = useRef({ responseId: "", text: "" });
+ 
+   useEffect(() => {
+     isUnmountedRef.current = false;
+@@ -77,12 +121,34 @@
+     connectionRef.current = null;
+     if (farewellTimerRef.current) clearTimeout(farewellTimerRef.current);
+     setStatus("finished");
++    setSpeaker("none");
++  }
++
++  function showVoiceActivity(serverEvent: unknown): void {
++    const activity = readVoiceActivity(serverEvent);
++    if (!activity) return;
++    if (activity.kind === "speaker") setSpeaker(activity.speaker);
++    if (activity.kind === "agentDelta") {
++      const draft = agentDraftRef.current;
++      const text = draft.responseId === activity.responseId ? draft.text + activity.delta : activity.delta;
++      agentDraftRef.current = { responseId: activity.responseId, text };
++      setAgentLine(text);
++    }
++    if (activity.kind === "agentLine") setAgentLine(activity.line);
++    if (activity.kind === "userLine") setUserLine(activity.line);
++  }
++
++  function continueToApp(): void {
++    const { profile } = interviewRef.current;
++    setSession({ profileId: profile.id, role });
++    router.push(NEXT_SCREEN[role]);
+   }
+ 
+   function handleServerEvent(serverEvent: unknown): void {
+     const connection = connectionRef.current;
+     if (!connection) return;
+     const sessionId = interviewRef.current.profile.id;
++    showVoiceActivity(serverEvent);
+ 
+     const serverError = readServerError(serverEvent);
+     if (serverError !== undefined) {
+@@ -105,6 +171,7 @@
+     if (toolCalls.length === 0) return;
+ 
+     const phaseBefore = interviewRef.current.phase;
++    const savedNow: string[] = [];
+     for (const { callId, toolCall } of toolCalls) {
+       const reply = handleToolCall(interviewRef.current, toolCall);
+       interviewRef.current = reply.state;
+@@ -115,8 +182,10 @@
+         data: { tool: toolCall.name, result: reply.output.ok ? "accepted" : "rejected" },
+       });
+       connection.send(buildToolOutputEvent(callId, reply.output));
++      if (reply.output.ok) savedNow.push(...reply.output.saved);
+     }
+     setInterview(interviewRef.current);
++    if (savedNow.length > 0) setJustSaved(savedNow);
+ 
+     const phaseNow = interviewRef.current.phase;
+     if (phaseNow !== phaseBefore) {
+@@ -147,6 +216,7 @@
+       data: { phase: interviewRef.current.phase },
+     });
+     setStatus(wasSayingGoodbye ? "finished" : "dropped");
++    setSpeaker("none");
+   }
+ 
+   async function startCall(): Promise<void> {
+@@ -155,6 +225,9 @@
+     isStartingRef.current = true;
+     interviewRef.current = startInterview(role, crypto.randomUUID());
+     setInterview(interviewRef.current);
++    setJustSaved([]);
++    setAgentLine(undefined);
++    setUserLine(undefined);
+     const sessionId = interviewRef.current.profile.id;
+     setStatus("connecting");
+     logEvent("info", {
+@@ -197,90 +270,23 @@
+   }
+ 
+   const { profile, phase } = interview;
+-  const factLabels: Record<string, string> = role === "tenant" ? TENANT_FACT_LABELS : HOME_FACT_LABELS;
+-  const facts: Record<string, unknown> = profile.facts;
+-  const canStart = status === "idle" || status === "failed" || status === "dropped";
+ 
+   return (
+-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-6 bg-white px-5 py-8 text-zinc-900">
++    <>
+       <audio ref={audioRef} autoPlay />
+-
+-      <header className="flex flex-col gap-1">
+-        <p className="text-sm font-medium text-zinc-500">{ROLE_TITLES[role]}</p>
+-        <h1 className="text-2xl font-semibold">{PHASE_TITLES[role][phase]}</h1>
+-        <p role="status" className="text-sm text-zinc-600">
+-          {STATUS_MESSAGES[status]}
+-        </p>
+-      </header>
+-
+-      {canStart && (
+-        <button
+-          type="button"
+-          onClick={startCall}
+-          className="h-14 rounded-full bg-zinc-900 text-base font-medium text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
+-        >
+-          Empezar entrevista
+-        </button>
+-      )}
+-
+-      <section aria-labelledby="facts-heading" className="flex flex-col gap-2">
+-        <h2 id="facts-heading" className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
+-          {role === "tenant" ? "Sobre ti" : "Tu piso"}
+-        </h2>
+-        <dl className="divide-y divide-zinc-100 rounded-2xl border border-zinc-200">
+-          {Object.entries(factLabels).map(([field, label]) => {
+-            const value = facts[field];
+-            return (
+-              <div key={field} className="flex items-center justify-between gap-4 px-4 py-3">
+-                <dt className="text-sm text-zinc-600">{label}</dt>
+-                <dd className={value === undefined ? "text-sm text-zinc-300" : "text-sm font-medium"}>
+-                  {value === undefined ? "—" : formatValue(value)}
+-                </dd>
+-              </div>
+-            );
+-          })}
+-        </dl>
+-      </section>
+-
+-      <section aria-labelledby="requirements-heading" className="flex flex-col gap-2">
+-        <h2 id="requirements-heading" className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
+-          {role === "tenant" ? "Qué buscas" : "A quién buscas"}
+-        </h2>
+-        {profile.requirements.length === 0 ? (
+-          <p className="rounded-2xl border border-dashed border-zinc-200 px-4 py-3 text-sm text-zinc-400">
+-            Aparecerá aquí mientras lo cuentas.
+-          </p>
+-        ) : (
+-          <ul className="flex flex-col gap-2">
+-            {profile.requirements.map((requirement) => (
+-              <li
+-                key={requirement.field}
+-                className="flex items-center justify-between gap-3 rounded-2xl border border-zinc-200 px-4 py-3"
+-              >
+-                <span className="text-sm font-medium">{formatRequirement(requirement)}</span>
+-                <span
+-                  className={
+-                    requirement.isMust
+-                      ? "shrink-0 rounded-full bg-zinc-900 px-2.5 py-1 text-xs font-medium text-white"
+-                      : "shrink-0 rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-700"
+-                  }
+-                >
+-                  {requirement.isMust ? "Imprescindible" : "Preferencia"}
+-                </span>
+-              </li>
+-            ))}
+-          </ul>
+-        )}
+-      </section>
+-
+-      {profile.notes !== "" && (
+-        <section aria-labelledby="notes-heading" className="flex flex-col gap-2">
+-          <h2 id="notes-heading" className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
+-            Notas
+-          </h2>
+-          <p className="rounded-2xl border border-zinc-200 px-4 py-3 text-sm">{profile.notes}</p>
+-        </section>
+-      )}
+-    </main>
++      <InterviewView
++        role={role}
++        status={VIEW_STATUS[status]}
++        phase={phase}
++        profile={profile}
++        speaker={speaker}
++        agentLine={agentLine}
++        userLine={userLine}
++        justSaved={justSaved}
++        onStart={startCall}
++        onEnd={endCall}
++        onContinue={continueToApp}
++      />
++    </>
+   );
+ }

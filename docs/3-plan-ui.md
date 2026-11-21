@@ -237,5 +237,35 @@ chat. Dos ensayos seguidos sin fallo.
 - [ ] Ningún dato discriminatorio en pantalla.
 
 ## Integración (lo va rellenando C2)
-- Pendiente de Asier: ruta de likes recibidos; ids de casas del seed; ¿`GET /api/profiles/:id`?
-- Pendiente de Adolfo: montar `InterviewView`; exponer `speaker` y subtítulos si puede.
+Última revisión: `git fetch` del 2026-11-21. Ramas remotas: `origin/main`, `origin/feat/voice-interview`.
+
+- **Adolfo (`origin/feat/voice-interview`, último `ed5a73f`)**: entrevista de voz con OpenAI Realtime
+  en `src/interview/**`, `POST /api/voice/session` (clave temporal) y la página `src/app/interview/page.tsx`
+  (`/interview?role=tenant|home`). Herramientas `save_facts`, `complete_facts`, `save_requirement`,
+  `finish_interview`; fases `facts → requirements → done`. Actualiza `docs/2-system-design.md`
+  (ElevenLabs → OpenAI, tabla de rutas).
+- **Asier**: aún no hay rama en remoto. El modo `api` de `_lib/api.ts` sigue la tabla de
+  `docs/2-system-design.md` tal cual (`/api/feed`, `/api/swipes`, `/api/matches`, `/api/profiles/:id`)
+  y cae a mock si una ruta falla.
+- **Deriva del contrato**: ninguna. Ni la rama de Adolfo ni main tocan `src/domain/profile.ts` ni
+  `swipe.ts` respecto a lo que usamos.
+- **Conflictos**: ninguno. `feat/ui` y la rama de Adolfo no comparten ficheros; él tiene
+  `src/app/interview` y `src/app/api/voice`, nosotros el resto de `src/app` (la vista de prueba está
+  en `/interview-preview`). Su página se pintará dentro de nuestro `PhoneFrame` (layout raíz).
+- **Pendiente de Asier**:
+  - `GET /api/likes?profileId=<homeId>` → `FeedItem[]` con los inquilinos que han dado like a esa casa
+    y pasan los imprescindibles de los dos lados (pestaña Interested). Hasta entonces, mock.
+  - `GET /api/profiles/:id` → `Profile`.
+  - `POST /api/swipes` con cuerpo `Swipe` (`{ fromProfileId, toProfileId, liked }`) → `{ match: FeedItem | null }`.
+  - Seed con ids `home-01…home-25` y `photoUrls: ["/homes/home-NN-1.jpg", …]` (las fotos las está bajando C1 a `public/homes/`).
+  - Nombre del casero por casa (ahora sale de `landlordNames` en las fixtures); un campo o una tabla aparte.
+- **Pendiente de Adolfo**:
+  - Aplicar `docs/ui/patches/adolfo-mount-interview-view.patch` tras unir `feat/ui` (ver
+    `docs/ui/patches/README.md`): monta `InterviewView` sin tocar su lógica y ya expone `speaker`,
+    `agentLine`, `justSaved` y `onContinue`.
+  - Para `userLine`, activar la transcripción de entrada en la sesión Realtime.
+  - Llamar a `PATCH /api/profiles/:id` (o `saveProfile`) cuando Asier tenga la ruta, para que el
+    perfil de la entrevista llegue al feed.
+- **Pasar a modo `api`**: `NEXT_PUBLIC_DATA_SOURCE=api` en `.env.local` y reiniciar `next dev` (es una
+  variable pública: se fija al compilar). Cada llamada que falle avisa en consola
+  (`[homie] api.<fn> failed, using mock data`) y usa mock, así que se puede ir activando ruta a ruta.
