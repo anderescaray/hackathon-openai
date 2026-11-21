@@ -45,7 +45,7 @@ match con sus razones.
 ## MVP (dentro)
 | Función | Criterio de aceptación |
 |---|---|
-| Entrevista de voz en dos fases (qué busca, qué ofrece), para inquilino y para casero | Tras hablar, los campos fijos de esa persona o casa quedan rellenados y se ven en pantalla |
+| Entrevista de voz en dos fases, cada una con su agente: primero qué ofreces, después qué buscas; para inquilino y para casero | Tras hablar, los campos fijos de esa persona o casa quedan rellenados y se ven en pantalla |
 | Pregunta "¿es imprescindible?" | Cada campo que la persona menciona queda marcado como imprescindible o preferencia |
 | Cierre "¿quieres añadir algo?" | Lo que diga se guarda como texto libre |
 | Mismo modelo de datos para inquilino y casa | Una sola lista cerrada de campos objetivos describe a ambos |
@@ -86,7 +86,7 @@ La demo funciona de principio a fin delante del jurado y responde a sus tres pre
 
 ## Decisiones
 - 2026-11-21, Adolfo: el motivo es ganar; modo showcase.
-- 2026-11-21, Adolfo: los dos lados se entrevistan por voz, en dos fases, con el mismo modelo de datos.
+- 2026-11-21, Adolfo: los dos lados se entrevistan por voz, con el mismo modelo de datos, en dos fases y con un agente por fase: primero qué ofreces (más personal), después qué buscas.
 - 2026-11-21, Adolfo: imprescindibles descartan en ambos sentidos; preferencias ordenan. El agente pregunta si cada cosa es imprescindible.
 - 2026-11-21, Adolfo: lista cerrada de campos más texto libre al final.
 - 2026-11-21, Adolfo: solo campos objetivos como filtro.
