@@ -51,7 +51,7 @@ Reglas para la pantalla:
 - **Respuesta perdida.** Repetir el mismo `PATCH` con el mismo id y el mismo contenido: es seguro.
 - **Orden.** Enviar las llamadas de una entrevista de una en una y en orden, incluidas las que lleguen en eventos seguidos, para que `complete_facts` vea el último guardado.
 - **Requisitos.** Cada requisito se identifica por `field` + `operator`. «Entre 800 y 1.100 €» son dos requisitos (`gte 800` y `lte 1100`), y corregir el máximo conserva el mínimo. La lista en pantalla tiene que usar `field` + `operator` como clave.
-- **Entrega a Ander.** Tras el cierre confirmado, guardar el id en `sessionStorage["profileId"]`, que es independiente en cada pestaña. Con él, `GET /api/feed?profileId=<id>` devuelve el feed.
+- **Entrega a Ander.** Al pulsar «Continuar» tras el cierre, la pantalla guarda `{ profileId, role }` con `setSession` (`src/app/_lib/session.ts`, `sessionStorage["homie.session"]`, independiente en cada pestaña). Con ese id, `GET /api/feed?profileId=<id>` devuelve el feed.
 
 ## Decisiones
 

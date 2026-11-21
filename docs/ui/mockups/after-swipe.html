@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Homie · After the swipe</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#E7DED3}
+a{color:#7C1D2E}a:hover{color:#5A1220}
+.ph{width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:#F4EEE6;box-shadow:0 30px 60px -20px rgba(36,26,28,.4),0 0 0 1px rgba(0,0,0,.06);font-family:'DM Sans',system-ui,sans-serif;color:#241A1C}
+.fr{font-family:'Fraunces',Georgia,serif;font-weight:600}
+.ck{width:20px;height:20px;border-radius:6px;background:#7C1D2E;display:flex;align-items:center;justify-content:center;flex:none}
+.dock{position:absolute;left:0;right:0;bottom:0;height:86px;background:#FFFBF5;border-radius:28px 28px 0 0;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -6px 24px rgba(36,26,28,.08)}
+.di{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;font:700 11px 'DM Sans',sans-serif;color:#8A7F7B;min-width:72px;min-height:44px;justify-content:center}
+.di.on{color:#7C1D2E}
+.dc{width:66px;height:66px;border-radius:33px;background:#FFFBF5;border:5px solid #F4EEE6;margin-top:-34px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px -6px rgba(36,26,28,.25)}
+.dc.on{background:#7C1D2E;box-shadow:0 8px 18px -6px rgba(124,29,46,.6)}
+.row{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #EAE2D8}
+.th{width:52px;height:52px;border-radius:16px;object-fit:cover;flex:none}
+.bub{max-width:76%;padding:11px 14px;border-radius:18px;font-size:14px;line-height:1.4}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-16deg)}}
+@keyframes spark{0%,100%{transform:scale(.6);opacity:.4}50%{transform:scale(1.1);opacity:1}}
+.bob{animation:bob 1.6s ease-in-out infinite}
+.wave{animation:wave .9s ease-in-out infinite;transform-box:fill-box;transform-origin:100% 100%}
+.spark{animation:spark 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+</style>
+</helmet>
+<div style="width:1760px;height:960px;box-sizing:border-box;padding:40px;display:flex;gap:40px;align-items:flex-start;background:#E7DED3">
+
+<!-- PHONE 1 · MATCH MOMENT (tenant) -->
+<div class="ph" style="background:#7C1D2E;color:#F4EEE6;display:flex;flex-direction:column;align-items:center">
+  <div style="position:relative;margin-top:56px">
+    <svg width="230" height="250" viewBox="0 0 230 250" aria-hidden="true">
+      <circle cx="115" cy="128" r="104" fill="#F4EEE6"/>
+      <path class="spark" d="M30 60 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z" fill="#E2B04A"/>
+      <path class="spark" style="animation-delay:.5s" d="M196 40 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4z" fill="#E2B04A"/>
+      <path class="spark" style="animation-delay:.9s" d="M206 150 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#F7E3B5"/>
+      <path class="spark" style="animation-delay:.3s" d="M20 170 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#F7E3B5"/>
+      <g class="bob" transform="translate(15 4)">
+        <ellipse cx="100" cy="232" rx="46" ry="5" fill="#000" opacity=".2"/>
+        <rect x="78" y="198" width="12" height="24" rx="6" fill="#241A1C"/><rect x="110" y="198" width="12" height="24" rx="6" fill="#241A1C"/>
+        <path d="M66 228 Q66 218 80 218 H92 V230 H66 Z" fill="#241A1C"/><path d="M108 218 H120 Q134 218 134 228 V230 H108 Z" fill="#241A1C"/>
+        <rect x="124" y="44" width="16" height="36" rx="2" fill="#7C1D2E" stroke="#241A1C" stroke-width="4"/>
+        <rect x="52" y="94" width="96" height="108" rx="8" fill="#FBF5EA" stroke="#241A1C" stroke-width="4"/>
+        <path d="M34 102 L100 36 L166 102 Z" fill="#7C1D2E" stroke="#241A1C" stroke-width="4.5" stroke-linejoin="round"/>
+        <circle cx="100" cy="76" r="9" fill="#F7E3B5" stroke="#241A1C" stroke-width="3"/><path d="M100 67 V85 M91 76 H109" stroke="#241A1C" stroke-width="2.5"/>
+        <rect x="62" y="166" width="16" height="20" rx="3" fill="#F7E3B5" stroke="#241A1C" stroke-width="3"/><rect x="122" y="166" width="16" height="20" rx="3" fill="#F7E3B5" stroke="#241A1C" stroke-width="3"/>
+        <path d="M88 202 V180 a12 12 0 0124 0 V202" fill="#7C1D2E" stroke="#241A1C" stroke-width="3.5"/>
+        <path d="M68 108 Q76 102 86 106" fill="none" stroke="#241A1C" stroke-width="4" stroke-linecap="round"/>
+        <path d="M114 108 Q122 102 132 106" fill="none" stroke="#241A1C" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="78" cy="124" r="7" fill="#241A1C"/><circle cx="80" cy="121.5" r="2.2" fill="#fff"/>
+        <path d="M113 126 Q122 117 131 126" fill="none" stroke="#241A1C" stroke-width="4.5" stroke-linecap="round"/>
+        <circle cx="66" cy="140" r="7" fill="#7C1D2E" opacity=".3"/><circle cx="134" cy="140" r="7" fill="#7C1D2E" opacity=".3"/>
+        <path d="M84 140 Q92 134 100 140 Q108 134 116 140 Q108 148 100 143 Q92 148 84 140 Z" fill="#241A1C"/>
+        <path d="M88 150 Q100 166 112 150 Z" fill="#7C1D2E" stroke="#241A1C" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M92 168 L100 174 L92 180 Z M108 168 L100 174 L108 180 Z" fill="#C08A1E" stroke="#241A1C" stroke-width="2.5" stroke-linejoin="round"/><circle cx="100" cy="174" r="3" fill="#241A1C"/>
+        <g class="wave"><path d="M52 132 Q34 118 32 96" fill="none" stroke="#241A1C" stroke-width="6" stroke-linecap="round"/><circle cx="32" cy="92" r="7" fill="#FBF5EA" stroke="#241A1C" stroke-width="3"/></g>
+        <path d="M148 132 Q166 118 168 96" fill="none" stroke="#241A1C" stroke-width="6" stroke-linecap="round"/><circle cx="168" cy="92" r="7" fill="#FBF5EA" stroke="#241A1C" stroke-width="3"/>
+      </g>
+    </svg>
+  </div>
+  <div class="fr" style="font-size:40px;margin-top:6px;letter-spacing:-.5px">It’s a match</div>
+  <div style="font-size:15px;opacity:.85;margin-top:6px;text-align:center;padding:0 40px;line-height:1.4">Marta accepted you for <b>Sunny 2‑bed in Gràcia</b></div>
+  <div style="display:flex;align-items:center;margin-top:20px">
+    <img src="img/sofa.jpg" alt="" style="width:64px;height:64px;border-radius:32px;object-fit:cover;border:3px solid #F4EEE6">
+    <span style="width:64px;height:64px;border-radius:32px;background:#E2B04A;color:#241A1C;border:3px solid #F4EEE6;margin-left:-14px;display:flex;align-items:center;justify-content:center;font:600 22px 'Fraunces',serif">LM</span>
+  </div>
+  <div style="margin:20px 20px 0;align-self:stretch;padding:16px;border-radius:20px;background:rgba(244,238,230,.1);display:flex;flex-direction:column;gap:8px;font-size:14px">
+    <div style="display:flex;gap:10px;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E2B04A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Fits all 4 of your must-haves</div>
+    <div style="display:flex;gap:10px;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E2B04A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>You fit all 3 of Marta’s</div>
+  </div>
+  <div style="margin-top:auto;align-self:stretch;padding:0 20px 30px;display:flex;flex-direction:column;gap:10px">
+    <button style="min-height:56px;border-radius:18px;border:0;background:#E2B04A;color:#241A1C;font:700 16px 'DM Sans',sans-serif">Say hi to Marta</button>
+    <button style="min-height:48px;border-radius:18px;border:0;background:transparent;color:#F4EEE6;font:600 15px 'DM Sans',sans-serif;opacity:.85">Keep discovering</button>
+  </div>
+</div>
+
+<!-- PHONE 2 · MATCHES TAB -->
+<div class="ph">
+  <div style="padding:26px 20px 0">
+    <div class="fr" style="font-size:32px">Matches</div>
+    <div style="font-size:14px;color:#6E6260;margin-top:2px">Landlords who said yes to you</div>
+  </div>
+  <div style="margin:16px 12px 0;padding:14px;border-radius:22px;background:#fff;display:flex;gap:12px;align-items:center;border:1.5px solid #E2B04A">
+    <img class="th" src="img/sofa.jpg" alt="">
+    <div style="flex:1;min-width:0">
+      <div style="display:flex;gap:6px;align-items:center"><span style="font-size:10px;font-weight:800;letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:#F7E3B5;color:#6B4C0E">NEW</span><span style="font-size:12px;color:#8A7F7B">just now</span></div>
+      <div class="fr" style="font-size:17px;margin-top:3px">Sunny 2‑bed in Gràcia</div>
+      <div style="font-size:13px;color:#6E6260">Marta · €950/mo</div>
+    </div>
+    <button style="min-height:44px;padding:0 14px;border-radius:14px;border:0;background:#7C1D2E;color:#fff;font:700 13px 'DM Sans',sans-serif">Say hi</button>
+  </div>
+  <div style="padding:22px 20px 0;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8A7F7B">Chats</div>
+  <div style="padding:0 20px">
+    <div class="row"><img class="th" src="img/armchair.jpg" alt=""><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between"><b style="font-size:15px">Jordi · Eixample loft</b><span style="font-size:12px;color:#8A7F7B">12:40</span></div><div style="font-size:14px;color:#6E6260;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Thursday at 6:30 works for me!</div></div><span style="width:10px;height:10px;border-radius:5px;background:#7C1D2E;flex:none"></span></div>
+    <div class="row"><span class="th" style="background:#F5E1E1;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7C1D2E" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1H5a1 1 0 01-1-1z"/></svg></span><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between"><b style="font-size:15px">Núria · Room in Sants</b><span style="font-size:12px;color:#8A7F7B">Mon</span></div><div style="font-size:14px;color:#6E6260;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">You: Is the deposit one month or two?</div></div></div>
+  </div>
+  <nav class="dock">
+    <button class="di on"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg>Matches</button>
+    <button class="di"><span class="dc"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7C1D2E" stroke-width="2.4" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1H5a1 1 0 01-1-1z"/></svg></span>Discover</button>
+    <button class="di"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Profile</button>
+  </nav>
+</div>
+
+<!-- PHONE 3 · CHAT -->
+<div class="ph" style="display:flex;flex-direction:column">
+  <div style="padding:18px 14px 14px;display:flex;gap:10px;align-items:center;background:#FFFBF5;border-bottom:1px solid #EAE2D8">
+    <button aria-label="Back" style="width:44px;height:44px;border-radius:22px;border:0;background:transparent;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#241A1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <img src="img/sofa.jpg" alt="" style="width:42px;height:42px;border-radius:14px;object-fit:cover">
+    <div style="flex:1"><div style="font-weight:700;font-size:15px">Marta</div><div style="font-size:12px;color:#6E6260">Sunny 2‑bed in Gràcia · €950</div></div>
+  </div>
+  <div style="flex:1;padding:16px 14px;display:flex;flex-direction:column;gap:10px">
+    <div style="align-self:center;display:inline-flex;gap:6px;align-items:center;padding:7px 12px;border-radius:999px;background:#F7E3B5;color:#6B4C0E;font-size:12px;font-weight:700"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B4C0E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Matched · must-haves met on both sides</div>
+    <div class="bub" style="background:#fff;align-self:flex-start;border-bottom-left-radius:6px">Hi Laura! Your profile fits really well. Would you like to see the flat this week?</div>
+    <div class="bub" style="background:#7C1D2E;color:#fff;align-self:flex-end;border-bottom-right-radius:6px">Hi Marta! Yes please. Thursday after 6pm works for me.</div>
+    <div class="bub" style="background:#fff;align-self:flex-start;border-bottom-left-radius:6px">Perfect, Thursday 18:30 then. Carrer de Verdi, 3rd floor.</div>
+    <div style="align-self:flex-start;padding:12px 14px;border-radius:18px;background:#fff;border:1.5px solid #E2B04A;display:flex;gap:10px;align-items:center;font-size:13px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C1D2E" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+      <div><b>Viewing · Thu 18:30</b><br><span style="color:#6E6260">Carrer de Verdi, Gràcia</span></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:6px;padding:0 14px 10px;overflow:hidden">
+    <span style="padding:8px 12px;border-radius:999px;border:1px solid #DCD1C5;font-size:13px;white-space:nowrap">Ask about the deposit</span>
+    <span style="padding:8px 12px;border-radius:999px;border:1px solid #DCD1C5;font-size:13px;white-space:nowrap">Share my documents</span>
+  </div>
+  <div style="padding:10px 14px 26px;display:flex;gap:8px;align-items:center;background:#FFFBF5;border-top:1px solid #EAE2D8">
+    <label style="flex:1;display:flex"><span style="position:absolute;left:-9999px">Message</span><input placeholder="Message Marta…" style="flex:1;min-height:46px;border-radius:23px;border:1px solid #DCD1C5;background:#fff;padding:0 16px;font:15px 'DM Sans',sans-serif"></label>
+    <button aria-label="Send" style="width:46px;height:46px;border-radius:23px;border:0;background:#7C1D2E;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+
+<!-- PHONE 4 · LANDLORD · INTERESTED -->
+<div class="ph">
+  <div style="padding:26px 20px 0;display:flex;justify-content:space-between;align-items:flex-end">
+    <div><div class="fr" style="font-size:32px">Interested</div><div style="font-size:14px;color:#6E6260;margin-top:2px">3 people already fit your must-haves</div></div>
+  </div>
+  <button style="margin:12px 20px 0;min-height:40px;padding:0 12px 0 6px;border-radius:999px;border:1px solid #DCD1C5;background:#fff;display:inline-flex;gap:8px;align-items:center;font:600 13px 'DM Sans',sans-serif;color:#241A1C"><img src="img/sofa.jpg" alt="" style="width:28px;height:28px;border-radius:14px;object-fit:cover">Sunny 2‑bed in Gràcia<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#241A1C" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+  <div style="margin:14px 12px 0;padding:18px;border-radius:26px;background:#fff;display:flex;flex-direction:column;gap:14px;box-shadow:0 6px 20px -10px rgba(36,26,28,.25)">
+    <div style="display:flex;gap:12px;align-items:center">
+      <span style="width:56px;height:56px;border-radius:28px;background:#F7E3B5;display:flex;align-items:center;justify-content:center;font:600 22px 'Fraunces',serif;color:#7C1D2E;flex:none">LM</span>
+      <div style="flex:1"><div class="fr" style="font-size:20px">Laura M.</div><div style="font-size:13px;color:#6E6260">Liked your place · 2h ago</div></div>
+      <span style="padding:6px 10px;border-radius:10px;background:#7C1D2E;color:#F7E3B5;font-size:12px;font-weight:700">3/3 musts</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+      <div style="padding:10px 12px;border-radius:14px;background:#F4EEE6"><div style="font-size:12px;color:#6E6260">Income</div><div style="font-weight:700">€2,900 <span style="font-weight:500;color:#6E6260;font-size:12px">3.1× rent</span></div></div>
+      <div style="padding:10px 12px;border-radius:14px;background:#F4EEE6"><div style="font-size:12px;color:#6E6260">Contract</div><div style="font-weight:700">Permanent</div></div>
+      <div style="padding:10px 12px;border-radius:14px;background:#F4EEE6"><div style="font-size:12px;color:#6E6260">Moves in</div><div style="font-weight:700">1 Dec · 12+ mo</div></div>
+      <div style="padding:10px 12px;border-radius:14px;background:#F4EEE6"><div style="font-size:12px;color:#6E6260">Household</div><div style="font-weight:700">1 · no pets</div></div>
+    </div>
+    <div style="font-size:14px;color:#3D3133;line-height:1.45;font-style:italic">“I work from home two days a week, I’m quiet and I look after plants.”</div>
+    <div style="display:flex;gap:8px">
+      <button style="flex:1;min-height:50px;border-radius:16px;border:1.5px solid #DCD1C5;background:#fff;font:700 15px 'DM Sans',sans-serif;color:#241A1C">Decline</button>
+      <button style="flex:1.4;min-height:50px;border-radius:16px;border:0;background:#7C1D2E;font:700 15px 'DM Sans',sans-serif;color:#fff">Accept · open chat</button>
+    </div>
+  </div>
+  <div style="margin:10px 24px 0;height:40px;border-radius:0 0 22px 22px;background:#fff;opacity:.6"></div>
+  <nav class="dock">
+    <button class="di"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg>Chats</button>
+    <button class="di on"><span class="dc on"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F4EEE6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c1-3.5 3.3-5 6-5s5 1.5 6 5M16 4.5a3.5 3.5 0 010 7M18 15c1.6.6 2.6 2.2 3 5"/></svg></span>Interested</button>
+    <button class="di"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l6-5 6 5v9H3z"/><path d="M15 9l3-2.5 3 2.5v11h-6"/></svg>My listings</button>
+  </nav>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1760,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

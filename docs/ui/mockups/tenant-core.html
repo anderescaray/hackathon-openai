@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Homie · Tenant core</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#E7DED3}
+a{color:#7C1D2E}a:hover{color:#5A1220}
+.ph{width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:#F4EEE6;box-shadow:0 30px 60px -20px rgba(36,26,28,.4),0 0 0 1px rgba(0,0,0,.06);font-family:'DM Sans',system-ui,sans-serif;color:#241A1C}
+.fr{font-family:'Fraunces',Georgia,serif;font-weight:600}
+.ck{width:22px;height:22px;border-radius:7px;background:#7C1D2E;display:flex;align-items:center;justify-content:center;flex:none}
+.dock{position:absolute;left:0;right:0;bottom:0;height:86px;background:#FFFBF5;border-radius:28px 28px 0 0;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -6px 24px rgba(36,26,28,.08)}
+.di{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;font:700 11px 'DM Sans',sans-serif;color:#8A7F7B;min-width:72px;min-height:44px;justify-content:center}
+.dc{width:66px;height:66px;border-radius:33px;background:#7C1D2E;border:5px solid #F4EEE6;margin-top:-34px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px -6px rgba(124,29,46,.6)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes tilt{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg)}}
+@keyframes brow{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(-5px)}}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.bob{animation:bob 2.5s ease-in-out infinite}
+.mic{animation:tilt 1.5s ease-in-out infinite;transform-box:fill-box;transform-origin:0% 100%}
+.brow{animation:brow 3s ease-in-out infinite}
+.eye{animation:blink 4.4s infinite;transform-box:fill-box;transform-origin:center}
+</style>
+</helmet>
+<div style="width:1330px;height:960px;box-sizing:border-box;padding:40px;display:flex;gap:40px;align-items:flex-start;background:#E7DED3">
+
+<!-- PHONE 1 · DISCOVER -->
+<div class="ph">
+  <img src="img/sofa.jpg" alt="Living room with grey sofa and plants" style="position:absolute;left:0;top:0;width:100%;height:560px;object-fit:cover">
+  <div style="position:absolute;top:20px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:center">
+    <span class="fr" style="font-size:24px;padding:6px 14px;border-radius:999px;background:rgba(244,238,230,.94);color:#7C1D2E">homie</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:8px 12px;border-radius:999px;background:rgba(244,238,230,.94)"><span style="width:7px;height:7px;border-radius:4px;background:#C08A1E"></span>2 of 5 today</span>
+  </div>
+  <div style="position:absolute;right:14px;top:180px;display:flex;flex-direction:column;gap:6px" aria-hidden="true">
+    <span style="width:6px;height:22px;border-radius:3px;background:#fff"></span><span style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.6)"></span><span style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.6)"></span><span style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.6)"></span><span style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.6)"></span>
+  </div>
+  <div style="position:absolute;left:12px;right:12px;top:420px;bottom:108px;border-radius:28px;background:#fff;padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 -10px 30px rgba(36,26,28,.12)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="fr" style="font-size:24px;line-height:1.1">Sunny 2‑bed in Gràcia</div>
+        <div style="font-size:14px;color:#6E6260;margin-top:4px">Entire home · 68 m² · Furnished</div>
+      </div>
+      <div style="text-align:right"><div class="fr" style="font-size:26px;color:#7C1D2E">€950</div><div style="font-size:12px;color:#6E6260">per month</div></div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span style="display:inline-flex;gap:5px;align-items:center;padding:6px 10px;border-radius:10px;background:#F5E1E1;color:#7C1D2E;font-size:13px;font-weight:600"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7C1D2E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Under €1,000</span>
+      <span style="display:inline-flex;gap:5px;align-items:center;padding:6px 10px;border-radius:10px;background:#F5E1E1;color:#7C1D2E;font-size:13px;font-weight:600"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7C1D2E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Gràcia</span>
+      <span style="display:inline-flex;gap:5px;align-items:center;padding:6px 10px;border-radius:10px;background:#F5E1E1;color:#7C1D2E;font-size:13px;font-weight:600">+2 must-haves</span>
+    </div>
+    <div style="margin-top:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:#8A7F7B"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8A7F7B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Swipe to decide · scroll for photos</div>
+  </div>
+  <nav class="dock">
+    <button class="di"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg>Matches</button>
+    <button class="di" style="color:#7C1D2E"><span class="dc"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F4EEE6" stroke-width="2.4" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1H5a1 1 0 01-1-1z"/></svg></span>Discover</button>
+    <button class="di"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Profile</button>
+  </nav>
+</div>
+
+<!-- PHONE 2 · TAP = MUST-HAVES -->
+<div class="ph">
+  <img src="img/sofa.jpg" alt="" style="position:absolute;left:0;top:0;width:100%;height:300px;object-fit:cover">
+  <div style="position:absolute;top:20px;left:20px"><span class="fr" style="font-size:24px;padding:6px 14px;border-radius:999px;background:rgba(244,238,230,.94);color:#7C1D2E">homie</span></div>
+  <div style="position:absolute;left:12px;right:12px;top:190px;bottom:108px;border-radius:28px;background:#fff;padding:22px 20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 -10px 30px rgba(36,26,28,.12)">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div class="fr" style="font-size:26px">Fits you <span style="color:#7C1D2E">4/4</span></div>
+      <span style="font-size:12px;color:#8A7F7B">tap to close</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;font-size:15px">
+      <div style="display:flex;gap:12px;align-items:center"><span class="ck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span><span style="flex:1">Rent under €1,000</span><span style="color:#6E6260">€950</span></div>
+      <div style="display:flex;gap:12px;align-items:center"><span class="ck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span><span style="flex:1">Gràcia or Eixample</span><span style="color:#6E6260">Gràcia</span></div>
+      <div style="display:flex;gap:12px;align-items:center"><span class="ck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span><span style="flex:1">Entire home</span><span style="color:#6E6260">Yes</span></div>
+      <div style="display:flex;gap:12px;align-items:center"><span class="ck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span><span style="flex:1">Available by January</span><span style="color:#6E6260">1 Dec</span></div>
+    </div>
+    <div style="padding:14px;border-radius:18px;background:#F4EEE6;display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6E6260">Nice to have · 2 of 3</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:6px 10px;border-radius:10px;background:#fff;font-size:13px;font-weight:600">Furnished</span>
+        <span style="padding:6px 10px;border-radius:10px;background:#fff;font-size:13px;font-weight:600">2+ bedrooms</span>
+        <span style="padding:6px 10px;border-radius:10px;font-size:13px;color:#8A7F7B;text-decoration:line-through">70 m²+</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;padding:14px;border-radius:18px;background:#7C1D2E;color:#F4EEE6">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E2B04A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12l3 3 5-6"/><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/></svg>
+      <div style="font-size:13px;line-height:1.35"><b>You fit the landlord’s must-haves too</b><br>Permanent contract · no smoking · 12+ months</div>
+    </div>
+  </div>
+  <nav class="dock">
+    <button class="di"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg>Matches</button>
+    <button class="di" style="color:#7C1D2E"><span class="dc"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F4EEE6" stroke-width="2.4" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1H5a1 1 0 01-1-1z"/></svg></span>Discover</button>
+    <button class="di"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Profile</button>
+  </nav>
+</div>
+
+<!-- PHONE 3 · INTERVIEW · reporter house, triangle roof -->
+<div class="ph" style="display:flex;flex-direction:column">
+  <div style="padding:22px 20px 0;display:flex;justify-content:space-between;align-items:center">
+    <span class="fr" style="font-size:24px;color:#7C1D2E">homie</span>
+    <div style="display:flex;gap:5px;align-items:center" aria-label="Step 1 of 3"><span style="width:26px;height:6px;border-radius:3px;background:#7C1D2E"></span><span style="width:26px;height:6px;border-radius:3px;background:#E3D8CC"></span><span style="width:26px;height:6px;border-radius:3px;background:#E3D8CC"></span></div>
+  </div>
+  <div style="display:flex;align-items:flex-end;gap:8px;padding:14px 16px 0">
+    <svg class="bob" width="132" height="158" viewBox="0 0 200 240" aria-hidden="true" style="flex:none">
+      <ellipse cx="100" cy="232" rx="46" ry="5" fill="#241A1C" opacity=".14"/>
+      <rect x="78" y="198" width="12" height="24" rx="6" fill="#241A1C"/><rect x="110" y="198" width="12" height="24" rx="6" fill="#241A1C"/>
+      <path d="M66 228 Q66 218 80 218 H92 V230 H66 Z" fill="#241A1C"/><path d="M108 218 H120 Q134 218 134 228 V230 H108 Z" fill="#241A1C"/>
+      <rect x="124" y="44" width="16" height="36" rx="2" fill="#7C1D2E" stroke="#241A1C" stroke-width="4"/>
+      <rect x="52" y="94" width="96" height="108" rx="8" fill="#FBF5EA" stroke="#241A1C" stroke-width="4"/>
+      <path d="M34 102 L100 36 L166 102 Z" fill="#7C1D2E" stroke="#241A1C" stroke-width="4.5" stroke-linejoin="round"/>
+      <circle cx="100" cy="76" r="9" fill="#F7E3B5" stroke="#241A1C" stroke-width="3"/><path d="M100 67 V85 M91 76 H109" stroke="#241A1C" stroke-width="2.5"/>
+      <rect x="62" y="166" width="16" height="20" rx="3" fill="#F7E3B5" stroke="#241A1C" stroke-width="3"/><rect x="122" y="166" width="16" height="20" rx="3" fill="#F7E3B5" stroke="#241A1C" stroke-width="3"/>
+      <path d="M88 202 V180 a12 12 0 0124 0 V202" fill="#7C1D2E" stroke="#241A1C" stroke-width="3.5"/><circle cx="106" cy="191" r="2" fill="#E2B04A"/>
+      <path class="brow" d="M68 112 Q76 104 86 110" fill="none" stroke="#241A1C" stroke-width="4" stroke-linecap="round"/>
+      <path d="M114 114 H132" stroke="#241A1C" stroke-width="4" stroke-linecap="round"/>
+      <g class="eye"><circle cx="78" cy="126" r="7" fill="#241A1C"/><circle cx="80" cy="123.5" r="2.2" fill="#fff"/></g>
+      <g class="eye"><circle cx="122" cy="126" r="7" fill="#241A1C"/><circle cx="124" cy="123.5" r="2.2" fill="#fff"/></g>
+      <circle cx="66" cy="140" r="6" fill="#7C1D2E" opacity=".22"/><circle cx="134" cy="140" r="6" fill="#7C1D2E" opacity=".22"/>
+      <path d="M84 142 Q92 136 100 142 Q108 136 116 142 Q108 150 100 145 Q92 150 84 142 Z" fill="#241A1C"/>
+      <path d="M93 152 Q100 158 107 152" fill="none" stroke="#241A1C" stroke-width="3" stroke-linecap="round"/>
+      <path d="M92 160 L100 166 L92 172 Z M108 160 L100 166 L108 172 Z" fill="#C08A1E" stroke="#241A1C" stroke-width="2.5" stroke-linejoin="round"/><circle cx="100" cy="166" r="3" fill="#241A1C"/>
+      <path d="M52 140 Q36 146 34 164" fill="none" stroke="#241A1C" stroke-width="6" stroke-linecap="round"/>
+      <g transform="rotate(-12 30 172)"><rect x="18" y="160" width="24" height="30" rx="3" fill="#fff" stroke="#241A1C" stroke-width="3"/><path d="M23 169 h14 M23 175 h14 M23 181 h9" stroke="#8A7F7B" stroke-width="2"/></g>
+      <g class="mic">
+        <path d="M148 140 Q166 134 168 112" fill="none" stroke="#241A1C" stroke-width="6" stroke-linecap="round"/>
+        <path d="M168 116 Q178 150 160 176 Q150 192 166 206" fill="none" stroke="#241A1C" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="163" y="96" width="10" height="22" rx="4" fill="#241A1C" transform="rotate(10 168 107)"/>
+        <rect x="158" y="62" width="26" height="36" rx="13" fill="#C9CDD3" stroke="#241A1C" stroke-width="3.5"/>
+        <path d="M159 74 h24 M159 80 h24 M159 86 h24" stroke="#7C1D2E" stroke-width="2.5"/>
+      </g>
+    </svg>
+    <div style="flex:1;padding:14px 16px;border-radius:20px 20px 20px 6px;background:#fff;margin-bottom:58px;box-shadow:0 2px 10px rgba(36,26,28,.06)">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7C1D2E;display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:4px;background:#C08A1E"></span>Homie asks</div>
+      <div class="fr" style="font-size:19px;line-height:1.2;margin-top:4px">Is that budget a must, or a nice‑to‑have?</div>
+    </div>
+  </div>
+  <div style="padding:2px 24px 0;font-size:14px;color:#6E6260;text-align:right">“…a must. I can’t go over a thousand.”</div>
+  <div style="padding:16px 20px 8px;display:flex;justify-content:space-between;align-items:baseline">
+    <div class="fr" style="font-size:22px">Your card</div><div style="font-size:12px;color:#8A7F7B">3 of 7 · updates live</div>
+  </div>
+  <div style="margin:0 12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+    <div style="padding:14px;border-radius:18px;background:#7C1D2E;color:#fff"><div style="font-size:12px;opacity:.85">Budget · must</div><div class="fr" style="font-size:20px;margin-top:4px">≤ €1,000</div></div>
+    <div style="padding:14px;border-radius:18px;background:#fff"><div style="font-size:12px;color:#6E6260">Area · must</div><div class="fr" style="font-size:20px;margin-top:4px">Gràcia, Eixample</div></div>
+    <div style="padding:14px;border-radius:18px;background:#fff"><div style="font-size:12px;color:#6E6260">Furnished · nice</div><div class="fr" style="font-size:20px;margin-top:4px">Yes</div></div>
+    <div style="padding:14px;border-radius:18px;border:1.5px dashed #CDBFB4;color:#8A7F7B;display:flex;align-items:center;justify-content:center;font-size:13px">Move‑in date…</div>
+  </div>
+  <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding:16px 22px 26px">
+    <button style="min-height:44px;padding:0 16px;border-radius:999px;border:0;background:#fff;font:600 14px 'DM Sans',sans-serif;color:#241A1C">Type instead</button>
+    <button aria-label="Mute microphone" style="width:64px;height:64px;border-radius:32px;border:0;background:#7C1D2E;display:flex;align-items:center;justify-content:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></button>
+    <button style="min-height:44px;padding:0 16px;border-radius:999px;border:0;background:transparent;font:600 14px 'DM Sans',sans-serif;color:#6E6260">End</button>
+  </div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1330,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
