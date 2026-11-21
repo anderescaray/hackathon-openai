@@ -51,6 +51,43 @@ test("set_fact rejects a field of the other role and a value of the wrong type",
   await assert.rejects(applyAction(database, id, { action: "set_fact", field: "monthlyRentEur", value: "900" }), ZodError);
 });
 
+test("set_facts saves a whole batch of facts at once", async () => {
+  const database = openDatabase(":memory:");
+  const { id } = createDraft(database, { role: "home" });
+
+  const updated = await applyAction(database, id, { action: "set_facts", facts: homeFacts });
+
+  assert.deepEqual(updated.facts, homeFacts);
+  assert.deepEqual(findProfile(database, id)?.facts, homeFacts);
+});
+
+test("a batch with one invalid fact saves nothing", async () => {
+  const database = openDatabase(":memory:");
+  const { id } = createDraft(database, { role: "home" });
+  await applyAction(database, id, { action: "set_facts", facts: { monthlyRentEur: 900 } });
+
+  await assert.rejects(
+    applyAction(database, id, { action: "set_facts", facts: { monthlyRentEur: 1000, bedrooms: "dos" } }),
+    ZodError,
+  );
+  assert.deepEqual(findProfile(database, id)?.facts, { monthlyRentEur: 900 });
+});
+
+test("a range keeps both limits and correcting the maximum keeps the minimum", async () => {
+  const database = openDatabase(":memory:");
+  const { id } = createDraft(database, { role: "tenant" });
+  const rent = { action: "add_requirement", field: "monthlyRentEur", isMust: true };
+
+  await applyAction(database, id, { ...rent, operator: "gte", value: 800 });
+  await applyAction(database, id, { ...rent, operator: "lte", value: 1100 });
+  const updated = await applyAction(database, id, { ...rent, operator: "lte", value: 1200 });
+
+  assert.deepEqual(updated.requirements, [
+    { field: "monthlyRentEur", operator: "gte", value: 800, isMust: true },
+    { field: "monthlyRentEur", operator: "lte", value: 1200, isMust: true },
+  ]);
+});
+
 test("add_requirement rejects values outside the closed list", async () => {
   const database = openDatabase(":memory:");
   const { id } = createDraft(database, { role: "home" });

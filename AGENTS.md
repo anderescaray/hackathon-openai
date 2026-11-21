@@ -24,7 +24,7 @@ Next.js App Router, TypeScript, React, Zod y SQLite con `node:sqlite`. Usar npm 
 ## Reparto
 
 - **Asier** lleva los datos de demo, el filtro, el orden y las razones en `src/matching/`, además de las rutas de perfiles, feed, swipes y matches en `src/app/api/`.
-- **Adolfo** lleva la entrevista, ElevenLabs y `POST /api/voice/token`.
+- **Adolfo** lleva la entrevista con la Realtime API de OpenAI y `POST /api/voice/session`.
 - **Ander** lleva las pantallas y estilos, la interacción de swipe y el aviso visual de match.
 - Avisar a los otros dos antes de cambiar `src/domain/` o `src/db/`. Coordinar con el consumidor los cambios de contrato que afecten a la entrevista o a la interfaz.
 

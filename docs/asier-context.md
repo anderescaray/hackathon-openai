@@ -18,7 +18,7 @@ Los datos de demo y la lógica de Asier van en `src/matching/`. Next.js exige qu
 | `src/app/api/swipes/route.ts` | `POST /api/swipes` | Interacción de Ander. Devuelve `{ match: FeedItem \| null }`. |
 | `src/app/api/matches/route.ts` | `GET /api/matches?profileId=` | Aviso de Ander. Devuelve `FeedItem[]` para la consulta cada dos segundos. |
 
-Adolfo implementa `POST /api/voice/token` y las herramientas que envían los datos de la entrevista. Ander construye el feed con el JSON de ejemplo y después conecta los endpoints. Las pantallas, los estilos y la presentación del match son de Ander. Para cambios en `src/domain/` o `src/db/`, avisar a ambos. Si aparece una decisión de contrato pendiente, anotarla y acordarla con el consumidor antes de implementarla.
+Adolfo implementa `POST /api/voice/session` (Realtime API de OpenAI) y conecta las herramientas de la entrevista a las rutas de perfiles, según la [tabla de integración](3-pipeline-matching.md#integración-con-la-entrevista-de-voz). Ander construye el feed con el JSON de ejemplo y después conecta los endpoints. Las pantallas, los estilos y la presentación del match son de Ander. Para cambios en `src/domain/` o `src/db/`, avisar a ambos. Si aparece una decisión de contrato pendiente, anotarla y acordarla con el consumidor antes de implementarla.
 
 ## Criterios de aceptación del matching
 

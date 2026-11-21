@@ -25,6 +25,7 @@ const createProfileInputSchema = z.strictObject({
 
 const profileActionSchema = z.discriminatedUnion("action", [
   z.strictObject({ action: z.literal("set_fact"), field: z.string(), value: z.unknown() }),
+  z.strictObject({ action: z.literal("set_facts"), facts: z.record(z.string(), z.unknown()) }),
   z.strictObject({
     action: z.literal("add_requirement"),
     field: z.string(),
@@ -57,7 +58,7 @@ export function createDraft(database: DatabaseSync, input: unknown): Profile {
   return profile;
 }
 
-/** Applies one interview tool call (set_fact, add_requirement or finish_interview) to a profile. */
+/** Applies one interview tool call (set_fact(s), add_requirement or finish_interview) to a profile. */
 export async function applyAction(database: DatabaseSync, id: string, input: unknown): Promise<Profile> {
   const action = profileActionSchema.parse(input);
   const profile = requireProfile(database, id);
@@ -68,9 +69,10 @@ export async function applyAction(database: DatabaseSync, id: string, input: unk
     throw new HttpError(409, "Profile is already complete");
   }
 
-  if (action.action === "set_fact") {
-    // Parsing the whole profile checks that the field belongs to this role and the value has its type.
-    const updated = profileSchema.parse({ ...profile, facts: { ...profile.facts, [action.field]: action.value } });
+  if (action.action === "set_fact" || action.action === "set_facts") {
+    const facts = action.action === "set_fact" ? { [action.field]: action.value } : action.facts;
+    // Parsing the whole profile checks every field and type; one bad fact rejects the batch before any write.
+    const updated = profileSchema.parse({ ...profile, facts: { ...profile.facts, ...facts } });
     saveProfile(database, updated);
     return updated;
   }
