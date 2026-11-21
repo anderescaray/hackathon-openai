@@ -1,5 +1,6 @@
 import { profileSchema, type Profile, type Role } from "../domain/profile.ts";
 import type { InterviewPhase } from "./agents.ts";
+import type { ProfileWrite, SaveResult } from "./profileApi.ts";
 import { applyToolCall, findMissingFacts, type ToolCall } from "./toolCall.ts";
 
 export type InterviewState = { phase: InterviewPhase; profile: Profile };
@@ -54,5 +55,45 @@ export function handleToolCall(state: InterviewState, toolCall: ToolCall): ToolC
   return {
     state: { phase: NEXT_PHASE_BY_TOOL[toolCall.name] ?? state.phase, profile: outcome.profile },
     output: { ok: true, saved: outcome.saved, missingFacts: outcome.missingFacts },
+  };
+}
+
+/** The server write for a tool call that changes the profile; complete_facts only reads it. */
+export function toProfileWrite(toolCall: ToolCall): ProfileWrite | null {
+  // Only called after handleToolCall accepted the call, so args is already a validated object.
+  const args = toolCall.args as Record<string, unknown>;
+  switch (toolCall.name) {
+    case "save_facts":
+      return { action: "set_facts", facts: args };
+    case "save_requirement":
+      return { action: "add_requirement", ...args };
+    case "finish_interview":
+      return { action: "finish_interview", notes: args.notes };
+    default:
+      return null;
+  }
+}
+
+/**
+ * Checks the tool call locally, then saves it on the server. The interview only moves on with the
+ * profile the server stored; a server rejection goes back to the agent and nothing changes.
+ */
+export async function handleAndSaveToolCall(
+  state: InterviewState,
+  toolCall: ToolCall,
+  save: (write: ProfileWrite) => Promise<SaveResult>,
+): Promise<ToolCallReply> {
+  const reply = handleToolCall(state, toolCall);
+  const write = reply.output.ok ? toProfileWrite(toolCall) : null;
+  if (!write) return reply;
+
+  const saved = await save(write);
+  if (!saved.ok) {
+    return { state, output: { ok: false, error: saved.error, missingFacts: findMissingFacts(state.profile) } };
+  }
+  const missingFacts = findMissingFacts(saved.profile);
+  return {
+    state: { ...reply.state, profile: saved.profile },
+    output: { ...reply.output, missingFacts },
   };
 }

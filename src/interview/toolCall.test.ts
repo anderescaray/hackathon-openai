@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import type { HomeProfile, TenantProfile } from "../domain/profile.ts";
+import type { HomeProfile, Profile, TenantProfile } from "../domain/profile.ts";
 import { applyToolCall } from "./toolCall.ts";
 
 function buildTenantDraft(): TenantProfile {
@@ -142,7 +142,22 @@ test("saves a tenant requirement on a home fact", () => {
   assert.deepEqual(outcome.ok && outcome.saved, ["district"]);
 });
 
-test("replaces the earlier requirement on the same field", () => {
+test("keeps both limits of a range and correcting the maximum keeps the minimum", () => {
+  const save = (profile: Profile, operator: "gte" | "lte", value: number) =>
+    applyToolCall(profile, {
+      name: "save_requirement",
+      args: { field: "monthlyRentEur", operator, value, isMust: true },
+    }).profile;
+
+  const corrected = save(save(save(buildTenantWithAllFacts(), "gte", 800), "lte", 1100), "lte", 1200);
+
+  assert.deepEqual(corrected.requirements, [
+    { field: "monthlyRentEur", operator: "gte", value: 800, isMust: true },
+    { field: "monthlyRentEur", operator: "lte", value: 1200, isMust: true },
+  ]);
+});
+
+test("replaces the earlier requirement with the same field and operator", () => {
   const first = applyToolCall(buildTenantWithAllFacts(), {
     name: "save_requirement",
     args: { field: "monthlyRentEur", operator: "lte", value: 1500, isMust: true },
