@@ -9,7 +9,7 @@ import type { FitResult } from "@/app/_lib/fit";
 import { formatEur, homeSummary, requirementChip } from "@/app/_lib/format";
 
 import { CheckIcon, SwipeArrowsIcon } from "./icons";
-import { PhotoPager } from "./PhotoPager";
+import { PhotoPager, photoIndexForPage } from "./PhotoPager";
 
 const SHEET_SPRING = { type: "spring" as const, stiffness: 300, damping: 30 };
 
@@ -36,9 +36,11 @@ export function HomeCard({
   const prefersReducedMotion = useReducedMotion() ?? false;
 
   const photoSlideCount = Math.max(1, home.photoUrls.length);
+  // Dots: one per photo + one for details. Scroll pages have an extra stop on photo 1 (see PhotoPager).
   const totalPages = photoSlideCount + 1;
-  const isDetailsPage = activePage >= photoSlideCount;
-  // The summary sheet belongs to the first photo only; from photo 2 on, the photo gets the whole screen.
+  const isDetailsPage = activePage >= photoSlideCount + 1;
+  const activeDot = isDetailsPage ? photoSlideCount : photoIndexForPage(activePage);
+  // The summary sheet shows only before the first scroll; the first scroll hides it and keeps photo 1.
   const showSheet = activePage === 0;
 
   const summary = homeSummary(home.facts);
@@ -52,9 +54,10 @@ export function HomeCard({
   const visibleChips = metMustChips.slice(0, 2);
   const remainingMustCount = Math.max(0, metMustChips.length - visibleChips.length);
 
-  const scrollToPage = (pageIndex: number) => {
+  const scrollToPage = (dotIndex: number) => {
     const el = scrollerRef.current;
     if (!el) return;
+    const pageIndex = dotIndex === 0 ? 0 : dotIndex + 1;
     el.scrollTo({
       top: pageIndex * el.clientHeight,
       behavior: prefersReducedMotion ? "auto" : "smooth",
@@ -80,7 +83,7 @@ export function HomeCard({
         onClick={(e) => e.stopPropagation()}
       >
         {Array.from({ length: totalPages }, (_, idx) => {
-          const isActive = idx === activePage;
+          const isActive = idx === activeDot;
           const isDetailsDot = idx === totalPages - 1;
           return (
             <button

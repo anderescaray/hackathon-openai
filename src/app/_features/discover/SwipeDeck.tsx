@@ -42,6 +42,7 @@ import { DecisionBurst } from "./DecisionBurst";
 import { DiscoverSkeleton } from "./DiscoverSkeleton";
 import { FitsOverlay } from "./FitsOverlay";
 import { HomeCard } from "./HomeCard";
+import { photoIndexForPage } from "./PhotoPager";
 
 const CARD_SPRING = { type: "spring" as const, stiffness: 300, damping: 30 };
 const SWIPE_DISTANCE_PX = 120;
@@ -344,7 +345,7 @@ export function SwipeDeck() {
 
   const topActivePage = topHome ? (activePages[topHome.id] ?? 0) : 0;
   const topPhotoIndex = topHome
-    ? Math.min(topActivePage, Math.max(0, topHome.photoUrls.length - 1))
+    ? Math.min(photoIndexForPage(topActivePage), Math.max(0, topHome.photoUrls.length - 1))
     : 0;
   const topActivePhotoUrl = topHome?.photoUrls[topPhotoIndex];
 
