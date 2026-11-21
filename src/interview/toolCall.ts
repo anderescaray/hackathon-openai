@@ -22,6 +22,15 @@ const FACT_SCHEMAS: Record<Role, Record<string, z.ZodType>> = {
 
 const OTHER_ROLE: Record<Role, Role> = { tenant: "home", home: "tenant" };
 
+type RequirementOperator = (typeof REQUIREMENT_OPERATORS)[number];
+
+const OPERATORS_BY_FIELD_TYPE: Record<string, RequirementOperator[]> = {
+  number: ["eq", "lte", "gte"],
+  string: ["eq", "lte", "gte"],
+  enum: ["eq", "in"],
+  boolean: ["eq"],
+};
+
 const factsArgsSchema = z.record(z.string(), z.unknown());
 
 const requirementArgsSchema = z.strictObject({
@@ -77,6 +86,10 @@ function saveRequirement(profile: Profile, args: unknown): ToolCallOutcome {
     return reject(profile, `field must be one of: ${Object.keys(otherRoleFacts).join(", ")}`);
   }
   const fieldSchema = otherRoleFacts[field];
+  const allowedOperators = OPERATORS_BY_FIELD_TYPE[fieldSchema.def.type] ?? [];
+  if (!allowedOperators.includes(operator)) {
+    return reject(profile, `operator for ${field} must be one of: ${allowedOperators.join(", ")}`);
+  }
   const valueSchema = operator === "in" ? z.array(fieldSchema).min(1) : fieldSchema;
   const parsedValue = valueSchema.safeParse(value);
   if (!parsedValue.success) return reject(profile, describeIssues(parsedValue.error, ["value"]));

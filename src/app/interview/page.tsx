@@ -9,7 +9,7 @@ const roleSchema = z.enum(["tenant", "home"]).catch("tenant");
 
 async function InterviewForRole({ searchParams }: { searchParams: SearchParams }): Promise<React.JSX.Element> {
   const role = roleSchema.parse((await searchParams).role);
-  return <InterviewScreen role={role} />;
+  return <InterviewScreen key={role} role={role} />;
 }
 
 export default function InterviewPage({ searchParams }: { searchParams: SearchParams }): React.JSX.Element {

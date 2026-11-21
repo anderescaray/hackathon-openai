@@ -207,3 +207,42 @@ test("rejects a tool it does not know", () => {
   assert.equal(outcome.ok, false);
   assert.equal(outcome.ok ? "" : outcome.error, "unknown tool: delete_profile");
 });
+
+test("rejects a range operator on a field that is a list of options", () => {
+  const outcome = applyToolCall(buildTenantWithAllFacts(), {
+    name: "save_requirement",
+    args: { field: "district", operator: "gte", value: "gracia", isMust: true },
+  });
+
+  assert.equal(outcome.ok, false);
+  assert.equal(outcome.ok ? "" : outcome.error, "operator for district must be one of: eq, in");
+});
+
+test("rejects a range operator on a yes or no field", () => {
+  const outcome = applyToolCall(buildTenantWithAllFacts(), {
+    name: "save_requirement",
+    args: { field: "furnished", operator: "lte", value: true, isMust: true },
+  });
+
+  assert.equal(outcome.ok, false);
+  assert.equal(outcome.ok ? "" : outcome.error, "operator for furnished must be one of: eq");
+});
+
+test("rejects a list operator on a number field", () => {
+  const outcome = applyToolCall(buildTenantWithAllFacts(), {
+    name: "save_requirement",
+    args: { field: "bedrooms", operator: "in", value: [2], isMust: true },
+  });
+
+  assert.equal(outcome.ok, false);
+  assert.equal(outcome.ok ? "" : outcome.error, "operator for bedrooms must be one of: eq, lte, gte");
+});
+
+test("accepts a latest date as a requirement", () => {
+  const outcome = applyToolCall(buildTenantWithAllFacts(), {
+    name: "save_requirement",
+    args: { field: "availableFrom", operator: "lte", value: "2027-01-01", isMust: true },
+  });
+
+  assert.equal(outcome.ok, true);
+});

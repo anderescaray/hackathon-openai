@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { buildSessionUpdate, buildToolOutputEvent, extractToolCalls } from "./realtimeEvents.ts";
+import {
+  buildSessionUpdate,
+  buildToolOutputEvent,
+  extractToolCalls,
+  readServerError,
+  trackFarewell,
+} from "./realtimeEvents.ts";
 
 test("extracts the tool calls of a finished response with their arguments parsed", () => {
   const serverEvent = {
@@ -79,4 +85,45 @@ test("builds the event that returns a tool result to the agent as JSON text", ()
       output: '{"ok":true,"saved":["hasPets"],"missingFacts":[]}',
     },
   });
+});
+
+test("the farewell is not finished when the audio of an earlier response stops", () => {
+  const started = trackFarewell(
+    { farewellResponseId: undefined, isFinished: false },
+    { type: "response.created", response: { id: "resp_farewell" } },
+  );
+
+  const progress = trackFarewell(started, { type: "output_audio_buffer.stopped", response_id: "resp_earlier" });
+
+  assert.deepEqual(progress, { farewellResponseId: "resp_farewell", isFinished: false });
+});
+
+test("the farewell is finished when its own audio stops", () => {
+  const started = trackFarewell(
+    { farewellResponseId: undefined, isFinished: false },
+    { type: "response.created", response: { id: "resp_farewell" } },
+  );
+
+  const progress = trackFarewell(started, { type: "output_audio_buffer.stopped", response_id: "resp_farewell" });
+
+  assert.deepEqual(progress, { farewellResponseId: "resp_farewell", isFinished: true });
+});
+
+test("the farewell is not finished by audio that stops before the farewell starts", () => {
+  const progress = trackFarewell(
+    { farewellResponseId: undefined, isFinished: false },
+    { type: "output_audio_buffer.stopped", response_id: "resp_earlier" },
+  );
+
+  assert.deepEqual(progress, { farewellResponseId: undefined, isFinished: false });
+});
+
+test("reads the message of an error event from the server", () => {
+  const message = readServerError({ type: "error", error: { type: "invalid_request_error", message: "bad tools" } });
+
+  assert.equal(message, "bad tools");
+});
+
+test("reads no error from other server events", () => {
+  assert.equal(readServerError({ type: "response.done", response: { output: [] } }), undefined);
 });

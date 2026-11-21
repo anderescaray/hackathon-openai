@@ -38,6 +38,7 @@ test("asks OpenAI for a realtime session with the server key", async () => {
   assert.equal(openAi.requests[0].url, "https://api.openai.com/v1/realtime/client_secrets");
   assert.equal(openAi.requests[0].headers.get("authorization"), "Bearer sk-test");
   assert.deepEqual(openAi.requests[0].body, {
+    expires_after: { anchor: "created_at", seconds: 120 },
     session: { type: "realtime", model: "gpt-realtime-2.1", audio: { output: { voice: "marin" } } },
   });
 });
@@ -76,4 +77,12 @@ test("fails when the answer from OpenAI has no temporary key", async () => {
 
   assert.equal(outcome.ok, false);
   assert.equal(outcome.ok ? "" : outcome.reason, "invalid_response");
+});
+
+test("fails when OpenAI answers with a body that is not JSON", async () => {
+  const openAi = makeFakeOpenAi(() => new Response("<html>gateway</html>", { status: 200 }));
+
+  const outcome = await createVoiceClientSecret({ apiKey: "sk-test", fetchFn: openAi.fetchFn });
+
+  assert.deepEqual(outcome, { ok: false, reason: "invalid_response", detail: "OpenAI answered with a body that is not JSON" });
 });

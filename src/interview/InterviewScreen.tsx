@@ -9,13 +9,21 @@ import { handleToolCall, startInterview, type InterviewState } from "./interview
 import { HOME_FACT_LABELS, TENANT_FACT_LABELS, formatRequirement, formatValue } from "./labels.ts";
 import { logEvent } from "./log.ts";
 import { connectRealtime, type RealtimeConnection } from "./realtimeConnection.ts";
-import { buildSessionUpdate, buildToolOutputEvent, extractToolCalls, readEventType } from "./realtimeEvents.ts";
+import {
+  buildSessionUpdate,
+  buildToolOutputEvent,
+  extractToolCalls,
+  readServerError,
+  trackFarewell,
+  type FarewellProgress,
+} from "./realtimeEvents.ts";
+import { formatBarcelonaDate } from "./today.ts";
 
-type ScreenStatus = "idle" | "connecting" | "live" | "finished" | "failed";
+type ScreenStatus = "idle" | "connecting" | "live" | "finished" | "failed" | "dropped";
 
 const voiceSessionSchema = z.object({ clientSecret: z.string().min(1) });
 
-const AGENT_STOPPED_SPEAKING = "output_audio_buffer.stopped";
+const FAREWELL_NOT_STARTED: FarewellProgress = { farewellResponseId: undefined, isFinished: false };
 const FAREWELL_TIMEOUT_MS = 15000;
 
 const ROLE_TITLES: Record<Role, string> = { tenant: "Busco piso", home: "Alquilo mi piso" };
@@ -31,10 +39,11 @@ const STATUS_MESSAGES: Record<ScreenStatus, string> = {
   live: "Te escucho. Habla con normalidad.",
   finished: "Entrevista terminada.",
   failed: "No se ha podido iniciar la entrevista. Revisa el micrófono y vuelve a intentarlo.",
+  dropped: "Se ha cortado la conexión. Vuelve a empezar la entrevista.",
 };
 
 function getToday(): string {
-  return new Date().toISOString().slice(0, 10);
+  return formatBarcelonaDate(new Date());
 }
 
 async function fetchClientSecret(): Promise<string> {
@@ -50,9 +59,14 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
   const connectionRef = useRef<RealtimeConnection | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const farewellTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const farewellRef = useRef(FAREWELL_NOT_STARTED);
+  const isStartingRef = useRef(false);
+  const isUnmountedRef = useRef(false);
 
   useEffect(() => {
+    isUnmountedRef.current = false;
     return () => {
+      isUnmountedRef.current = true;
       connectionRef.current?.close();
       if (farewellTimerRef.current) clearTimeout(farewellTimerRef.current);
     };
@@ -70,8 +84,20 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
     if (!connection) return;
     const sessionId = interviewRef.current.profile.id;
 
+    const serverError = readServerError(serverEvent);
+    if (serverError !== undefined) {
+      logEvent("error", {
+        msg: "The voice service reported an error",
+        event_name: "interview.server_error",
+        request_id: sessionId,
+        data: { detail: serverError },
+      });
+      return;
+    }
+
     if (interviewRef.current.phase === "done") {
-      if (readEventType(serverEvent) === AGENT_STOPPED_SPEAKING) endCall();
+      farewellRef.current = trackFarewell(farewellRef.current, serverEvent);
+      if (farewellRef.current.isFinished) endCall();
       return;
     }
 
@@ -103,15 +129,32 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
       connection.send(buildSessionUpdate(buildAgentConfig(role, phaseNow, getToday())));
     }
     if (phaseNow === "done") {
+      farewellRef.current = FAREWELL_NOT_STARTED;
       connection.stopMicrophone();
       farewellTimerRef.current = setTimeout(endCall, FAREWELL_TIMEOUT_MS);
     }
     connection.send({ type: "response.create" });
   }
 
+  function handleDropped(): void {
+    connectionRef.current = null;
+    if (farewellTimerRef.current) clearTimeout(farewellTimerRef.current);
+    const wasSayingGoodbye = interviewRef.current.phase === "done";
+    logEvent("warn", {
+      msg: "The voice connection closed unexpectedly",
+      event_name: "interview.connection_dropped",
+      request_id: interviewRef.current.profile.id,
+      data: { phase: interviewRef.current.phase },
+    });
+    setStatus(wasSayingGoodbye ? "finished" : "dropped");
+  }
+
   async function startCall(): Promise<void> {
     const audioElement = audioRef.current;
-    if (!audioElement) return;
+    if (!audioElement || isStartingRef.current) return;
+    isStartingRef.current = true;
+    interviewRef.current = startInterview(role, crypto.randomUUID());
+    setInterview(interviewRef.current);
     const sessionId = interviewRef.current.profile.id;
     setStatus("connecting");
     logEvent("info", {
@@ -123,16 +166,23 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
 
     try {
       const clientSecret = await fetchClientSecret();
-      connectionRef.current = await connectRealtime({
+      const connection = await connectRealtime({
         clientSecret,
+        sessionId,
         audioElement,
         onServerEvent: handleServerEvent,
+        onDropped: handleDropped,
         onOpen: () => {
           connectionRef.current?.send(buildSessionUpdate(buildAgentConfig(role, "facts", getToday())));
           connectionRef.current?.send({ type: "response.create" });
           setStatus("live");
         },
       });
+      if (isUnmountedRef.current) {
+        connection.close();
+        return;
+      }
+      connectionRef.current = connection;
     } catch (error) {
       logEvent("error", {
         msg: "Could not start the voice interview",
@@ -141,13 +191,15 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
         data: { detail: error instanceof Error ? error.message : "unknown error" },
       });
       setStatus("failed");
+    } finally {
+      isStartingRef.current = false;
     }
   }
 
   const { profile, phase } = interview;
   const factLabels: Record<string, string> = role === "tenant" ? TENANT_FACT_LABELS : HOME_FACT_LABELS;
   const facts: Record<string, unknown> = profile.facts;
-  const canStart = status === "idle" || status === "failed";
+  const canStart = status === "idle" || status === "failed" || status === "dropped";
 
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-6 bg-white px-5 py-8 text-zinc-900">

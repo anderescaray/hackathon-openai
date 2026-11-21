@@ -20,8 +20,6 @@ export type ResponseCreateEvent = { type: "response.create" };
 
 export type RealtimeClientEvent = SessionUpdateEvent | ToolOutputEvent | ResponseCreateEvent;
 
-const serverEventSchema = z.looseObject({ type: z.string() });
-
 const responseDoneSchema = z.looseObject({
   type: z.literal("response.done"),
   response: z.looseObject({ output: z.array(z.unknown()) }),
@@ -73,7 +71,36 @@ export function buildToolOutputEvent(callId: string, output: ToolOutput): ToolOu
   };
 }
 
-export function readEventType(serverEvent: unknown): string | undefined {
-  const parsed = serverEventSchema.safeParse(serverEvent);
-  return parsed.success ? parsed.data.type : undefined;
+const errorEventSchema = z.looseObject({
+  type: z.literal("error"),
+  error: z.looseObject({ message: z.string() }),
+});
+
+export function readServerError(serverEvent: unknown): string | undefined {
+  const parsed = errorEventSchema.safeParse(serverEvent);
+  return parsed.success ? parsed.data.error.message : undefined;
+}
+
+export type FarewellProgress = { farewellResponseId: string | undefined; isFinished: boolean };
+
+const responseCreatedSchema = z.looseObject({
+  type: z.literal("response.created"),
+  response: z.looseObject({ id: z.string() }),
+});
+
+const audioStoppedSchema = z.looseObject({
+  type: z.literal("output_audio_buffer.stopped"),
+  response_id: z.string(),
+});
+
+export function trackFarewell(progress: FarewellProgress, serverEvent: unknown): FarewellProgress {
+  if (progress.farewellResponseId === undefined) {
+    const responseCreated = responseCreatedSchema.safeParse(serverEvent);
+    return responseCreated.success ? { ...progress, farewellResponseId: responseCreated.data.response.id } : progress;
+  }
+  const audioStopped = audioStoppedSchema.safeParse(serverEvent);
+  if (audioStopped.success && audioStopped.data.response_id === progress.farewellResponseId) {
+    return { ...progress, isFinished: true };
+  }
+  return progress;
 }
