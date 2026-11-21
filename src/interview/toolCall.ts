@@ -33,7 +33,7 @@ const requirementArgsSchema = z.strictObject({
 
 const finishArgsSchema = z.strictObject({ notes: z.string() });
 
-function findMissingFacts(profile: Profile): string[] {
+export function findMissingFacts(profile: Profile): string[] {
   const facts: Record<string, unknown> = profile.facts;
   return Object.keys(FACT_SCHEMAS[profile.role]).filter((key) => facts[key] === undefined);
 }

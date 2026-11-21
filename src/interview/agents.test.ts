@@ -156,3 +156,10 @@ test("no tool definition has a field for a protected trait", () => {
     assert.doesNotMatch(JSON.stringify(config.tools), /nationality|gender|children|religion|health|"age"/i);
   }
 });
+
+test("the farewell agent has no tools and is told to say goodbye", () => {
+  const config = buildAgentConfig("tenant", "done", TODAY);
+
+  assert.deepEqual(config.tools, []);
+  assert.match(config.instructions, /Despídete/);
+});

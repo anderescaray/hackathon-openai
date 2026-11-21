@@ -13,7 +13,7 @@ import {
   type TenantFacts,
 } from "../domain/profile.ts";
 
-export const INTERVIEW_PHASES = ["facts", "requirements"] as const;
+export const INTERVIEW_PHASES = ["facts", "requirements", "done"] as const;
 export type InterviewPhase = (typeof INTERVIEW_PHASES)[number];
 
 export type ToolDefinition = {
@@ -26,7 +26,7 @@ export type ToolDefinition = {
 export type AgentConfig = { instructions: string; tools: ToolDefinition[] };
 
 const PROTECTED_TRAITS_LIMIT =
-  "No preguntes ni apuntes nacionalidad, edad, género, hijos, religión ni salud. Si lo menciona, sigue sin comentarlo.";
+  "No preguntes ni apuntes nacionalidad, edad, género, hijos, religión ni salud. Si lo menciona, sigue sin comentarlo y no lo pongas en las notas.";
 
 const TENANT_FACT_HINTS: Record<keyof TenantFacts, string> = {
   monthlyIncomeEur: "ingresos netos al mes, en euros",
@@ -34,7 +34,7 @@ const TENANT_FACT_HINTS: Record<keyof TenantFacts, string> = {
   occupants: "cuántas personas vivirán en el piso",
   hasPets: "si tiene mascotas",
   smokes: "si fuma",
-  moveInDate: "cuándo quiere entrar, como fecha AAAA-MM-DD",
+  moveInDate: "cuándo quiere entrar; tú lo conviertes a fecha AAAA-MM-DD",
   stayMonths: "cuántos meses piensa quedarse",
 };
 
@@ -45,7 +45,7 @@ const HOME_FACT_HINTS: Record<keyof HomeFacts, string> = {
   bedrooms: "número de habitaciones",
   sizeM2: "metros cuadrados",
   furnished: "si está amueblado",
-  availableFrom: "desde cuándo está disponible, como fecha AAAA-MM-DD",
+  availableFrom: "desde cuándo está disponible; tú lo conviertes a fecha AAAA-MM-DD",
 };
 
 const HOME_REQUIREMENT_HINTS: Record<keyof HomeFacts, string> = {
@@ -55,7 +55,7 @@ const HOME_REQUIREMENT_HINTS: Record<keyof HomeFacts, string> = {
   bedrooms: "habitaciones mínimas (gte)",
   sizeM2: "metros mínimos (gte)",
   furnished: "amueblado o no (eq)",
-  availableFrom: "disponible como tarde en una fecha AAAA-MM-DD (lte)",
+  availableFrom: "disponible como tarde en una fecha (lte); tú la conviertes a AAAA-MM-DD",
 };
 
 const TENANT_REQUIREMENT_HINTS: Record<keyof TenantFacts, string> = {
@@ -64,7 +64,7 @@ const TENANT_REQUIREMENT_HINTS: Record<keyof TenantFacts, string> = {
   occupants: "máximo de personas (lte)",
   hasPets: "si no acepta mascotas: eq false",
   smokes: "si no acepta fumadores: eq false",
-  moveInDate: "que entre como tarde en una fecha AAAA-MM-DD (lte)",
+  moveInDate: "que entre como tarde en una fecha (lte); tú la conviertes a AAAA-MM-DD",
   stayMonths: "estancia mínima en meses (gte)",
 };
 
@@ -90,7 +90,7 @@ Eres la entrevistadora de una app de alquiler en Barcelona. Hablas con alguien q
   }
 
 # Tono
-Cercana y breve. De tú. Una pregunta cada vez. Español de España.
+Cercana y breve. De tú. Una pregunta cada vez. Español de España. Nunca digas que guardas o apuntas algo, ni hables de formatos o herramientas: simplemente sigue la conversación.
 
 # Datos que necesitas
 ${formatHints(isTenant ? TENANT_FACT_HINTS : HOME_FACT_HINTS)}
@@ -99,7 +99,8 @@ Hoy es ${today}.
 
 # Cómo
 - Preséntate en una frase y pregunta en abierto por ${isTenant ? "su situación" : "la casa"}.
-- Cada vez que diga uno o varios datos, llama a save_facts con todos. No lo anuncies ni pidas permiso.
+- Cada vez que diga uno o varios datos, llama a save_facts con todos. No digas que lo guardas ni pidas permiso.
+- Habla como en una conversación: nunca nombres los campos ni pidas un formato.
 - La respuesta de la herramienta dice qué falta. Pregunta por lo siguiente.
 - Si un dato es vago ("${isTenant ? "gano bien" : "es grande"}"), pide la cifra. No supongas nada.
 - Si la herramienta devuelve un error, corrige o vuelve a preguntar.
@@ -118,7 +119,7 @@ Eres la entrevistadora de una app de alquiler en Barcelona. Ya conoces ${
   }
 
 # Tono
-Cercana y breve. De tú. Una pregunta cada vez. Español de España.
+Cercana y breve. De tú. Una pregunta cada vez. Español de España. Nunca digas que guardas o apuntas algo, ni hables de formatos o herramientas: simplemente sigue la conversación.
 
 # Sobre qué puede poner condiciones
 ${formatHints(isTenant ? HOME_REQUIREMENT_HINTS : TENANT_REQUIREMENT_HINTS)}
@@ -127,13 +128,15 @@ Hoy es ${today}.
 
 # Cómo
 - Pregunta en abierto qué es importante para él o ella.
-- Por cada cosa, conviértela en campo, operador y valor. Pregunta "¿es imprescindible o lo prefieres?", salvo que ya lo haya dejado claro. Después llama a save_requirement.
+- Por cada cosa, conviértela en campo, operador y valor. Pregunta "¿es imprescindible o lo prefieres?", salvo que ya lo haya dejado claro. Después llama a save_requirement, sin decir que lo guardas.
 - ${
     isTenant
       ? 'Si dice "cerca de mi universidad", pregunta qué zonas le valen.'
       : 'Si dice "alguien solvente", pregunta qué ingresos mínimos pide.'
   }
 - Si la herramienta devuelve un error, corrige o vuelve a preguntar.
+- No repases los campos uno a uno. Cuando termine de contarte, pregunta una sola vez si hay algo más importante.
+- Habla como en una conversación: nunca nombres los campos ni pidas un formato.
 - Lo que no encaje en ningún campo, guárdalo para las notas.
 - Cuando no tenga más, pregunta "¿quieres añadir algo?" y llama a finish_interview con las notas.
 
@@ -179,7 +182,10 @@ function buildRequirementsTools(role: Role): ToolDefinition[] {
   ];
 }
 
+const FAREWELL_INSTRUCTIONS = `La entrevista ha terminado y el perfil está guardado. Despídete en una frase, en español de España y de tú: di que ya puede ver sus mejores opciones. No preguntes nada más.`;
+
 export function buildAgentConfig(role: Role, phase: InterviewPhase, today: string): AgentConfig {
+  if (phase === "done") return { instructions: FAREWELL_INSTRUCTIONS, tools: [] };
   if (phase === "facts") {
     return { instructions: buildFactsInstructions(role, today), tools: buildFactsTools(role) };
   }
