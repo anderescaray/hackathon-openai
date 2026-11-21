@@ -14,7 +14,7 @@ forma del `Profile` y seis rutas.
 ```mermaid
 flowchart LR
   P[Persona hablando] --> V[Agente de voz]
-  V -->|set_fact, add_requirement| S[(Profiles)]
+  V -->|save_facts, save_requirement| S[(Profiles)]
   SEED[Datos inventados] --> S
   S --> M[Filtro mutuo y orden]
   M -->|5 mejores con razones| F[Feed]
@@ -24,8 +24,8 @@ flowchart LR
 
 ## El contrato: un perfil con hechos y requisitos (los tres)
 
-Inquilino y casa usan la misma estructura. Cada perfil tiene **hechos** (lo que ofrece, la fase 2
-de la entrevista) y **requisitos** (lo que busca, la fase 1). Un requisito es una condición sobre
+Inquilino y casa usan la misma estructura. Cada perfil tiene **hechos** (lo que ofrece, la fase 1
+de la entrevista) y **requisitos** (lo que busca, la fase 2). Un requisito es una condición sobre
 un hecho del otro lado, marcada como imprescindible o preferencia.
 
 ```ts
@@ -124,7 +124,7 @@ Los pesos 0.7 y 0.3 son un punto de partida; se ajustan mirando el feed con los 
 
 | Ruta | Qué hace | Devuelve | Dueño |
 |---|---|---|---|
-| `POST /api/voice/token` | Pide a ElevenLabs un token de conversación para que el navegador abra la sesión de voz | token temporal | Adolfo |
+| `POST /api/voice/session` | Pide a OpenAI una clave temporal para que el navegador abra la sesión de voz | clave temporal | Adolfo |
 | `POST /api/profiles` | Crea un perfil en borrador para un rol | `Profile` | Asier |
 | `PATCH /api/profiles/:id` | Guarda hechos, requisitos o notas según llegan de la entrevista; al completar, calcula el embedding de las notas | `Profile` | Asier |
 | `GET /api/feed?profileId=` | Aplica filtro y orden | `FeedItem[]` (máx. 5) | Asier |
@@ -136,29 +136,37 @@ el agente de voz: la salida de un modelo es entrada no fiable.
 
 ## La entrevista de voz (Adolfo)
 
-- La voz va con la plataforma de agentes de ElevenLabs. El navegador se conecta con su SDK de
-  JavaScript (`@elevenlabs/client`) por WebRTC. El servidor pide a ElevenLabs un token de
-  conversación y se lo pasa al navegador; la clave de ElevenLabs nunca sale del servidor.
-- Dos agentes creados en ElevenLabs, uno por rol, con las mismas tres herramientas de cliente:
-  `set_fact(field, value)`, `add_requirement(field, operator, value, isMust)` y
-  `finish_interview(notes)`. Se declaran en la configuración del agente y se implementan en el
-  navegador con el mismo nombre. Cada llamada hace un `PATCH` al perfil y la pantalla enseña el
-  campo rellenándose mientras la persona habla.
-- Guion de cada agente. Fase 1: qué buscas, y tras cada cosa, "¿es imprescindible?". Fase 2: qué
-  ofreces, hasta completar todos los hechos. Cierre: "¿quieres añadir algo?".
+El detalle (máquina de estados, herramientas, esquemas y guiones) está en `2b-voice-interview.md`.
+
+- La voz va con la Realtime API de OpenAI. El navegador se conecta por WebRTC. El servidor pide a
+  OpenAI una clave temporal (`POST /v1/realtime/client_secrets`) y se la pasa al navegador; la
+  clave real nunca sale del servidor.
+- Modelo: `gpt-realtime-2.1`, el más reciente en los ejemplos de la documentación. Se confirma en
+  la página de modelos al escribir el código.
+- Dos agentes, uno por fase. Cada agente es una configuración de la sesión: un guion y solo las
+  herramientas de su fase, así que las fases no se pueden mezclar.
+  - Fase 1, qué ofreces: `save_facts(facts)` y `complete_facts()`. Es la parte más personal y
+    va primero.
+  - Fase 2, qué buscas: `save_requirement(field, operator, value, isMust)` y
+    `finish_interview(notes)`. Tras cada requisito pregunta "¿es imprescindible?" y cierra con
+    "¿quieres añadir algo?".
+- El guion de cada agente se construye en nuestro código según el rol, con la lista de campos
+  sacada del contrato. No hay nada configurado fuera del repositorio.
+- Nuestro código valida cada apunte contra el contrato y contesta al agente qué hechos faltan. La
+  pantalla enseña el campo rellenándose mientras la persona habla.
+- El relevo entre fases lo hace nuestro código: cuando `complete_facts` se acepta porque están
+  todos los hechos, envía un `session.update` con el guion y las herramientas de la fase 2. Es la
+  misma conexión, sin corte.
 - El agente no pregunta por nacionalidad, edad, género ni hijos, y si alguien lo dice no hay
   herramienta donde guardarlo.
-- **Plan B si falla la voz en directo:** la misma conversación en modo solo texto, que el SDK
-  admite con el mismo agente y las mismas herramientas, y un perfil de demo ya entrevistado que se
-  carga con un botón.
-- OpenAI sigue en el proyecto: los embeddings de las notas (`text-embedding-3-small`) y, si se
-  elige así en ElevenLabs, el modelo de lenguaje que hay detrás del agente.
+- **Plan B si falla la voz en directo:** la misma entrevista por texto con las mismas herramientas,
+  y un perfil de demo ya entrevistado que se carga con un botón.
 
 ## Reparto y carpetas
 
 | Quién | Carpeta | Qué |
 |---|---|---|
-| Adolfo | `src/interview` | Ruta de token y conexión con ElevenLabs; los dos agentes y sus guiones; las tres herramientas; pantalla de entrevista con campos en vivo; modo texto de plan B |
+| Adolfo | `src/interview` | Ruta de sesión y conexión WebRTC con OpenAI; los dos agentes y sus guiones; el relevo entre fases; las tres herramientas; pantalla de entrevista con campos en vivo; modo texto de plan B |
 | Asier | `src/matching` | 25 casas y 25 inquilinos inventados; filtro, orden y razones; rutas de perfiles, feed, swipes y matches |
 | Ander | `src/app` | Marco con forma de móvil y elección de rol; feed vertical; like y descartar; pantalla de match con razones; aviso de match al otro lado |
 
@@ -211,12 +219,17 @@ La visita tras el match solo se empieza si el bloque 2 se cierra con tiempo de s
   datos con `npm run seed`. La demo se hace en local, con dos ventanas.
 - 2026-11-21, Adolfo: validación con zod, un esquema por tipo del contrato, usado en las rutas y en
   las herramientas del agente.
-- 2026-11-21, Adolfo: voz con ElevenLabs (ya tiene la API), en lugar de la Realtime API de OpenAI.
+- 2026-11-21, Adolfo: voz con la Realtime API de OpenAI y su mejor modelo. Sustituye a ElevenLabs,
+  que se había elegido antes: el hackathon da 50 € en créditos de OpenAI y así OpenAI queda en el
+  centro del proyecto.
+- 2026-11-21, Adolfo: un agente por fase en vez de un agente con dos fases, primero qué ofreces y
+  después qué buscas. El relevo lo hace nuestro código cambiando el guion y las herramientas de la
+  sesión, así que la regla queda en el repositorio y se prueba con tests.
 
 ## Preguntas abiertas
 
 - La hora de entrega.
 - Si la demo es en vivo o en vídeo, y cuánto dura. Si es en vídeo, el plan B de voz pierde
   importancia.
-- Si las bases obligan a usar algún producto concreto de OpenAI. Importa más ahora que la voz es de
-  ElevenLabs: si piden que lo central sea de OpenAI, hay que saberlo antes de empezar.
+- Si las bases obligan a usar algún producto concreto de OpenAI. Con la voz y los embeddings en
+  OpenAI, lo más probable es que ya se cumpla.
