@@ -84,7 +84,7 @@ export function PhotoPager({
     <div
       ref={scrollerRef}
       onScroll={handleScroll}
-      className="no-scrollbar absolute inset-0 snap-y snap-mandatory overflow-y-auto bg-cream"
+      className="no-scrollbar absolute inset-0 touch-pan-y snap-y snap-mandatory overflow-y-auto overscroll-contain bg-cream"
     >
       {photos.length > 0 ? (
         photos.map((url, idx) =>

@@ -1,6 +1,5 @@
 "use client";
 
-import { Heart, X } from "lucide-react";
 import {
   AnimatePresence,
   animate,
@@ -8,6 +7,7 @@ import {
   useMotionValue,
   useReducedMotion,
   useTransform,
+  type MotionValue,
   type PanInfo,
 } from "motion/react";
 import { useRouter } from "next/navigation";
@@ -39,14 +39,15 @@ import { useSession } from "@/app/_lib/session";
 import { MatchCelebration } from "@/app/_features/match/MatchCelebration";
 
 import { DayDone } from "./DayDone";
-import { DecisionBurst } from "./DecisionBurst";
+import { DecisionBurst, DragIntent } from "./DecisionBurst";
 import { DiscoverSkeleton } from "./DiscoverSkeleton";
 import { FitsOverlay } from "./FitsOverlay";
 import { HomeCard } from "./HomeCard";
 import { photoIndexForPage } from "./PhotoPager";
 
 const CARD_SPRING = { type: "spring" as const, stiffness: 300, damping: 30 };
-const SWIPE_DISTANCE_PX = 120;
+// Release past this distance (or flick past the velocity) to decide; below it the card goes back.
+const SWIPE_DISTANCE_PX = 100;
 const SWIPE_VELOCITY_PX = 600;
 const TAP_SLOP_PX = 8;
 
@@ -69,6 +70,8 @@ type SwipeCardProps = {
   /** fires as soon as the card starts flying out (drives the heart / ✕ burst) */
   onDecisionStart?: (liked: boolean) => void;
   cardRef?: Ref<SwipeCardHandle>;
+  /** horizontal offset shared with the deck (drives the centred heart / ✕ while dragging) */
+  dragX?: MotionValue<number>;
 };
 
 function SwipeCard({
@@ -83,17 +86,17 @@ function SwipeCard({
   onDecide,
   onDecisionStart,
   cardRef,
+  dragX,
 }: SwipeCardProps) {
   const prefersReducedMotion = useReducedMotion() ?? false;
-  const x = useMotionValue(0);
+  const ownX = useMotionValue(0);
+  const x = dragX ?? ownX;
   const cardOpacity = useMotionValue(1);
 
   const rawRotate = useTransform(x, [-240, 0, 240], [-12, 0, 12]);
   const cardRadius = useTransform(x, [-24, 0, 24], [28, 0, 28]);
   const likeOpacity = useTransform(x, [0, SWIPE_DISTANCE_PX], [0, 1]);
   const passOpacity = useTransform(x, [-SWIPE_DISTANCE_PX, 0], [1, 0]);
-  const rawLikeScale = useTransform(x, [0, SWIPE_DISTANCE_PX], [0.75, 1]);
-  const rawPassScale = useTransform(x, [-SWIPE_DISTANCE_PX, 0], [1, 0.75]);
 
   const decidingRef = useRef(false);
   const didDragRef = useRef(false);
@@ -163,7 +166,6 @@ function SwipeCard({
       animate={{ scale: isTop ? 1 : 0.96 }}
       transition={prefersReducedMotion ? { duration: 0.15 } : CARD_SPRING}
       drag={isTop && !dragDisabled ? "x" : false}
-      dragDirectionLock
       dragMomentum={false}
       onPointerDown={handlePointerDown}
       onDragStart={handleDragStart}
@@ -188,7 +190,7 @@ function SwipeCard({
         onTapPhoto={handleTapPhoto}
       />
 
-      {/* Border tints + Like/Pass badges (60fps via MotionValues, zero React state) */}
+      {/* Border tints (60fps via MotionValues, zero React state) */}
       {isTop && (
         <>
           <motion.div
@@ -202,27 +204,6 @@ function SwipeCard({
             className="pointer-events-none absolute inset-0 z-20 border-[4px] border-subtle"
           />
 
-          <motion.div
-            aria-hidden="true"
-            style={{
-              opacity: likeOpacity,
-              scale: prefersReducedMotion ? 1 : rawLikeScale,
-            }}
-            className="pointer-events-none absolute top-[88px] left-[24px] z-20 flex size-[64px] items-center justify-center rounded-full bg-granate text-white shadow-fab"
-          >
-            <Heart className="size-7 fill-white text-white" strokeWidth={2.2} />
-          </motion.div>
-
-          <motion.div
-            aria-hidden="true"
-            style={{
-              opacity: passOpacity,
-              scale: prefersReducedMotion ? 1 : rawPassScale,
-            }}
-            className="pointer-events-none absolute top-[88px] right-[24px] z-20 flex size-[64px] items-center justify-center rounded-full bg-ink text-cream ring-2 ring-subtle/40 shadow-card"
-          >
-            <X className="size-7" strokeWidth={2.6} />
-          </motion.div>
         </>
       )}
     </motion.div>
@@ -242,6 +223,8 @@ export function SwipeDeck() {
   const [fitsOpen, setFitsOpen] = useState(false);
   const [activeMatch, setActiveMatch] = useState<FeedItem | null>(null);
   const [burst, setBurst] = useState<{ id: number; liked: boolean } | null>(null);
+  // Offset of the top card, shared with the centred heart / ✕ that grows while dragging.
+  const topX = useMotionValue(0);
 
   const topCardRef = useRef<SwipeCardHandle | null>(null);
   const profileId = session?.profileId ?? null;
@@ -299,6 +282,7 @@ export function SwipeDeck() {
     (homeId: string, liked: boolean) => {
       if (!profileId) return;
       setFitsOpen(false);
+      topX.jump(0);
       setCurrentIndex((prev) => prev + 1);
 
       void swipe(profileId, homeId, liked)
@@ -312,7 +296,7 @@ export function SwipeDeck() {
           console.warn("[homie] swipe failed", err);
         });
     },
-    [profileId],
+    [profileId, topX],
   );
 
   // Keyboard support: ArrowLeft = pass, ArrowRight = like, Escape = close FitsOverlay
@@ -378,6 +362,7 @@ export function SwipeDeck() {
           <SwipeCard
             key={topHome.id}
             cardRef={topCardRef}
+            dragX={topX}
             home={topHome}
             viewer={viewer}
             fit={topFit}
@@ -418,6 +403,7 @@ export function SwipeDeck() {
         </>
       )}
 
+      {topHome && !burst && !fitsOpen && <DragIntent x={topX} threshold={SWIPE_DISTANCE_PX} />}
       {burst && <DecisionBurst key={burst.id} liked={burst.liked} onDone={() => setBurst(null)} />}
 
       {/* Mutual match celebration (can show even right after the 5th swipe) */}
