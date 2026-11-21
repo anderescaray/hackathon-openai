@@ -92,6 +92,32 @@ test("finish_interview completes the profile, can be retried and then locks it",
   await assert.rejects(applyAction(database, id, { action: "set_fact", field: "bedrooms", value: 3 }), isStatus(409));
 });
 
+test("two overlapping finishes with different notes: one wins, the other gets 409", async () => {
+  const { database, id } = await draftWithAllFacts();
+
+  const results = await Promise.allSettled([
+    applyAction(database, id, { action: "finish_interview", notes: "Primera." }),
+    applyAction(database, id, { action: "finish_interview", notes: "Segunda." }),
+  ]);
+
+  assert.equal(results[0].status, "fulfilled");
+  assert.equal(results[1].status, "rejected");
+  assert.ok(isStatus(409)(results[1].status === "rejected" ? results[1].reason : null));
+  assert.equal(findProfile(database, id)?.notes, "Primera.");
+});
+
+test("a fact saved while the finish waits for the embedding is kept", async () => {
+  const { database, id } = await draftWithAllFacts();
+
+  const finishing = applyAction(database, id, { action: "finish_interview", notes: "Mucha luz." });
+  await applyAction(database, id, { action: "set_fact", field: "bedrooms", value: 3 });
+  const completed = await finishing;
+
+  const stored = findProfile(database, id);
+  assert.equal(completed.role === "home" && completed.facts.bedrooms, 3);
+  assert.equal(stored?.role === "home" && stored.facts.bedrooms, 3);
+});
+
 test("an unknown profile is a 404", async () => {
   const database = openDatabase(":memory:");
 

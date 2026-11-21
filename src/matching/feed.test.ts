@@ -154,6 +154,16 @@ test("an identical swipe can be retried and a different one is rejected", () => 
   });
 });
 
+test("a retried like keeps the decision and reports the current match state", () => {
+  const database = seeded(tenant, compatible);
+  const like = { fromProfileId: tenant.id, toProfileId: compatible.id, liked: true };
+
+  assert.equal(recordSwipe(database, like).match, null);
+  recordSwipe(database, { fromProfileId: compatible.id, toProfileId: tenant.id, liked: true });
+
+  assert.equal(recordSwipe(database, like).match?.profile.id, compatible.id);
+});
+
 test("swiping an incompatible or unknown profile fails with 409 or 404", () => {
   const database = seeded(tenant, tooExpensive);
 

@@ -96,7 +96,16 @@ export async function applyAction(database: DatabaseSync, id: string, input: unk
   const factsSchema = profile.role === "tenant" ? tenantFactsSchema : homeFactsSchema;
   factsSchema.parse(profile.facts);
   const embedding = await embedNotes(action.notes);
-  const completed = profileSchema.parse({ ...profile, notes: action.notes, status: "complete" });
+
+  // Other requests may have run during the await, so complete the current row, not the copy read above.
+  // From here to the end there is no await, so nothing can interleave with these writes.
+  const current = requireProfile(database, id);
+  if (current.status === "complete") {
+    if (current.notes === action.notes) return current;
+    throw new HttpError(409, "Profile is already complete");
+  }
+  factsSchema.parse(current.facts);
+  const completed = profileSchema.parse({ ...current, notes: action.notes, status: "complete" });
   if (embedding) saveEmbedding(database, completed.id, embedding);
   saveProfile(database, completed);
   return completed;

@@ -28,7 +28,9 @@ Errores con `{ error }`. 400 para una entrada inválida; si la ha rechazado Zod,
 - deslizar una pareja incompatible;
 - cambiar una decisión ya tomada.
 
-Repetir la misma finalización, o el mismo swipe, devuelve la misma respuesta.
+Repetir la misma finalización devuelve el mismo perfil. Si dos finalizaciones con notas distintas se solapan, gana la primera y la otra recibe 409.
+
+Repetir el mismo swipe conserva la decisión y devuelve el estado **actual** del match. Si el otro lado dio like entre los dos intentos, el reintento devuelve el `FeedItem` aunque el primero devolviera `null`. Para la interfaz, un match es nuevo si su id no estaba ya entre los avisados, sin importar si llegó por el swipe o por `GET /api/matches`.
 
 ## Decisiones
 
