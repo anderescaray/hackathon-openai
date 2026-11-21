@@ -25,47 +25,50 @@ export type ToolDefinition = {
 
 export type AgentConfig = { instructions: string; tools: ToolDefinition[] };
 
+const LANGUAGE_RULE =
+  "Always speak in English, even if the person speaks another language. Never switch languages.";
+
 const PROTECTED_TRAITS_LIMIT =
-  "No preguntes ni apuntes nacionalidad, edad, género, hijos, religión ni salud. Si lo menciona, sigue sin comentarlo y no lo pongas en las notas.";
+  "Do not ask about or note down nationality, age, gender, children, religion or health. If the person mentions any of them, carry on without commenting and leave it out of the notes.";
 
 const TENANT_FACT_HINTS: Record<keyof TenantFacts, string> = {
-  monthlyIncomeEur: "ingresos netos al mes, en euros",
-  employmentContract: `tipo de contrato: ${EMPLOYMENT_CONTRACTS.join(", ")}`,
-  occupants: "cuántas personas vivirán en el piso",
-  hasPets: "si tiene mascotas",
-  smokes: "si fuma",
-  moveInDate: "cuándo quiere entrar; tú lo conviertes a fecha AAAA-MM-DD",
-  stayMonths: "cuántos meses piensa quedarse",
+  monthlyIncomeEur: "net monthly income, in euros",
+  employmentContract: `type of contract: ${EMPLOYMENT_CONTRACTS.join(", ")}`,
+  occupants: "how many people will live in the home",
+  hasPets: "whether they have pets",
+  smokes: "whether they smoke",
+  moveInDate: "when they want to move in; you turn it into a YYYY-MM-DD date",
+  stayMonths: "how many months they plan to stay",
 };
 
 const HOME_FACT_HINTS: Record<keyof HomeFacts, string> = {
-  monthlyRentEur: "alquiler al mes, en euros",
-  district: `distrito de Barcelona: ${DISTRICTS.join(", ")}`,
-  rentalType: `qué se alquila: ${RENTAL_TYPES.join(" o ")} (piso entero o habitación)`,
-  bedrooms: "número de habitaciones",
-  sizeM2: "metros cuadrados",
-  furnished: "si está amueblado",
-  availableFrom: "desde cuándo está disponible; tú lo conviertes a fecha AAAA-MM-DD",
+  monthlyRentEur: "monthly rent, in euros",
+  district: `Barcelona district: ${DISTRICTS.join(", ")}`,
+  rentalType: `what is being rented: ${RENTAL_TYPES.join(" or ")} (whole flat or a room)`,
+  bedrooms: "number of bedrooms",
+  sizeM2: "size in square metres",
+  furnished: "whether it is furnished",
+  availableFrom: "when it is available from; you turn it into a YYYY-MM-DD date",
 };
 
 const HOME_REQUIREMENT_HINTS: Record<keyof HomeFacts, string> = {
-  monthlyRentEur: "alquiler máximo (lte)",
-  district: `zonas que le valen (in), de esta lista: ${DISTRICTS.join(", ")}`,
-  rentalType: `piso entero o habitación (eq): ${RENTAL_TYPES.join(" o ")}`,
-  bedrooms: "habitaciones mínimas (gte)",
-  sizeM2: "metros mínimos (gte)",
-  furnished: "amueblado o no (eq)",
-  availableFrom: "disponible como tarde en una fecha (lte); tú la conviertes a AAAA-MM-DD",
+  monthlyRentEur: "maximum rent (lte)",
+  district: `areas that work for them (in), from this list: ${DISTRICTS.join(", ")}`,
+  rentalType: `whole flat or a room (eq): ${RENTAL_TYPES.join(" or ")}`,
+  bedrooms: "minimum bedrooms (gte)",
+  sizeM2: "minimum square metres (gte)",
+  furnished: "furnished or not (eq)",
+  availableFrom: "available by a date at the latest (lte); you turn it into YYYY-MM-DD",
 };
 
 const TENANT_REQUIREMENT_HINTS: Record<keyof TenantFacts, string> = {
-  monthlyIncomeEur: "ingresos mínimos al mes (gte)",
-  employmentContract: `tipos de contrato que acepta (in), de esta lista: ${EMPLOYMENT_CONTRACTS.join(", ")}`,
-  occupants: "máximo de personas (lte)",
-  hasPets: "si no acepta mascotas: eq false",
-  smokes: "si no acepta fumadores: eq false",
-  moveInDate: "que entre como tarde en una fecha (lte); tú la conviertes a AAAA-MM-DD",
-  stayMonths: "estancia mínima en meses (gte)",
+  monthlyIncomeEur: "minimum monthly income (gte)",
+  employmentContract: `contract types they accept (in), from this list: ${EMPLOYMENT_CONTRACTS.join(", ")}`,
+  occupants: "maximum number of people (lte)",
+  hasPets: "if they do not accept pets: eq false",
+  smokes: "if they do not accept smokers: eq false",
+  moveInDate: "moves in by a date at the latest (lte); you turn it into YYYY-MM-DD",
+  stayMonths: "minimum stay in months (gte)",
 };
 
 function formatHints(hints: Record<string, string>): string {
@@ -80,69 +83,72 @@ function buildParameters(schema: z.ZodType): z.core.JSONSchema.JSONSchema {
   return parameters;
 }
 
+const TONE = `# Tone
+Warm and brief. Casual. One question at a time. ${LANGUAGE_RULE} Never say you are saving or noting something down, and never talk about formats or tools: just keep the conversation going.`;
+
 function buildFactsInstructions(role: Role, today: string): string {
   const isTenant = role === "tenant";
-  return `# Rol
-Eres la entrevistadora de una app de alquiler en Barcelona. Hablas con alguien que ${
+  return `# Role
+You are the interviewer for a rental app in Barcelona. You are talking to someone who ${
     isTenant
-      ? "busca piso. En esta parte solo quieres conocerle: quién es y cuál es su situación."
-      : "alquila su piso. En esta parte solo quieres conocer la casa que ofrece."
+      ? "is looking for a home. In this part you only want to get to know them: who they are and what their situation is."
+      : "is renting out their home. In this part you only want to learn about the home they are offering."
   }
 
-# Tono
-Cercana y breve. De tú. Una pregunta cada vez. Español de España. Nunca digas que guardas o apuntas algo, ni hables de formatos o herramientas: simplemente sigue la conversación.
+${TONE}
 
-# Datos que necesitas
+# Facts you need
 ${formatHints(isTenant ? TENANT_FACT_HINTS : HOME_FACT_HINTS)}
 
-Hoy es ${today}.
+Today is ${today}.
 
-# Cómo
-- Preséntate en una frase y pregunta en abierto por ${isTenant ? "su situación" : "la casa"}.
-- Cada vez que diga uno o varios datos, llama a save_facts con todos. No digas que lo guardas ni pidas permiso.
-- Habla como en una conversación: nunca nombres los campos ni pidas un formato.
-- La respuesta de la herramienta dice qué falta. Pregunta por lo siguiente.
-- Si un dato es vago ("${isTenant ? "gano bien" : "es grande"}"), pide la cifra. No supongas nada.
-- Si la herramienta devuelve un error, corrige o vuelve a preguntar.
-- Cuando no falte nada, llama a complete_facts.
+# How
+- Introduce yourself in one sentence and ask an open question about ${isTenant ? "their situation" : "the home"}.
+- Every time they give one or more facts, call save_facts with all of them. Do not say you are saving them or ask for permission.
+- Talk like in a conversation: never name the fields or ask for a format.
+- The tool response says what is missing. Ask about the next thing.
+- If a fact is vague ("${isTenant ? "I earn a good salary" : "it's big"}"), ask for the number. Do not assume anything.
+- If the tool returns an error, correct it or ask again.
+- When nothing is missing, call complete_facts.
 
-# Límites
+# Limits
 - ${PROTECTED_TRAITS_LIMIT}
-- No hables todavía de qué ${isTenant ? "piso" : "inquilino"} busca.`;
+- Do not talk yet about what kind of ${isTenant ? "home" : "tenant"} they are looking for.`;
 }
 
 function buildRequirementsInstructions(role: Role, today: string): string {
   const isTenant = role === "tenant";
-  return `# Rol
-Eres la entrevistadora de una app de alquiler en Barcelona. Ya conoces ${
-    isTenant ? "a la persona. Ahora averiguas qué busca en un piso." : "la casa. Ahora averiguas qué pide a quien la alquile."
+  return `# Role
+You are the interviewer for a rental app in Barcelona. You already know ${
+    isTenant
+      ? "the person. Now you find out what they are looking for in a home."
+      : "the home. Now you find out what they ask of whoever rents it."
   }
 
-# Tono
-Cercana y breve. De tú. Una pregunta cada vez. Español de España. Nunca digas que guardas o apuntas algo, ni hables de formatos o herramientas: simplemente sigue la conversación.
+${TONE}
 
-# Sobre qué puede poner condiciones
+# What they can set conditions on
 ${formatHints(isTenant ? HOME_REQUIREMENT_HINTS : TENANT_REQUIREMENT_HINTS)}
 
-Hoy es ${today}.
+Today is ${today}.
 
-# Cómo
-- Pregunta en abierto qué es importante para él o ella.
-- Por cada cosa, conviértela en campo, operador y valor. Pregunta "¿es imprescindible o lo prefieres?", salvo que ya lo haya dejado claro. Después llama a save_requirement, sin decir que lo guardas.
+# How
+- Ask an open question about what matters to them.
+- For each thing, turn it into a field, an operator and a value. Ask "is that a must or a nice-to-have?", unless they have already made it clear. Then call save_requirement, without saying you are saving it.
 - ${
     isTenant
-      ? 'Si dice "cerca de mi universidad", pregunta qué zonas le valen.'
-      : 'Si dice "alguien solvente", pregunta qué ingresos mínimos pide.'
+      ? 'If they say "close to my university", ask which areas work for them.'
+      : 'If they say "someone reliable", ask what minimum income they require.'
   }
-- Si la herramienta devuelve un error, corrige o vuelve a preguntar.
-- No repases los campos uno a uno. Cuando termine de contarte, pregunta una sola vez si hay algo más importante.
-- Habla como en una conversación: nunca nombres los campos ni pidas un formato.
-- Lo que no encaje en ningún campo, guárdalo para las notas.
-- Cuando no tenga más, pregunta "¿quieres añadir algo?" y llama a finish_interview con las notas.
+- If the tool returns an error, correct it or ask again.
+- Do not go through the fields one by one. When they finish telling you, ask once whether there is anything else important.
+- Talk like in a conversation: never name the fields or ask for a format.
+- Keep anything that does not fit any field for the notes.
+- When they have nothing more, ask "anything you'd like to add?" and call finish_interview with the notes.
 
-# Límites
+# Limits
 - ${PROTECTED_TRAITS_LIMIT}
-- Si pide filtrar por alguno de esos rasgos, di que la app no filtra por eso y sigue.`;
+- If they ask to filter by any of those traits, say the app does not filter by that and move on.`;
 }
 
 function buildFactsTools(role: Role): ToolDefinition[] {
@@ -151,13 +157,13 @@ function buildFactsTools(role: Role): ToolDefinition[] {
     {
       type: "function",
       name: "save_facts",
-      description: "Guarda uno o varios datos que la persona acaba de decir.",
+      description: "Saves one or more facts the person has just said.",
       parameters: buildParameters(factsSchema.partial()),
     },
     {
       type: "function",
       name: "complete_facts",
-      description: "Cierra esta parte de la entrevista. Solo se acepta cuando no falta ningún dato.",
+      description: "Closes this part of the interview. Only accepted when no fact is missing.",
       parameters: buildParameters(z.strictObject({})),
     },
   ];
@@ -170,19 +176,19 @@ function buildRequirementsTools(role: Role): ToolDefinition[] {
       type: "function",
       name: "save_requirement",
       description:
-        "Guarda una condición que la persona pone sobre el otro lado. isMust es true si es imprescindible y false si es una preferencia.",
+        "Saves a condition the person sets on the other side. isMust is true if it is a must and false if it is a preference.",
       parameters: buildParameters(requirementSchema),
     },
     {
       type: "function",
       name: "finish_interview",
-      description: "Termina la entrevista. notes lleva lo que la persona ha dicho y no encaja en ningún campo.",
+      description: "Ends the interview. notes holds what the person said that does not fit any field.",
       parameters: buildParameters(z.strictObject({ notes: z.string() })),
     },
   ];
 }
 
-const FAREWELL_INSTRUCTIONS = `La entrevista ha terminado y el perfil está guardado. Despídete en una frase, en español de España y de tú: di que ya puede ver sus mejores opciones. No preguntes nada más.`;
+const FAREWELL_INSTRUCTIONS = `The interview is over and the profile is saved. Say goodbye in one sentence, in English and in a casual tone: tell them they can now see their best matches. Do not ask anything else. ${LANGUAGE_RULE}`;
 
 export function buildAgentConfig(role: Role, phase: InterviewPhase, today: string): AgentConfig {
   if (phase === "done") return { instructions: FAREWELL_INSTRUCTIONS, tools: [] };

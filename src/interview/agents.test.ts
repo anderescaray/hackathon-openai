@@ -140,7 +140,7 @@ test("every script forbids asking about protected traits", () => {
   ];
 
   for (const config of configs) {
-    assert.match(config.instructions, /No preguntes ni apuntes nacionalidad, edad, género, hijos, religión ni salud/);
+    assert.match(config.instructions, /Do not ask about or note down nationality, age, gender, children, religion or health/);
   }
 });
 
@@ -161,5 +161,13 @@ test("the farewell agent has no tools and is told to say goodbye", () => {
   const config = buildAgentConfig("tenant", "done", TODAY);
 
   assert.deepEqual(config.tools, []);
-  assert.match(config.instructions, /Despídete/);
+  assert.match(config.instructions, /Say goodbye/);
+});
+
+test("every script tells the agent to speak only in English", () => {
+  for (const phase of ["facts", "requirements", "done"] as const) {
+    for (const role of ["tenant", "home"] as const) {
+      assert.match(buildAgentConfig(role, phase, TODAY).instructions, /Always speak in English/);
+    }
+  }
 });
