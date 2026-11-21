@@ -1,0 +1,71 @@
+# Home photo credits
+
+All photos are from [Unsplash](https://unsplash.com) under the [Unsplash License](https://unsplash.com/license) (free to use, no attribution required; credited here anyway). Downloaded at 800x1200, JPG q75.
+
+| File | Source |
+| --- | --- |
+| home-01-1.jpg | https://images.unsplash.com/photo-1585128792103-0b591f96512e |
+| home-01-2.jpg | https://images.unsplash.com/photo-1615800002234-05c4d488696c |
+| home-01-3.jpg | https://images.unsplash.com/photo-1585128792020-803d29415281 |
+| home-01-4.jpg | https://images.unsplash.com/photo-1615800002658-0edcdf98f6e5 |
+| home-01-5.jpg | https://images.unsplash.com/photo-1599243272864-e9dd455966bd |
+| home-02-1.jpg | https://images.unsplash.com/photo-1615884241403-c5ee2e600bef |
+| home-02-2.jpg | https://images.unsplash.com/photo-1615800001718-73ba40557cb3 |
+| home-02-3.jpg | https://images.unsplash.com/photo-1619602662217-938271505f2d |
+| home-02-4.jpg | https://images.unsplash.com/photo-1619602707513-05a6ef9e3bd1 |
+| home-02-5.jpg | https://images.unsplash.com/photo-1712333423846-c890b722c2fb |
+| home-03-1.jpg | https://images.unsplash.com/photo-1502672260266-1c1ef2d93688 |
+| home-03-2.jpg | https://images.unsplash.com/photo-1502672023488-70e25813eb80 |
+| home-03-3.jpg | https://images.unsplash.com/photo-1499916078039-922301b0eb9b |
+| home-03-4.jpg | https://images.unsplash.com/photo-1588946355955-8ad8dc42ce49 |
+| home-03-5.jpg | https://images.unsplash.com/photo-1552321554-5fefe8c9ef14 |
+| home-04-1.jpg | https://images.unsplash.com/photo-1512918580421-b2feee3b85a6 |
+| home-04-2.jpg | https://images.unsplash.com/photo-1512914890251-2f96a9b0bbe2 |
+| home-04-3.jpg | https://images.unsplash.com/photo-1512916194211-3f2b7f5f7de3 |
+| home-04-4.jpg | https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd |
+| home-04-5.jpg | https://images.unsplash.com/photo-1512916958891-fcf61b2160df |
+| home-05-1.jpg | https://images.unsplash.com/photo-1630699294544-d3fb634e2de4 |
+| home-05-2.jpg | https://images.unsplash.com/photo-1630699375019-c334927264df |
+| home-05-3.jpg | https://images.unsplash.com/photo-1630699293875-e56c25151c4b |
+| home-05-4.jpg | https://images.unsplash.com/photo-1630699376443-a79cea41ed80 |
+| home-05-5.jpg | https://images.unsplash.com/photo-1630699376682-84df40131d22 |
+| home-06-1.jpg | https://images.unsplash.com/photo-1560448204-e02f11c3d0e2 |
+| home-06-2.jpg | https://images.unsplash.com/photo-1560448075-57d0285fc59b |
+| home-06-3.jpg | https://images.unsplash.com/photo-1560448075-cbc16bb4af8e |
+| home-06-4.jpg | https://images.unsplash.com/photo-1560448075-bb485b067938 |
+| home-06-5.jpg | https://images.unsplash.com/photo-1560185127-6ed189bf02f4 |
+| home-07-1.jpg | https://images.unsplash.com/photo-1601002257790-ebe0966a85ae |
+| home-07-2.jpg | https://images.unsplash.com/photo-1601086386762-0620518df7f9 |
+| home-07-3.jpg | https://images.unsplash.com/photo-1601086540476-7d9fa9dd6023 |
+| home-07-4.jpg | https://images.unsplash.com/photo-1601221998768-c0cdf463a393 |
+| home-08-1.jpg | https://images.unsplash.com/photo-1759691555285-74005fcf3ddf |
+| home-08-2.jpg | https://images.unsplash.com/photo-1759691555393-60cd5355d840 |
+| home-08-3.jpg | https://images.unsplash.com/photo-1759691337957-ebc9ed54dc44 |
+| home-08-4.jpg | https://images.unsplash.com/photo-1759691554646-8155da2172ee |
+| home-09-1.jpg | https://images.unsplash.com/photo-1702014859878-5d4743176d28 |
+| home-09-2.jpg | https://images.unsplash.com/photo-1702014857653-dcea938d51f0 |
+| home-09-3.jpg | https://images.unsplash.com/photo-1702014862053-946a122b920d |
+| home-10-1.jpg | https://images.unsplash.com/photo-1560185009-dddeb820c7b7 |
+| home-10-2.jpg | https://images.unsplash.com/photo-1560185007-cde436f6a4d0 |
+| home-10-3.jpg | https://images.unsplash.com/photo-1560185127-bdf08e449371 |
+| home-11-1.jpg | https://images.unsplash.com/photo-1692455067486-d4637182a61c |
+| home-11-2.jpg | https://images.unsplash.com/photo-1610527003928-47afd5f470c6 |
+| home-11-3.jpg | https://images.unsplash.com/photo-1781115659144-fbd50547c8cf |
+| home-12-1.jpg | https://images.unsplash.com/photo-1642094538644-52a1b91f1184 |
+| home-12-2.jpg | https://images.unsplash.com/photo-1529423374493-8b2f78fd2437 |
+| home-12-3.jpg | https://images.unsplash.com/photo-1600776216872-b39b2a3dd995 |
+| home-13-1.jpg | https://images.unsplash.com/photo-1522708323590-d24dbb6b0267 |
+| home-13-2.jpg | https://images.unsplash.com/photo-1531835551805-16d864c8d311 |
+| home-13-3.jpg | https://images.unsplash.com/photo-1587527901949-ab0341697c1e |
+| home-14-1.jpg | https://images.unsplash.com/photo-1606074280798-2dabb75ce10c |
+| home-14-2.jpg | https://images.unsplash.com/photo-1564078516393-cf04bd966897 |
+| home-14-3.jpg | https://images.unsplash.com/photo-1523755231516-e43fd2e8dca5 |
+| home-15-1.jpg | https://images.unsplash.com/photo-1612419299101-6c294dc2901d |
+| home-15-2.jpg | https://images.unsplash.com/photo-1699942681763-d1da9f692489 |
+| home-15-3.jpg | https://images.unsplash.com/photo-1584622650111-993a426fbf0a |
+| home-16-1.jpg | https://images.unsplash.com/photo-1605306866017-e57fef2e248f |
+| home-16-2.jpg | https://images.unsplash.com/photo-1757742690834-aa581b9f53b2 |
+| home-16-3.jpg | https://images.unsplash.com/photo-1682941529757-f3f1e808ba5a |
+| home-16-4.jpg | https://images.unsplash.com/photo-1563804951772-db97f4cfaf82 |
+
+placeholder-1.jpg and placeholder-2.jpg are the original scaffold placeholders.
