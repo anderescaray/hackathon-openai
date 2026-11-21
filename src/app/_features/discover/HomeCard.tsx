@@ -113,7 +113,7 @@ export function HomeCard({
         initial={false}
         animate={showSheet ? { y: 0, opacity: 1 } : { y: 440, opacity: 0 }}
         transition={prefersReducedMotion ? { duration: 0.15 } : SHEET_SPRING}
-        className={`absolute inset-x-[12px] top-[420px] bottom-[108px] z-10 flex flex-col gap-[12px] rounded-sheet bg-surface p-[20px] shadow-sheet ${
+        className={`absolute inset-x-[12px] top-[min(420px,calc(100%-330px))] bottom-[108px] z-10 flex flex-col gap-[12px] rounded-sheet bg-surface p-[20px] shadow-sheet ${
           showSheet ? "" : "pointer-events-none"
         }`}
       >

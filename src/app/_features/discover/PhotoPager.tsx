@@ -43,7 +43,8 @@ export function PhotoPager({
 }: PhotoPagerProps) {
   const photos = home.photoUrls;
   const totalPages = scrollPageCount(photos.length);
-  const firstHeight = activePage === 0 ? "560px" : "100%";
+  // 560px as in the mockup; shorter on small phones so the summary sheet keeps its room (same at 844px).
+  const firstHeight = activePage === 0 ? "min(560px, calc(100% - 190px))" : "100%";
 
   // Mouse wheel / trackpad: one gesture = one step (hide sheet → photo 2 → … → details), so it behaves the same
   // in every browser regardless of snap heuristics. Inside the details page, normal scrolling.
