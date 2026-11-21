@@ -1,6 +1,6 @@
-import { Placeholder } from "./_ui/Placeholder";
+import { LandingScreen } from "./_features/landing/LandingScreen";
 
-/** Choose a role. G2 builds it. */
+/** Choose a role (landing screen). */
 export default function Home() {
-  return <Placeholder title="homie" note="Find a home that fits — both ways." />;
+  return <LandingScreen />;
 }
