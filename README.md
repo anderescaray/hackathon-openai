@@ -24,6 +24,7 @@ npm run build
 | Carpeta | Dueño | Qué |
 |---|---|---|
 | `src/domain` | Los tres | El contrato: `profile.ts`. Se cambia avisando a los otros dos. |
+| `src/db` | Los tres | La base de datos SQLite: `store.ts` guarda y lee perfiles y swipes. Se crea sola en `data/app.db`. |
 | `src/interview` | Adolfo | Entrevista de voz |
 | `src/matching` | Asier | Datos, filtro, orden y rutas |
 | `src/app` | Ander | Feed y pantalla de match |

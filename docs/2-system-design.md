@@ -159,10 +159,16 @@ el agente de voz: la salida de un modelo es entrada no fiable.
 | Quién | Carpeta | Qué |
 |---|---|---|
 | Adolfo | `src/interview` | Ruta de token y conexión con ElevenLabs; los dos agentes y sus guiones; las tres herramientas; pantalla de entrevista con campos en vivo; modo texto de plan B |
-| Asier | `src/matching`, `src/domain` | `profile.ts` y su esquema; 25 casas y 25 inquilinos inventados; almacén de perfiles y swipes; filtro, orden y razones; rutas de perfiles, feed, swipes y matches |
+| Asier | `src/matching` | 25 casas y 25 inquilinos inventados; filtro, orden y razones; rutas de perfiles, feed, swipes y matches |
 | Ander | `src/app` | Marco con forma de móvil y elección de rol; feed vertical; like y descartar; pantalla de match con razones; aviso de match al otro lado |
 
-Cada uno toca solo su carpeta. `src/domain` se cambia avisando a los otros dos, porque rompe a todos.
+Cada uno toca solo su carpeta. `src/domain` y `src/db` son comunes y se cambian avisando a los
+otros dos, porque rompen a todos.
+
+`src/db/store.ts` ya existe: abre el fichero SQLite (`data/app.db`, se crea solo) y ofrece
+`saveProfile`, `findProfile`, `listProfilesByRole`, `saveSwipe`, `findSwipe` y `listSwipesFrom`.
+Las rutas y los datos inventados de Asier se apoyan en él. El embedding de las notas aún no tiene
+dónde guardarse; lo añade Asier cuando haga el orden.
 
 ## Orden del día
 
