@@ -54,7 +54,7 @@ export function PhotoPager({
           <div key={`${url}-${idx}`} className="relative h-full w-full shrink-0 snap-start bg-cream">
             <div
               onClick={onTapPhoto}
-              className="relative h-[560px] w-full cursor-pointer overflow-hidden bg-track/40"
+              className={`relative w-full cursor-pointer overflow-hidden bg-track/40 ${idx === 0 ? "h-[560px]" : "h-full"}`}
             >
               <Image
                 src={url}

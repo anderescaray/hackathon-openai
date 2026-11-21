@@ -38,6 +38,8 @@ export function HomeCard({
   const photoSlideCount = Math.max(1, home.photoUrls.length);
   const totalPages = photoSlideCount + 1;
   const isDetailsPage = activePage >= photoSlideCount;
+  // The summary sheet belongs to the first photo only; from photo 2 on, the photo gets the whole screen.
+  const showSheet = activePage === 0;
 
   const summary = homeSummary(home.facts);
 
@@ -106,10 +108,10 @@ export function HomeCard({
       {/* Floating white summary sheet (moves away on the HomeDetails page) */}
       <motion.div
         initial={false}
-        animate={isDetailsPage ? { y: 440, opacity: 0 } : { y: 0, opacity: 1 }}
+        animate={showSheet ? { y: 0, opacity: 1 } : { y: 440, opacity: 0 }}
         transition={prefersReducedMotion ? { duration: 0.15 } : SHEET_SPRING}
         className={`absolute inset-x-[12px] top-[420px] bottom-[108px] z-10 flex flex-col gap-[12px] rounded-sheet bg-surface p-[20px] shadow-sheet ${
-          isDetailsPage ? "pointer-events-none" : ""
+          showSheet ? "" : "pointer-events-none"
         }`}
       >
         <div className="flex items-start justify-between gap-[12px]">

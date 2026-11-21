@@ -38,6 +38,7 @@ import { useSession } from "@/app/_lib/session";
 import { MatchCelebration } from "@/app/_features/match/MatchCelebration";
 
 import { DayDone } from "./DayDone";
+import { DecisionBurst } from "./DecisionBurst";
 import { DiscoverSkeleton } from "./DiscoverSkeleton";
 import { FitsOverlay } from "./FitsOverlay";
 import { HomeCard } from "./HomeCard";
@@ -63,6 +64,8 @@ type SwipeCardProps = {
   onPageChange: (page: number) => void;
   onTapPhoto: () => void;
   onDecide: (liked: boolean) => void;
+  /** fires as soon as the card starts flying out (drives the heart / ✕ burst) */
+  onDecisionStart?: (liked: boolean) => void;
   cardRef?: Ref<SwipeCardHandle>;
 };
 
@@ -76,6 +79,7 @@ function SwipeCard({
   onPageChange,
   onTapPhoto,
   onDecide,
+  onDecisionStart,
   cardRef,
 }: SwipeCardProps) {
   const prefersReducedMotion = useReducedMotion() ?? false;
@@ -97,6 +101,7 @@ function SwipeCard({
     async (liked: boolean, velocityX = 0) => {
       if (decidingRef.current) return;
       decidingRef.current = true;
+      onDecisionStart?.(liked);
       if (prefersReducedMotion) {
         await animate(cardOpacity, 0, { duration: 0.16 });
       } else {
@@ -109,7 +114,7 @@ function SwipeCard({
       }
       onDecide(liked);
     },
-    [cardOpacity, onDecide, prefersReducedMotion, x],
+    [cardOpacity, onDecide, onDecisionStart, prefersReducedMotion, x],
   );
 
   useImperativeHandle(
@@ -234,6 +239,7 @@ export function SwipeDeck() {
   const [activePages, setActivePages] = useState<Record<string, number>>({});
   const [fitsOpen, setFitsOpen] = useState(false);
   const [activeMatch, setActiveMatch] = useState<FeedItem | null>(null);
+  const [burst, setBurst] = useState<{ id: number; liked: boolean } | null>(null);
 
   const topCardRef = useRef<SwipeCardHandle | null>(null);
   const profileId = session?.profileId ?? null;
@@ -376,6 +382,7 @@ export function SwipeDeck() {
             onPageChange={(page) => setActivePages((prev) => ({ ...prev, [topHome.id]: page }))}
             onTapPhoto={() => setFitsOpen(true)}
             onDecide={(liked) => handleDecide(topHome.id, liked)}
+            onDecisionStart={(liked) => setBurst((prev) => ({ id: (prev?.id ?? 0) + 1, liked }))}
           />
 
           {/* Fixed header pills above the card stack */}
@@ -405,6 +412,8 @@ export function SwipeDeck() {
           </AnimatePresence>
         </>
       )}
+
+      {burst && <DecisionBurst key={burst.id} liked={burst.liked} onDone={() => setBurst(null)} />}
 
       {/* Mutual match celebration (can show even right after the 5th swipe) */}
       {activeMatch && profileId && (
