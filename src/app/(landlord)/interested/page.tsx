@@ -1,5 +1,5 @@
-import { Placeholder } from "../../_ui/Placeholder";
+import { InterestedScreen } from "../../_features/inbox/InterestedScreen";
 
 export default function InterestedPage() {
-  return <Placeholder title="Interested" />;
+  return <InterestedScreen />;
 }

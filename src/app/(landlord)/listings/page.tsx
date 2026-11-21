@@ -1,5 +1,5 @@
-import { Placeholder } from "../../_ui/Placeholder";
+import { ListingsScreen } from "../../_features/inbox/ListingsScreen";
 
 export default function ListingsPage() {
-  return <Placeholder title="My listings" />;
+  return <ListingsScreen />;
 }

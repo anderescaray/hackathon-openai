@@ -1,17 +1,12 @@
 import { Suspense } from "react";
 
-import { Placeholder } from "../../_ui/Placeholder";
+import { ChatScreen } from "../../_features/inbox/ChatScreen";
 
-/** Next 16: params is a Promise. Read it inside Suspense (cacheComponents is on). */
-async function ChatForMatch({ params }: { params: Promise<{ matchId: string }> }) {
-  const { matchId } = await params;
-  return <Placeholder title="Chat" note={decodeURIComponent(matchId)} />;
-}
-
-export default function ChatPage({ params }: PageProps<"/chat/[matchId]">) {
+/** Next 16: useParams inside a dynamic route suspends when cacheComponents is on. */
+export default function ChatPage() {
   return (
-    <Suspense>
-      <ChatForMatch params={params} />
+    <Suspense fallback={<div className="absolute inset-0 bg-cream" />}>
+      <ChatScreen />
     </Suspense>
   );
 }

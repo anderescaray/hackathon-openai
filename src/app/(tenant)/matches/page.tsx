@@ -1,5 +1,5 @@
-import { Placeholder } from "../../_ui/Placeholder";
+import { MatchesScreen } from "../../_features/inbox/MatchesScreen";
 
 export default function MatchesPage() {
-  return <Placeholder title="Matches" />;
+  return <MatchesScreen />;
 }

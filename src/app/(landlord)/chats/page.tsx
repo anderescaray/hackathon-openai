@@ -1,5 +1,5 @@
-import { Placeholder } from "../../_ui/Placeholder";
+import { LandlordChatsScreen } from "../../_features/inbox/LandlordChatsScreen";
 
 export default function ChatsPage() {
-  return <Placeholder title="Chats" />;
+  return <LandlordChatsScreen />;
 }

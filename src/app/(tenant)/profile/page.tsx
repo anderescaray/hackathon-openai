@@ -1,5 +1,5 @@
-import { Placeholder } from "../../_ui/Placeholder";
+import { TenantProfileScreen } from "../../_features/inbox/TenantProfileScreen";
 
 export default function ProfilePage() {
-  return <Placeholder title="Your card" />;
+  return <TenantProfileScreen />;
 }
