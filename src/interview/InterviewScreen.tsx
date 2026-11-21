@@ -10,8 +10,9 @@ import { saveProfile } from "../app/_lib/api";
 import { setSession } from "../app/_lib/session";
 import type { Role } from "../domain/profile.ts";
 import { buildAgentConfig } from "./agents.ts";
-import { handleToolCall, startInterview, type InterviewState } from "./interviewSession.ts";
+import { handleAndSaveToolCall, startInterview, type InterviewState } from "./interviewSession.ts";
 import { logEvent } from "./log.ts";
+import { createProfile, saveProfileWrite } from "./profileApi.ts";
 import { connectRealtime, type RealtimeConnection } from "./realtimeConnection.ts";
 import {
   buildSessionUpdate,
@@ -107,6 +108,8 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
   const [userLine, setUserLine] = useState<string | undefined>(undefined);
   const [justSaved, setJustSaved] = useState<string[]>([]);
   const agentDraftRef = useRef({ responseId: "", text: "" });
+  // Server events are handled one at a time, so complete_facts sees the result of the save before it.
+  const eventQueueRef = useRef<Promise<void>>(Promise.resolve());
 
   useEffect(() => {
     isUnmountedRef.current = false;
@@ -151,11 +154,27 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
     router.push(NEXT_SCREEN[role]);
   }
 
-  function handleServerEvent(serverEvent: unknown): void {
+  function enqueueServerEvent(serverEvent: unknown): void {
+    // Subtitles and who-is-talking never wait for a save; only the profile logic is queued.
+    showVoiceActivity(serverEvent);
+    eventQueueRef.current = eventQueueRef.current
+      .then(() => handleServerEvent(serverEvent))
+      .catch((error: unknown) => {
+        logEvent("error", {
+          msg: "Could not handle an event from the voice service",
+          event_name: "interview.event_failed",
+          request_id: interviewRef.current.profile.id,
+          data: { detail: error instanceof Error ? error.message : "unknown error" },
+        });
+      });
+  }
+
+  async function handleServerEvent(serverEvent: unknown): Promise<void> {
     const connection = connectionRef.current;
     if (!connection) return;
     const sessionId = interviewRef.current.profile.id;
-    showVoiceActivity(serverEvent);
+    // After each save, a reply for an interview that has since ended or restarted is dropped.
+    const isStale = () => connectionRef.current !== connection || interviewRef.current.profile.id !== sessionId;
 
     const serverError = readServerError(serverEvent);
     if (serverError !== undefined) {
@@ -180,7 +199,10 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
     const phaseBefore = interviewRef.current.phase;
     const savedNow: string[] = [];
     for (const { callId, toolCall } of toolCalls) {
-      const reply = handleToolCall(interviewRef.current, toolCall);
+      const reply = await handleAndSaveToolCall(interviewRef.current, toolCall, (write) =>
+        saveProfileWrite(sessionId, write),
+      );
+      if (isStale()) return;
       interviewRef.current = reply.state;
       logEvent(reply.output.ok ? "info" : "warn", {
         msg: "Applied a tool call from the voice agent",
@@ -230,27 +252,31 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
     const audioElement = audioRef.current;
     if (!audioElement || isStartingRef.current) return;
     isStartingRef.current = true;
-    interviewRef.current = startInterview(role, crypto.randomUUID());
-    setInterview(interviewRef.current);
     setJustSaved([]);
     setAgentLine(undefined);
     setUserLine(undefined);
-    const sessionId = interviewRef.current.profile.id;
     setStatus("connecting");
-    logEvent("info", {
-      msg: "Starting the voice interview",
-      event_name: "interview.started",
-      request_id: sessionId,
-      data: { role },
-    });
 
     try {
+      // The draft lives in SQLite from the first second, so every tool call has a row to update.
+      const profile = await createProfile(role);
+      interviewRef.current = { phase: "facts", profile };
+      eventQueueRef.current = Promise.resolve();
+      setInterview(interviewRef.current);
+      const sessionId = profile.id;
+      logEvent("info", {
+        msg: "Starting the voice interview",
+        event_name: "interview.started",
+        request_id: sessionId,
+        data: { role },
+      });
+
       const clientSecret = await fetchClientSecret();
       const connection = await connectRealtime({
         clientSecret,
         sessionId,
         audioElement,
-        onServerEvent: handleServerEvent,
+        onServerEvent: enqueueServerEvent,
         onDropped: handleDropped,
         onOpen: () => {
           connectionRef.current?.send(buildSessionUpdate(buildAgentConfig(role, "facts", getToday())));
@@ -267,7 +293,7 @@ export function InterviewScreen({ role }: { role: Role }): React.JSX.Element {
       logEvent("error", {
         msg: "Could not start the voice interview",
         event_name: "interview.failed",
-        request_id: sessionId,
+        request_id: interviewRef.current.profile.id,
         data: { detail: error instanceof Error ? error.message : "unknown error" },
       });
       setStatus("failed");

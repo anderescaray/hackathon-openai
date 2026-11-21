@@ -94,11 +94,14 @@ function saveRequirement(profile: Profile, args: unknown): ToolCallOutcome {
   const parsedValue = valueSchema.safeParse(value);
   if (!parsedValue.success) return reject(profile, describeIssues(parsedValue.error, ["value"]));
 
-  const currentRequirements: { field: string }[] = profile.requirements;
+  // A range ("entre 800 y 1.100 €") is two requirements on one field, so field and operator identify each one.
+  const currentRequirements: { field: string; operator: string }[] = profile.requirements;
   const candidate = {
     ...profile,
     requirements: [
-      ...currentRequirements.filter((requirement) => requirement.field !== field),
+      ...currentRequirements.filter(
+        (requirement) => requirement.field !== field || requirement.operator !== operator,
+      ),
       { field, operator, value: parsedValue.data, isMust },
     ],
   };

@@ -22,7 +22,13 @@ const CREATE_TABLES_SQL = `
     liked INTEGER NOT NULL,
     PRIMARY KEY (from_profile_id, to_profile_id)
   );
+  CREATE TABLE IF NOT EXISTS profile_embeddings (
+    profile_id TEXT PRIMARY KEY,
+    embedding_json TEXT NOT NULL
+  );
 `;
+
+const embeddingRowSchema = z.object({ embedding_json: z.string() });
 
 const profileRowSchema = z.object({ profile_json: z.string() });
 
@@ -101,6 +107,24 @@ export function listSwipesFrom(database: DatabaseSync, fromProfileId: string): S
     )
     .all(fromProfileId)
     .map(parseSwipeRow);
+}
+
+// Kept outside profile_json because profileSchema is strict and the vector is server-only data.
+export function saveEmbedding(database: DatabaseSync, profileId: string, embedding: number[]): void {
+  database
+    .prepare(
+      `INSERT INTO profile_embeddings (profile_id, embedding_json) VALUES (?, ?)
+       ON CONFLICT (profile_id) DO UPDATE SET embedding_json = excluded.embedding_json`,
+    )
+    .run(profileId, JSON.stringify(embedding));
+}
+
+export function findEmbedding(database: DatabaseSync, profileId: string): number[] | null {
+  const row = database
+    .prepare("SELECT embedding_json FROM profile_embeddings WHERE profile_id = ?")
+    .get(profileId);
+  if (row === undefined) return null;
+  return z.array(z.number()).parse(JSON.parse(embeddingRowSchema.parse(row).embedding_json));
 }
 
 function parseProfileRow(row: unknown): Profile {

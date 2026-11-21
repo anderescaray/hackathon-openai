@@ -1,0 +1,2551 @@
+[
+  {
+    "id": "home-01",
+    "role": "home",
+    "displayName": "Piso con terraza en Ciutat Vella",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-01/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 950,
+      "district": "ciutat_vella",
+      "rentalType": "entire_home",
+      "bedrooms": 3,
+      "sizeM2": 85,
+      "furnished": true,
+      "availableFrom": "2027-02-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 2400,
+        "isMust": true
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 4,
+        "isMust": true
+      }
+    ],
+    "notes": "Edificio con ascensor y vecinos tranquilos. Mucha luz por la mañana.",
+    "status": "complete"
+  },
+  {
+    "id": "home-02",
+    "role": "home",
+    "displayName": "Piso con balcón en Eixample",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-02/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 900,
+      "district": "eixample",
+      "rentalType": "entire_home",
+      "bedrooms": 2,
+      "sizeM2": 72,
+      "furnished": false,
+      "availableFrom": "2027-01-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 2250,
+        "isMust": true
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 3,
+        "isMust": true
+      }
+    ],
+    "notes": "Cerca del metro y de mercados. Ideal para quien trabaja en el centro.",
+    "status": "complete"
+  },
+  {
+    "id": "home-03",
+    "role": "home",
+    "displayName": "Habitación en Sants",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-03/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 550,
+      "district": "sants_montjuic",
+      "rentalType": "room",
+      "bedrooms": 4,
+      "sizeM2": 101,
+      "furnished": false,
+      "availableFrom": "2026-12-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 1100,
+        "isMust": true
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed",
+          "student"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 1,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 12,
+        "isMust": false
+      }
+    ],
+    "notes": "Busco a alguien ordenado que cuide el piso como si fuera suyo.",
+    "status": "complete"
+  },
+  {
+    "id": "home-04",
+    "role": "home",
+    "displayName": "Piso con balcón en Les Corts",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-04/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1000,
+      "district": "les_corts",
+      "rentalType": "entire_home",
+      "bedrooms": 1,
+      "sizeM2": 61,
+      "furnished": false,
+      "availableFrom": "2027-01-15"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 2500,
+        "isMust": false
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent"
+        ],
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 2,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 12,
+        "isMust": false
+      }
+    ],
+    "notes": "Calle peatonal, sin ruido de tráfico. Terraza con plantas.",
+    "status": "complete"
+  },
+  {
+    "id": "home-05",
+    "role": "home",
+    "displayName": "Piso exterior en Sarrià",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-05/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 950,
+      "district": "sarria_sant_gervasi",
+      "rentalType": "entire_home",
+      "bedrooms": 1,
+      "sizeM2": 52,
+      "furnished": true,
+      "availableFrom": "2026-12-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 2400,
+        "isMust": true
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed"
+        ],
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 2,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 12,
+        "isMust": false
+      }
+    ],
+    "notes": "Piso recién reformado, cocina equipada y calefacción central.",
+    "status": "complete"
+  },
+  {
+    "id": "home-06",
+    "role": "home",
+    "displayName": "Habitación en Gràcia",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-06/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 550,
+      "district": "gracia",
+      "rentalType": "room",
+      "bedrooms": 3,
+      "sizeM2": 98,
+      "furnished": true,
+      "availableFrom": "2026-12-15"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 1100,
+        "isMust": true
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 1,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 6,
+        "isMust": false
+      }
+    ],
+    "notes": "Zona con parques y ambiente familiar. Supermercado en la esquina.",
+    "status": "complete"
+  },
+  {
+    "id": "home-07",
+    "role": "home",
+    "displayName": "Piso céntrico en Horta",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-07/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 950,
+      "district": "horta_guinardo",
+      "rentalType": "entire_home",
+      "bedrooms": 2,
+      "sizeM2": 77,
+      "furnished": true,
+      "availableFrom": "2027-01-15"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 2400,
+        "isMust": true
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed"
+        ],
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 3,
+        "isMust": true
+      }
+    ],
+    "notes": "Prefiero estancias largas; el contrato se puede renovar sin problema.",
+    "status": "complete"
+  },
+  {
+    "id": "home-08",
+    "role": "home",
+    "displayName": "Piso céntrico en Nou Barris",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-08/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1250,
+      "district": "nou_barris",
+      "rentalType": "entire_home",
+      "bedrooms": 1,
+      "sizeM2": 56,
+      "furnished": true,
+      "availableFrom": "2026-12-15"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 3150,
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 2,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 12,
+        "isMust": false
+      }
+    ],
+    "notes": "Barrio con mucha vida, bares y conciertos. Bien comunicado de noche.",
+    "status": "complete"
+  },
+  {
+    "id": "home-09",
+    "role": "home",
+    "displayName": "Habitación en Sant Andreu",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-09/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 400,
+      "district": "sant_andreu",
+      "rentalType": "room",
+      "bedrooms": 4,
+      "sizeM2": 94,
+      "furnished": true,
+      "availableFrom": "2026-12-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 800,
+        "isMust": false
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed",
+          "student"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 1,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 12,
+        "isMust": false
+      }
+    ],
+    "notes": "Ventanas dobles, muy silencioso. Perfecto para teletrabajar.",
+    "status": "complete"
+  },
+  {
+    "id": "home-10",
+    "role": "home",
+    "displayName": "Piso céntrico en Poblenou",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-10/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1250,
+      "district": "sant_marti",
+      "rentalType": "entire_home",
+      "bedrooms": 3,
+      "sizeM2": 87,
+      "furnished": false,
+      "availableFrom": "2027-02-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 3150,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 4,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 6,
+        "isMust": false
+      }
+    ],
+    "notes": "A cinco minutos de la playa en bici. Bicicleta incluida si se quiere.",
+    "status": "complete"
+  },
+  {
+    "id": "home-11",
+    "role": "home",
+    "displayName": "Piso céntrico en Ciutat Vella",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-11/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1250,
+      "district": "ciutat_vella",
+      "rentalType": "entire_home",
+      "bedrooms": 1,
+      "sizeM2": 52,
+      "furnished": true,
+      "availableFrom": "2027-01-15"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 3150,
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 2,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 12,
+        "isMust": true
+      }
+    ],
+    "notes": "Edificio con ascensor y vecinos tranquilos. Mucha luz por la mañana.",
+    "status": "complete"
+  },
+  {
+    "id": "home-12",
+    "role": "home",
+    "displayName": "Habitación en Eixample",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-12/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 500,
+      "district": "eixample",
+      "rentalType": "room",
+      "bedrooms": 4,
+      "sizeM2": 108,
+      "furnished": true,
+      "availableFrom": "2026-12-15"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 1000,
+        "isMust": false
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 1,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 12,
+        "isMust": false
+      }
+    ],
+    "notes": "Cerca del metro y de mercados. Ideal para quien trabaja en el centro.",
+    "status": "complete"
+  },
+  {
+    "id": "home-13",
+    "role": "home",
+    "displayName": "Piso con terraza en Sants",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-13/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 850,
+      "district": "sants_montjuic",
+      "rentalType": "entire_home",
+      "bedrooms": 3,
+      "sizeM2": 93,
+      "furnished": true,
+      "availableFrom": "2027-02-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 2150,
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 4,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 6,
+        "isMust": true
+      }
+    ],
+    "notes": "Busco a alguien ordenado que cuide el piso como si fuera suyo.",
+    "status": "complete"
+  },
+  {
+    "id": "home-14",
+    "role": "home",
+    "displayName": "Piso céntrico en Les Corts",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-14/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1300,
+      "district": "les_corts",
+      "rentalType": "entire_home",
+      "bedrooms": 2,
+      "sizeM2": 84,
+      "furnished": true,
+      "availableFrom": "2026-12-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 3250,
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 3,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 12,
+        "isMust": false
+      }
+    ],
+    "notes": "Calle peatonal, sin ruido de tráfico. Terraza con plantas.",
+    "status": "complete"
+  },
+  {
+    "id": "home-15",
+    "role": "home",
+    "displayName": "Habitación en Sarrià",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-15/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 550,
+      "district": "sarria_sant_gervasi",
+      "rentalType": "room",
+      "bedrooms": 3,
+      "sizeM2": 97,
+      "furnished": false,
+      "availableFrom": "2027-02-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 1100,
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 1,
+        "isMust": true
+      }
+    ],
+    "notes": "Piso recién reformado, cocina equipada y calefacción central.",
+    "status": "complete"
+  },
+  {
+    "id": "home-16",
+    "role": "home",
+    "displayName": "Piso exterior en Gràcia",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-16/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1350,
+      "district": "gracia",
+      "rentalType": "entire_home",
+      "bedrooms": 1,
+      "sizeM2": 57,
+      "furnished": false,
+      "availableFrom": "2027-02-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 3400,
+        "isMust": true
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed"
+        ],
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 2,
+        "isMust": true
+      }
+    ],
+    "notes": "Zona con parques y ambiente familiar. Supermercado en la esquina.",
+    "status": "complete"
+  },
+  {
+    "id": "home-17",
+    "role": "home",
+    "displayName": "Piso con balcón en Horta",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-17/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1050,
+      "district": "horta_guinardo",
+      "rentalType": "entire_home",
+      "bedrooms": 1,
+      "sizeM2": 64,
+      "furnished": true,
+      "availableFrom": "2026-12-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 2650,
+        "isMust": false
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed"
+        ],
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 2,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 12,
+        "isMust": false
+      }
+    ],
+    "notes": "Prefiero estancias largas; el contrato se puede renovar sin problema.",
+    "status": "complete"
+  },
+  {
+    "id": "home-18",
+    "role": "home",
+    "displayName": "Habitación en Nou Barris",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-18/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 400,
+      "district": "nou_barris",
+      "rentalType": "room",
+      "bedrooms": 4,
+      "sizeM2": 82,
+      "furnished": true,
+      "availableFrom": "2027-02-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 800,
+        "isMust": true
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 1,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 12,
+        "isMust": false
+      }
+    ],
+    "notes": "Barrio con mucha vida, bares y conciertos. Bien comunicado de noche.",
+    "status": "complete"
+  },
+  {
+    "id": "home-19",
+    "role": "home",
+    "displayName": "Piso con balcón en Sant Andreu",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-19/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1100,
+      "district": "sant_andreu",
+      "rentalType": "entire_home",
+      "bedrooms": 2,
+      "sizeM2": 77,
+      "furnished": true,
+      "availableFrom": "2027-01-15"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 2750,
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 3,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 6,
+        "isMust": false
+      }
+    ],
+    "notes": "Ventanas dobles, muy silencioso. Perfecto para teletrabajar.",
+    "status": "complete"
+  },
+  {
+    "id": "home-20",
+    "role": "home",
+    "displayName": "Piso céntrico en Poblenou",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-20/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1300,
+      "district": "sant_marti",
+      "rentalType": "entire_home",
+      "bedrooms": 1,
+      "sizeM2": 62,
+      "furnished": true,
+      "availableFrom": "2027-01-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 3250,
+        "isMust": true
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 2,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 6,
+        "isMust": true
+      }
+    ],
+    "notes": "A cinco minutos de la playa en bici. Bicicleta incluida si se quiere.",
+    "status": "complete"
+  },
+  {
+    "id": "home-21",
+    "role": "home",
+    "displayName": "Habitación en Ciutat Vella",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-21/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 500,
+      "district": "ciutat_vella",
+      "rentalType": "room",
+      "bedrooms": 3,
+      "sizeM2": 101,
+      "furnished": false,
+      "availableFrom": "2027-02-15"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 1000,
+        "isMust": false
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed",
+          "student"
+        ],
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 1,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 6,
+        "isMust": false
+      }
+    ],
+    "notes": "Edificio con ascensor y vecinos tranquilos. Mucha luz por la mañana.",
+    "status": "complete"
+  },
+  {
+    "id": "home-22",
+    "role": "home",
+    "displayName": "Piso con terraza en Eixample",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-22/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1300,
+      "district": "eixample",
+      "rentalType": "entire_home",
+      "bedrooms": 2,
+      "sizeM2": 73,
+      "furnished": true,
+      "availableFrom": "2027-01-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 3250,
+        "isMust": false
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed"
+        ],
+        "isMust": true
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 3,
+        "isMust": true
+      }
+    ],
+    "notes": "Cerca del metro y de mercados. Ideal para quien trabaja en el centro.",
+    "status": "complete"
+  },
+  {
+    "id": "home-23",
+    "role": "home",
+    "displayName": "Piso reformado en Sants",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-23/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 1200,
+      "district": "sants_montjuic",
+      "rentalType": "entire_home",
+      "bedrooms": 3,
+      "sizeM2": 98,
+      "furnished": true,
+      "availableFrom": "2027-02-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 3000,
+        "isMust": true
+      },
+      {
+        "field": "employmentContract",
+        "operator": "in",
+        "value": [
+          "permanent",
+          "temporary",
+          "self_employed"
+        ],
+        "isMust": true
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 4,
+        "isMust": true
+      }
+    ],
+    "notes": "Busco a alguien ordenado que cuide el piso como si fuera suyo.",
+    "status": "complete"
+  },
+  {
+    "id": "home-24",
+    "role": "home",
+    "displayName": "Habitación en Les Corts",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-24/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 550,
+      "district": "les_corts",
+      "rentalType": "room",
+      "bedrooms": 4,
+      "sizeM2": 72,
+      "furnished": false,
+      "availableFrom": "2026-12-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 1100,
+        "isMust": false
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": true
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 1,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 6,
+        "isMust": false
+      }
+    ],
+    "notes": "Calle peatonal, sin ruido de tráfico. Terraza con plantas.",
+    "status": "complete"
+  },
+  {
+    "id": "home-25",
+    "role": "home",
+    "displayName": "Piso exterior en Sarrià",
+    "photoUrls": [
+      "https://picsum.photos/seed/home-25/600/800"
+    ],
+    "facts": {
+      "monthlyRentEur": 750,
+      "district": "sarria_sant_gervasi",
+      "rentalType": "entire_home",
+      "bedrooms": 2,
+      "sizeM2": 74,
+      "furnished": true,
+      "availableFrom": "2027-02-01"
+    },
+    "requirements": [
+      {
+        "field": "monthlyIncomeEur",
+        "operator": "gte",
+        "value": 1900,
+        "isMust": false
+      },
+      {
+        "field": "hasPets",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "smokes",
+        "operator": "eq",
+        "value": false,
+        "isMust": false
+      },
+      {
+        "field": "occupants",
+        "operator": "lte",
+        "value": 3,
+        "isMust": true
+      },
+      {
+        "field": "stayMonths",
+        "operator": "gte",
+        "value": 6,
+        "isMust": false
+      }
+    ],
+    "notes": "Piso recién reformado, cocina equipada y calefacción central.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-01",
+    "role": "tenant",
+    "displayName": "Marta",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 3600,
+      "employmentContract": "self_employed",
+      "occupants": 2,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-02-01",
+      "stayMonths": 24
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1450,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "les_corts",
+          "sant_andreu",
+          "gracia"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 1,
+        "isMust": false
+      },
+      {
+        "field": "furnished",
+        "operator": "eq",
+        "value": true,
+        "isMust": false
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-02-01",
+        "isMust": false
+      }
+    ],
+    "notes": "Teletrabajo casi todos los días, necesito un sitio tranquilo y con luz.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-02",
+    "role": "tenant",
+    "displayName": "Jordi",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 1200,
+      "employmentContract": "student",
+      "occupants": 1,
+      "hasPets": true,
+      "smokes": false,
+      "moveInDate": "2027-02-01",
+      "stayMonths": 36
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 550,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "horta_guinardo",
+          "gracia",
+          "horta_guinardo"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "room",
+        "isMust": true
+      }
+    ],
+    "notes": "Soy enfermera con turnos de noche; valoro mucho el silencio.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-03",
+    "role": "tenant",
+    "displayName": "Lucía",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 4450,
+      "employmentContract": "permanent",
+      "occupants": 1,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-02-15",
+      "stayMonths": 24
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1800,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "sant_marti",
+          "sants_montjuic",
+          "nou_barris"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-02-15",
+        "isMust": true
+      }
+    ],
+    "notes": "Me encanta cocinar y tener plantas. Busco algo para muchos años.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-04",
+    "role": "tenant",
+    "displayName": "Pau",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 1200,
+      "employmentContract": "student",
+      "occupants": 1,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-02-01",
+      "stayMonths": 36
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 550,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "sants_montjuic",
+          "sant_marti",
+          "sant_andreu"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "room",
+        "isMust": true
+      },
+      {
+        "field": "furnished",
+        "operator": "eq",
+        "value": true,
+        "isMust": false
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-02-01",
+        "isMust": true
+      }
+    ],
+    "notes": "Estudio un máster en la UPF, quiero estar cerca de Ciutadella.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-05",
+    "role": "tenant",
+    "displayName": "Aina",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 3050,
+      "employmentContract": "self_employed",
+      "occupants": 2,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-01-15",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1200,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "gracia",
+          "horta_guinardo",
+          "sant_marti"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 1,
+        "isMust": false
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-01-15",
+        "isMust": true
+      }
+    ],
+    "notes": "Voy en bici a todas partes y me gustaría estar cerca de la playa.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-06",
+    "role": "tenant",
+    "displayName": "Carlos",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 950,
+      "employmentContract": "student",
+      "occupants": 1,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-01-15",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 450,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "sant_andreu",
+          "les_corts",
+          "ciutat_vella"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "room",
+        "isMust": true
+      }
+    ],
+    "notes": "Pareja tranquila, sin fiestas. Buscamos quedarnos a largo plazo.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-07",
+    "role": "tenant",
+    "displayName": "Nerea",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 3350,
+      "employmentContract": "temporary",
+      "occupants": 1,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-02-01",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1350,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "eixample",
+          "ciutat_vella",
+          "eixample"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-02-01",
+        "isMust": false
+      }
+    ],
+    "notes": "Me mudo desde Madrid por trabajo, primer piso en Barcelona.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-08",
+    "role": "tenant",
+    "displayName": "Oriol",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 1100,
+      "employmentContract": "student",
+      "occupants": 1,
+      "hasPets": false,
+      "smokes": true,
+      "moveInDate": "2027-03-01",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 500,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "sarria_sant_gervasi",
+          "nou_barris",
+          "sants_montjuic"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "room",
+        "isMust": true
+      },
+      {
+        "field": "furnished",
+        "operator": "eq",
+        "value": true,
+        "isMust": false
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-03-01",
+        "isMust": false
+      }
+    ],
+    "notes": "Músico, pero ensayo fuera de casa. Me gusta un barrio con vida.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-09",
+    "role": "tenant",
+    "displayName": "Sofía",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 3800,
+      "employmentContract": "temporary",
+      "occupants": 3,
+      "hasPets": false,
+      "smokes": true,
+      "moveInDate": "2027-03-15",
+      "stayMonths": 24
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1500,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "nou_barris",
+          "sarria_sant_gervasi",
+          "les_corts"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 2,
+        "isMust": false
+      },
+      {
+        "field": "furnished",
+        "operator": "eq",
+        "value": true,
+        "isMust": false
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-03-15",
+        "isMust": true
+      }
+    ],
+    "notes": "Busco un piso pequeño y bien comunicado con el metro.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-10",
+    "role": "tenant",
+    "displayName": "Marc",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 3050,
+      "employmentContract": "self_employed",
+      "occupants": 3,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-02-15",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1200,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "ciutat_vella",
+          "eixample",
+          "sarria_sant_gervasi"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 2,
+        "isMust": false
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-02-15",
+        "isMust": false
+      }
+    ],
+    "notes": "Trabajo en el 22@, ideal algo en Poblenou o cerca.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-11",
+    "role": "tenant",
+    "displayName": "Laia",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 2700,
+      "employmentContract": "self_employed",
+      "occupants": 2,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-03-01",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1100,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "les_corts",
+          "sant_andreu",
+          "gracia"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 1,
+        "isMust": false
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-03-01",
+        "isMust": false
+      }
+    ],
+    "notes": "Teletrabajo casi todos los días, necesito un sitio tranquilo y con luz.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-12",
+    "role": "tenant",
+    "displayName": "Diego",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 1250,
+      "employmentContract": "student",
+      "occupants": 1,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-03-15",
+      "stayMonths": 36
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 550,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "horta_guinardo",
+          "gracia",
+          "horta_guinardo"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "room",
+        "isMust": true
+      },
+      {
+        "field": "furnished",
+        "operator": "eq",
+        "value": true,
+        "isMust": false
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-03-15",
+        "isMust": false
+      }
+    ],
+    "notes": "Soy enfermera con turnos de noche; valoro mucho el silencio.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-13",
+    "role": "tenant",
+    "displayName": "Elena",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 950,
+      "employmentContract": "student",
+      "occupants": 1,
+      "hasPets": true,
+      "smokes": false,
+      "moveInDate": "2027-01-01",
+      "stayMonths": 24
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 450,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "sant_marti",
+          "sants_montjuic",
+          "nou_barris"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "room",
+        "isMust": true
+      },
+      {
+        "field": "furnished",
+        "operator": "eq",
+        "value": true,
+        "isMust": false
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-01-01",
+        "isMust": false
+      }
+    ],
+    "notes": "Me encanta cocinar y tener plantas. Busco algo para muchos años.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-14",
+    "role": "tenant",
+    "displayName": "Arnau",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 1250,
+      "employmentContract": "student",
+      "occupants": 1,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-03-01",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 550,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "sants_montjuic",
+          "sant_marti",
+          "sant_andreu"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "room",
+        "isMust": true
+      },
+      {
+        "field": "furnished",
+        "operator": "eq",
+        "value": true,
+        "isMust": false
+      }
+    ],
+    "notes": "Estudio un máster en la UPF, quiero estar cerca de Ciutadella.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-15",
+    "role": "tenant",
+    "displayName": "Paula",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 3300,
+      "employmentContract": "self_employed",
+      "occupants": 1,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-01-15",
+      "stayMonths": 36
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1300,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "gracia",
+          "horta_guinardo",
+          "sant_marti"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-01-15",
+        "isMust": true
+      }
+    ],
+    "notes": "Voy en bici a todas partes y me gustaría estar cerca de la playa.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-16",
+    "role": "tenant",
+    "displayName": "Iván",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 3000,
+      "employmentContract": "self_employed",
+      "occupants": 3,
+      "hasPets": false,
+      "smokes": true,
+      "moveInDate": "2027-01-15",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1200,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "sant_andreu",
+          "les_corts",
+          "ciutat_vella"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 2,
+        "isMust": true
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-01-15",
+        "isMust": false
+      }
+    ],
+    "notes": "Pareja tranquila, sin fiestas. Buscamos quedarnos a largo plazo.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-17",
+    "role": "tenant",
+    "displayName": "Clara",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 3600,
+      "employmentContract": "permanent",
+      "occupants": 2,
+      "hasPets": true,
+      "smokes": false,
+      "moveInDate": "2027-03-01",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1450,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "eixample",
+          "ciutat_vella",
+          "eixample"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 1,
+        "isMust": true
+      }
+    ],
+    "notes": "Me mudo desde Madrid por trabajo, primer piso en Barcelona.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-18",
+    "role": "tenant",
+    "displayName": "Hugo",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 2550,
+      "employmentContract": "permanent",
+      "occupants": 1,
+      "hasPets": true,
+      "smokes": false,
+      "moveInDate": "2027-02-15",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1000,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "sarria_sant_gervasi",
+          "nou_barris",
+          "sants_montjuic"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-02-15",
+        "isMust": false
+      }
+    ],
+    "notes": "Músico, pero ensayo fuera de casa. Me gusta un barrio con vida.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-19",
+    "role": "tenant",
+    "displayName": "Júlia",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 2500,
+      "employmentContract": "permanent",
+      "occupants": 1,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-03-01",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1000,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "nou_barris",
+          "sarria_sant_gervasi",
+          "les_corts"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      }
+    ],
+    "notes": "Busco un piso pequeño y bien comunicado con el metro.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-20",
+    "role": "tenant",
+    "displayName": "Álex",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 2250,
+      "employmentContract": "permanent",
+      "occupants": 2,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-01-01",
+      "stayMonths": 36
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 900,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "ciutat_vella",
+          "eixample",
+          "sarria_sant_gervasi"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 1,
+        "isMust": true
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-01-01",
+        "isMust": false
+      }
+    ],
+    "notes": "Trabajo en el 22@, ideal algo en Poblenou o cerca.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-21",
+    "role": "tenant",
+    "displayName": "Irene",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 2550,
+      "employmentContract": "self_employed",
+      "occupants": 3,
+      "hasPets": true,
+      "smokes": false,
+      "moveInDate": "2027-02-01",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1000,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "les_corts",
+          "sant_andreu",
+          "gracia"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 2,
+        "isMust": false
+      },
+      {
+        "field": "availableFrom",
+        "operator": "lte",
+        "value": "2027-02-01",
+        "isMust": false
+      }
+    ],
+    "notes": "Teletrabajo casi todos los días, necesito un sitio tranquilo y con luz.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-22",
+    "role": "tenant",
+    "displayName": "Sergi",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 3750,
+      "employmentContract": "permanent",
+      "occupants": 1,
+      "hasPets": true,
+      "smokes": false,
+      "moveInDate": "2027-01-01",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1500,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "horta_guinardo",
+          "gracia",
+          "horta_guinardo"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      }
+    ],
+    "notes": "Soy enfermera con turnos de noche; valoro mucho el silencio.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-23",
+    "role": "tenant",
+    "displayName": "Noa",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 4200,
+      "employmentContract": "temporary",
+      "occupants": 2,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-03-01",
+      "stayMonths": 6
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1700,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "sant_marti",
+          "sants_montjuic",
+          "nou_barris"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 1,
+        "isMust": true
+      }
+    ],
+    "notes": "Me encanta cocinar y tener plantas. Busco algo para muchos años.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-24",
+    "role": "tenant",
+    "displayName": "Bruno",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 3200,
+      "employmentContract": "self_employed",
+      "occupants": 2,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-01-01",
+      "stayMonths": 12
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 1300,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "sants_montjuic",
+          "sant_marti",
+          "sant_andreu"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "entire_home",
+        "isMust": true
+      },
+      {
+        "field": "bedrooms",
+        "operator": "gte",
+        "value": 1,
+        "isMust": false
+      },
+      {
+        "field": "furnished",
+        "operator": "eq",
+        "value": true,
+        "isMust": false
+      }
+    ],
+    "notes": "Estudio un máster en la UPF, quiero estar cerca de Ciutadella.",
+    "status": "complete"
+  },
+  {
+    "id": "tenant-25",
+    "role": "tenant",
+    "displayName": "Carla",
+    "photoUrls": [],
+    "facts": {
+      "monthlyIncomeEur": 1200,
+      "employmentContract": "student",
+      "occupants": 1,
+      "hasPets": false,
+      "smokes": false,
+      "moveInDate": "2027-03-15",
+      "stayMonths": 6
+    },
+    "requirements": [
+      {
+        "field": "monthlyRentEur",
+        "operator": "lte",
+        "value": 550,
+        "isMust": true
+      },
+      {
+        "field": "district",
+        "operator": "in",
+        "value": [
+          "gracia",
+          "horta_guinardo",
+          "sant_marti"
+        ],
+        "isMust": false
+      },
+      {
+        "field": "rentalType",
+        "operator": "eq",
+        "value": "room",
+        "isMust": true
+      }
+    ],
+    "notes": "Voy en bici a todas partes y me gustaría estar cerca de la playa.",
+    "status": "complete"
+  }
+]
