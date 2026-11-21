@@ -1,5 +1,5 @@
-import { Placeholder } from "../../_ui/Placeholder";
+import { SwipeDeck } from "../../_features/discover/SwipeDeck";
 
 export default function DiscoverPage() {
-  return <Placeholder title="Discover" />;
+  return <SwipeDeck />;
 }
