@@ -21,7 +21,7 @@ Base: F1 · Después: F2 · Al unir con Asier: F3 · Antes de congelar: F4
 - Evidence: `npm test` 6/6, `npm run lint` sin avisos, `npm run build` compila. Commit
   `build: scaffold next app and shared profile contract`.
 
-### F2: Entrevista de voz que rellena un perfil · todo
+### F2: Entrevista de voz que rellena un perfil · in progress
 - Goal: sustituir formularios y mensajes por una conversación.
 - Delivers: alguien habla con el agente y ve sus campos rellenarse en pantalla.
 - Covers: entrevista en dos fases, pregunta "¿es imprescindible?", cierre "¿quieres añadir algo?" (doc 1).
@@ -30,7 +30,7 @@ Base: F1 · Después: F2 · Al unir con Asier: F3 · Antes de congelar: F4
 - Depends on: F1.
 - Size: unas 2 h 45 min.
 
-#### I1: Aplicar una llamada del agente a un perfil · pending
+#### I1: Aplicar una llamada del agente a un perfil · ✅
 - What: una función que recibe lo que el agente quiere apuntar (un hecho, el fin de la fase de
   hechos, un requisito o el cierre de la entrevista) y devuelve el perfil actualizado junto con
   los hechos que faltan. Si el agente manda algo que no encaja en el
@@ -59,9 +59,10 @@ Base: F1 · Después: F2 · Al unir con Asier: F3 · Antes de congelar: F4
   - [ ] Código en `src/interview`
   - [ ] Logs: N/A (función pura)
   - [ ] Commit según `git.md`
-- Evidence:
+- Evidence: `npm test` con 15 tests nuevos en `src/interview/toolCall.test.ts`, lint y build pasan.
+  Commit `feat: apply voice agent tool calls to a profile`.
 
-#### I2: Guiones y herramientas de los dos agentes · pending
+#### I2: Guiones y herramientas de los dos agentes · ✅
 - What: escribe en el código la configuración de los dos agentes. El de la fase 1 entrevista sobre
   lo que la persona o la casa ofrece y solo puede apuntar hechos. El de la fase 2 pregunta qué
   busca, tras cada cosa si es imprescindible, y cierra con "¿quieres añadir algo?"; solo puede
@@ -84,9 +85,11 @@ Base: F1 · Después: F2 · Al unir con Asier: F3 · Antes de congelar: F4
   - [ ] Código en `src/interview/agents`
   - [ ] Logs: N/A
   - [ ] Commit según `git.md`
-- Evidence:
+- Evidence: 15 tests en `src/interview/agents.test.ts`, lint y build pasan. Commit
+  `feat: build scripts and tools for the interview agents`. Incluye un tercer agente sin
+  herramientas que solo se despide.
 
-#### I3: Ruta de la sesión de voz · pending
+#### I3: Ruta de la sesión de voz · ✅
 - What: una ruta del servidor que pide a OpenAI una clave temporal y la devuelve al navegador.
 - Why: la clave de OpenAI no puede llegar al navegador.
 - Depends on: nada.
@@ -103,9 +106,11 @@ Base: F1 · Después: F2 · Al unir con Asier: F3 · Antes de congelar: F4
   - [ ] Código en `src/interview` y la ruta en `src/app/api/voice/session`
   - [ ] Logs según `logging.md`
   - [ ] Commit según `git.md`
-- Evidence:
+- Evidence: 6 tests en `src/interview/voiceSession.test.ts`. Llamada real:
+  `curl -X POST localhost:3000/api/voice/session` devolvió HTTP 200 con una clave `ek_…`. Commit
+  `feat: add voice session route that issues a temporary openai key`.
 
-#### I4: Pantalla de entrevista con campos en vivo · pending
+#### I4: Pantalla de entrevista con campos en vivo · falta probar con micrófono
 - What: la pantalla donde la persona pulsa para empezar, habla con el agente de la fase 1 y luego
   con el de la fase 2, y ve cómo se rellenan sus hechos y requisitos mientras habla.
 - Why: es el momento de la demo.
@@ -126,7 +131,10 @@ Base: F1 · Después: F2 · Al unir con Asier: F3 · Antes de congelar: F4
   - [ ] Código en `src/interview`
   - [ ] Logs según `logging.md`
   - [ ] Commit según `git.md`
-- Evidence:
+- Evidence: `npm test` 68/68, lint y build pasan. Entrevista completa contra la Realtime API real
+  en modo texto, para inquilino y para casero: hechos, relevo de agente, requisitos y perfil
+  `complete`. La pantalla `/interview?role=tenant|home` carga y enseña los campos. Falta probarla
+  hablando: el navegador automático no puede aceptar el permiso del micrófono.
 
 ### F3: Guardar de verdad · todo
 - Goal: que lo que sale de la entrevista llegue al matching.

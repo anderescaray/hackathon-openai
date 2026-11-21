@@ -22,7 +22,7 @@ stateDiagram-v2
 |---|---|---|---|
 | `facts` | Fase 1: qué ofreces | Conocer a la persona o la casa | `save_facts`, `complete_facts` |
 | `requirements` | Fase 2: qué buscas | Qué pide al otro lado y si es imprescindible | `save_requirement`, `finish_interview` |
-| `done` | Ninguno | La entrevista ha terminado | Ninguna |
+| `done` | Despedida | Se despide en una frase y la conversación se cierra | Ninguna |
 
 Las fases no se pueden mezclar porque en cada estado el modelo solo tiene las herramientas de ese
 estado. Una transición solo ocurre cuando nuestro código acepta la llamada que la pide.
@@ -55,7 +55,9 @@ mascotas" es una sola llamada.
 ## Esquemas
 
 Una sola fuente: `src/domain/profile.ts`. La definición de cada herramienta se genera a partir de
-los esquemas zod del contrato, no se escribe a mano. Para un inquilino, `save_facts` queda así:
+los esquemas zod del contrato, no se escribe a mano. Lo que zod genera añade `"type": "string"` a
+los enumerados, un patrón a las fechas y, en `save_requirement`, limita `value` a texto, número,
+booleano o lista de textos. Para un inquilino, `save_facts` queda así:
 
 ```json
 {
@@ -188,9 +190,22 @@ Ya conoces a la persona. Ahora averiguas qué busca en un piso.
 - No preguntes ni apuntes nacionalidad, edad, género, hijos, religión ni salud.
 ```
 
-## Por comprobar al escribir el código
+## Comprobado con la API real (2026-11-21)
 
-- Los nombres exactos de los eventos de la Realtime API para recibir una llamada a herramienta y
-  devolver su resultado.
-- Que zod genere las definiciones de herramientas tal como aparecen aquí.
-- El nombre del modelo: `gpt-realtime-2.1` es el más reciente en los ejemplos de la documentación.
+- Clave temporal: `POST https://api.openai.com/v1/realtime/client_secrets`; la clave viene en `value`.
+- Conexión del navegador: oferta SDP a `https://api.openai.com/v1/realtime/calls` con la clave
+  temporal; canal de datos `oai-events`.
+- Las llamadas a herramientas llegan en el evento `response.done`, como elementos `function_call`
+  de `response.output`. Se contestan con `conversation.item.create` (`function_call_output`) y
+  después `response.create`.
+- `session.update` cambia guion y herramientas a mitad de conversación: el relevo funciona.
+- El modelo `gpt-realtime-2.1` existe y acepta las definiciones que genera zod, incluida la
+  expresión regular de las fechas.
+- Hay un tercer estado de configuración, `done`: sin herramientas, solo se despide.
+
+## Por comprobar
+
+- La entrevista hablando por el micrófono en el navegador. En modo texto funciona de principio a
+  fin para los dos roles.
+- La documentación de OpenAI recomienda ahora otro producto, GPT-Live (`gpt-live-1.1`), para voz
+  en el navegador. Seguimos con la Realtime API, que sigue documentada y funciona.
