@@ -203,7 +203,19 @@ Ya conoces a la persona. Ahora averiguas qué busca en un piso.
   expresión regular de las fechas.
 - Hay un tercer estado de configuración, `done`: sin herramientas, solo se despide.
 
+## Protecciones
+
+- `save_requirement` solo acepta operadores con sentido para el campo: números y fechas, `eq`,
+  `lte` o `gte`; listas de opciones, `eq` o `in`; sí o no, solo `eq`.
+- `POST /api/voice/session` solo responde a peticiones de la propia web, con un máximo de 20 por
+  minuto, y la clave temporal caduca a los 2 minutos. Atajo: no hay cuentas, así que no vale para
+  desplegar en internet sin añadir autenticación.
+- Si la conexión se corta, la pantalla lo dice y deja volver a empezar.
+
 ## Por comprobar
+
+- Que la llamada se cierre justo al acabar la despedida. Si el evento de fin de audio no trae el
+  identificador de la respuesta, se cierra igualmente a los 15 segundos.
 
 - La entrevista hablando por el micrófono en el navegador. En modo texto funciona de principio a
   fin para los dos roles.
