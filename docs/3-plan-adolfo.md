@@ -21,7 +21,7 @@ Base: F1 · Después: F2 · Al unir con Asier: F3 · Antes de congelar: F4
 - Evidence: `npm test` 6/6, `npm run lint` sin avisos, `npm run build` compila. Commit
   `build: scaffold next app and shared profile contract`.
 
-### F2: Entrevista de voz que rellena un perfil · in progress
+### F2: Entrevista de voz que rellena un perfil · ✅
 - Goal: sustituir formularios y mensajes por una conversación.
 - Delivers: alguien habla con el agente y ve sus campos rellenarse en pantalla.
 - Covers: entrevista en dos fases, pregunta "¿es imprescindible?", cierre "¿quieres añadir algo?" (doc 1).
@@ -110,7 +110,7 @@ Base: F1 · Después: F2 · Al unir con Asier: F3 · Antes de congelar: F4
   `curl -X POST localhost:3000/api/voice/session` devolvió HTTP 200 con una clave `ek_…`. Commit
   `feat: add voice session route that issues a temporary openai key`.
 
-#### I4: Pantalla de entrevista con campos en vivo · falta probar con micrófono
+#### I4: Pantalla de entrevista con campos en vivo · ✅
 - What: la pantalla donde la persona pulsa para empezar, habla con el agente de la fase 1 y luego
   con el de la fase 2, y ve cómo se rellenan sus hechos y requisitos mientras habla.
 - Why: es el momento de la demo.
@@ -146,7 +146,7 @@ Base: F1 · Después: F2 · Al unir con Asier: F3 · Antes de congelar: F4
 
 #### I5: Guardar el perfil con las rutas de Asier
 
-### F4: Plan B · todo
+### F4: Plan B · descartado
 - Goal: que la demo no dependa de que la voz funcione en directo.
 - Delivers: la entrevista se puede completar escribiendo, y hay un perfil de demo ya entrevistado.
 - Covers: el pozo "Voz en directo" de doc 1.
@@ -167,3 +167,6 @@ Base: F1 · Después: F2 · Al unir con Asier: F3 · Antes de congelar: F4
 - 2026-11-21: hasta que existan las rutas de Asier, la entrevista guarda el perfil en el navegador.
 - 2026-11-21: voz con la Realtime API de OpenAI en vez de ElevenLabs. Un agente por fase (primero
   qué ofreces, después qué buscas) y relevo hecho por nuestro código. Las fases no se mezclan porque cada agente solo tiene sus herramientas.
+- 2026-11-21, Adolfo: sin plan B. La demo es un vídeo de un minuto que incluye 10-15 segundos de
+  entrevista grabada por nosotros, así que la voz no tiene que funcionar en directo ante el jurado.
+- 2026-11-21: Adolfo probó la entrevista por voz en el navegador y funciona.
