@@ -85,6 +85,10 @@ interface FeedItem {
 }
 ```
 
+La versión que manda es `src/domain/profile.ts`, escrita como esquemas zod. Afina dos cosas sobre
+este bloque: `facts` admite campos sin rellenar mientras dura la entrevista, y el `field` de un
+requisito solo acepta hechos del otro rol (un inquilino no puede pedir nada sobre `hasPets`).
+
 Ejemplo: el casero pide contrato indefinido y sin mascotas, y lo marca como imprescindible.
 
 ```json
